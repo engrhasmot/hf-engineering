@@ -839,7 +839,7 @@ export default function AdminExpensesPage() {
   };
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto pb-12">
+    <div className="space-y-6 max-w-7xl mx-auto pb-12 print:max-w-none print:pb-0 print:space-y-4 print:p-0 print:m-0">
       {/* Hidden file input for Excel/CSV import */}
       <input
         type="file"
@@ -850,7 +850,7 @@ export default function AdminExpensesPage() {
       />
 
       {/* Printable Statement Header (Only visible on paper / print preview) */}
-      <div className="hidden print:block border-b-2 border-slate-900 pb-4 mb-6">
+      <div className="print-only border-b-2 border-slate-900 pb-4 mb-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -889,8 +889,8 @@ export default function AdminExpensesPage() {
         </div>
       </div>
 
-      {/* Top Header (Screen Only) */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b pb-4 print:hidden">
+      {/* Top Header (Screen Only - Completely Hidden in Print) */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b pb-4 print:hidden no-print print-hide">
         <div>
           <div className="flex items-center gap-2">
             <div className="p-2 bg-accent/10 rounded-lg text-accent">
@@ -2287,6 +2287,26 @@ export default function AdminExpensesPage() {
           </div>
         </div>
       )}
+
+      {/* Printable Statement Footer (Only on paper / print preview) */}
+      <div className="print-only border-t-2 border-slate-800 pt-6 mt-12 text-xs text-slate-600">
+        <div className="flex justify-between items-end">
+          <div className="space-y-1">
+            <p className="font-bold text-slate-800 text-sm">Triple H Plandraft &amp; Engineering</p>
+            <p className="text-[11px] text-slate-500">
+              This statement is a system-generated official record of project income, funds &amp; expenses.
+            </p>
+            <p className="text-[10px] text-slate-400">
+              Printed on {format(new Date(), "dd-MMM-yyyy 'at' hh:mm a")}
+            </p>
+          </div>
+          <div className="text-right">
+            <div className="w-52 border-b border-slate-700 mb-1.5 ml-auto"></div>
+            <p className="font-bold text-slate-800">Authorized Signature &amp; Company Seal</p>
+            <p className="text-[10px] text-slate-500">Accounts &amp; Audit Division</p>
+          </div>
+        </div>
+      </div>
 
       {/* ================= MODAL: ADD BALANCE / FUND DEPOSIT ================= */}
       <Dialog open={addBalanceModalOpen} onOpenChange={setAddBalanceModalOpen}>

@@ -188,86 +188,153 @@ html {
   animation: loading-bar 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-/* ─── Print Layout ─── */
+/* ─── Print Utilities & Classes ─── */
+.print-only {
+  display: none !important;
+}
+
 @media print {
   @page {
-    size: auto;
-    margin: 12mm 14mm;
+    size: A4 portrait;
+    margin: 10mm 12mm;
   }
 
-  /* Force hide admin sidebar, navigation, mobile headers, toasters, modals, buttons */
+  /* 1. Complete eradication of Admin Panel, Sidebar, Navigation, and Buttons */
+  #admin-sidebar,
+  #admin-mobile-toggle,
   aside,
   nav,
+  header button,
+  .no-print,
   .print-hide,
+  .print-hidden,
   .print\:hidden,
+  [class*="print:hidden"],
+  [class*="no-print"],
   [data-sonner-toaster],
-  [role="dialog"] {
+  [role="dialog"],
+  button:not(.print-keep),
+  input[type="file"] {
     display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: absolute !important;
+    left: -99999px !important;
+    top: -99999px !important;
+    pointer-events: none !important;
   }
 
-  /* Reset layout constraints so multi-page documents print completely without clipping */
+  /* 2. Show dedicated printable headers & footers */
+  .print-only,
+  div.print-only {
+    display: block !important;
+    visibility: visible !important;
+    width: 100% !important;
+  }
+
+  /* 3. Reset document height and overflow so multi-page documents print completely */
   html,
   body {
-    overflow: visible !important;
+    width: 100% !important;
+    min-width: 100% !important;
     height: auto !important;
     min-height: 100% !important;
+    overflow: visible !important;
+    position: static !important;
+    margin: 0 !important;
+    padding: 0 !important;
     background: #ffffff !important;
     color: #0f172a !important;
+    font-size: 11pt !important;
   }
 
-  /* Container resets */
-  .flex.h-screen.overflow-hidden,
+  /* 4. Reset layout root & all scrollable containers */
+  #admin-layout-root,
+  .flex.h-screen,
   div[class*="h-screen"],
   div[class*="overflow-hidden"],
-  div[class*="overflow-y-auto"] {
+  div[class*="overflow-y-auto"],
+  div[class*="overflow-x-auto"],
+  .overflow-x-auto,
+  .overflow-y-auto,
+  .overflow-hidden {
     display: block !important;
     height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
     overflow: visible !important;
+    position: static !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
-  /* Main content area takes full paper width */
+  /* 5. Main content takes full paper width */
+  #admin-main-content,
   main {
     display: block !important;
-    flex: none !important;
+    position: static !important;
     width: 100% !important;
     max-width: 100% !important;
+    min-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
     overflow: visible !important;
     background: transparent !important;
-    padding: 0 !important;
-    margin: 0 !important;
   }
 
+  #admin-main-content > div,
   main > div {
+    width: 100% !important;
     max-width: 100% !important;
-    padding: 0 !important;
     margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
   }
 
-  /* Prevent awkward page cuts in cards and table rows */
-  tr,
-  [class*="rounded-xl"],
-  [class*="Card"] {
+  /* 6. Clean Card & Container Styling for Paper */
+  [class*="Card"],
+  [class*="card"] {
+    border: 1px solid #cbd5e1 !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
 
-  /* Ensure tables print with clean borders and readable widths */
+  /* 7. Multi-page Table Layout & Repeated Column Headers */
   table {
     width: 100% !important;
     border-collapse: collapse !important;
+    page-break-inside: auto !important;
   }
 
-  /* Remove shadows */
+  thead {
+    display: table-header-group !important; /* Repeats table header at top of every printed page */
+  }
+
+  tr {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  th,
+  td {
+    border-color: #e2e8f0 !important;
+    padding: 6px 10px !important;
+  }
+
+  /* 8. Crisp Colors & Remove Shadows */
   * {
     box-shadow: none !important;
     text-shadow: none !important;
-  }
-
-  /* Preserve colors and badge tints on paper */
-  * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 }
+
 
 

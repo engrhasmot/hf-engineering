@@ -187,3 +187,87 @@ html {
 @utility animate-loading-bar {
   animation: loading-bar 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
+
+/* ─── Print Layout ─── */
+@media print {
+  @page {
+    size: auto;
+    margin: 12mm 14mm;
+  }
+
+  /* Force hide admin sidebar, navigation, mobile headers, toasters, modals, buttons */
+  aside,
+  nav,
+  .print-hide,
+  .print\:hidden,
+  [data-sonner-toaster],
+  [role="dialog"] {
+    display: none !important;
+  }
+
+  /* Reset layout constraints so multi-page documents print completely without clipping */
+  html,
+  body {
+    overflow: visible !important;
+    height: auto !important;
+    min-height: 100% !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+
+  /* Container resets */
+  .flex.h-screen.overflow-hidden,
+  div[class*="h-screen"],
+  div[class*="overflow-hidden"],
+  div[class*="overflow-y-auto"] {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Main content area takes full paper width */
+  main {
+    display: block !important;
+    flex: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  main > div {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Prevent awkward page cuts in cards and table rows */
+  tr,
+  [class*="rounded-xl"],
+  [class*="Card"] {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Ensure tables print with clean borders and readable widths */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+
+  /* Remove shadows */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Preserve colors and badge tints on paper */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+

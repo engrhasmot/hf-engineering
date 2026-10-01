@@ -849,8 +849,48 @@ export default function AdminExpensesPage() {
         className="hidden"
       />
 
-      {/* Top Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b pb-4">
+      {/* Printable Statement Header (Only visible on paper / print preview) */}
+      <div className="hidden print:block border-b-2 border-slate-900 pb-4 mb-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/logo.png"
+              alt="Triple H Plandraft & Engineering"
+              className="h-12 w-12 object-contain"
+            />
+            <div>
+              <h1 className="text-xl font-black tracking-tight text-slate-900 leading-tight">
+                Triple H Plandraft &amp; Engineering
+              </h1>
+              <p className="text-xs text-slate-600">
+                House #23, Road #4, Sector #10, Uttara, Dhaka | Phone: +880 1711-000000
+              </p>
+              <p className="text-xs font-bold text-amber-600 uppercase tracking-wider mt-0.5">
+                Official Project Statement &amp; Accounts Ledger
+              </p>
+            </div>
+          </div>
+          <div className="text-right text-xs">
+            <p className="font-black text-slate-900 text-sm">
+              {projectFilter === "all"
+                ? "All Projects & General Office"
+                : projectFilter === "general-office"
+                ? "General / Office Overhead"
+                : projects.find((p) => p._id === projectFilter)?.title || "Project Expenses"}
+            </p>
+            <p className="text-slate-500 font-medium">
+              Generated: {format(new Date(), "dd MMMM yyyy, hh:mm a")}
+            </p>
+            <span className="inline-block mt-1 px-2 py-0.5 bg-slate-100 border text-[10px] font-bold rounded">
+              Verified Accounts
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Top Header (Screen Only) */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b pb-4 print:hidden">
         <div>
           <div className="flex items-center gap-2">
             <div className="p-2 bg-accent/10 rounded-lg text-accent">
@@ -972,7 +1012,7 @@ export default function AdminExpensesPage() {
                 <button
                   type="button"
                   onClick={handleOpenDeleteAllModal}
-                  className="text-destructive font-semibold hover:underline flex items-center gap-1 text-[11px]"
+                  className="text-destructive font-semibold hover:underline flex items-center gap-1 text-[11px] print:hidden"
                   title="Delete all expenses with security confirmation code"
                 >
                   <Trash2 className="w-3 h-3" /> Clear All Data
@@ -1014,7 +1054,7 @@ export default function AdminExpensesPage() {
       </div>
 
       {/* Main Full-Page View Tabs Bar */}
-      <div className="flex flex-wrap border-b border-border gap-2">
+      <div className="flex flex-wrap border-b border-border gap-2 print:hidden">
         <button
           onClick={() => setActiveView("transactions")}
           className={`pb-3 px-4 text-sm font-bold flex items-center gap-2 border-b-2 transition-colors ${
@@ -1105,7 +1145,7 @@ export default function AdminExpensesPage() {
             <Button
               onClick={handleOpenAddBalance}
               size="sm"
-              className="font-bold bg-emerald-600 hover:bg-emerald-700 text-white text-xs gap-1.5 shadow"
+              className="font-bold bg-emerald-600 hover:bg-emerald-700 text-white text-xs gap-1.5 shadow print:hidden"
             >
               <Coins className="w-4 h-4" /> + Add New Balance Deposit
             </Button>
@@ -1139,7 +1179,7 @@ export default function AdminExpensesPage() {
                         <th className="py-3 px-4">Fund Source</th>
                         <th className="py-3 px-4">Deposited By & Method</th>
                         <th className="py-3 px-4 text-right">Amount (BDT)</th>
-                        <th className="py-3 px-4 text-right">Action</th>
+                        <th className="py-3 px-4 text-right print:hidden">Action</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
@@ -1181,7 +1221,7 @@ export default function AdminExpensesPage() {
                           <td className="py-3 px-4 text-right whitespace-nowrap font-black text-emerald-600 text-sm sm:text-base">
                             +{formatBDT(fund.amount)}
                           </td>
-                          <td className="py-3 px-4 text-right whitespace-nowrap">
+                          <td className="py-3 px-4 text-right whitespace-nowrap print:hidden">
                             <Button
                               variant="ghost"
                               size="icon"
@@ -1843,7 +1883,7 @@ export default function AdminExpensesPage() {
       {activeView === "transactions" && (
         <div className="space-y-4">
           {/* Filters Bar */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 p-4 bg-card rounded-xl border border-border shadow-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 p-4 bg-card rounded-xl border border-border shadow-sm print:hidden">
             {/* Search */}
             <div className="relative lg:col-span-2">
               <Search className="w-4 h-4 absolute left-3 top-3 text-muted-foreground" />
@@ -1958,7 +1998,7 @@ export default function AdminExpensesPage() {
                         <th className="py-3 px-4">Category</th>
                         <th className="py-3 px-4">Vendor & Method</th>
                         <th className="py-3 px-4 text-right">Amount (BDT)</th>
-                        <th className="py-3 px-4 text-right">Action</th>
+                        <th className="py-3 px-4 text-right print:hidden">Action</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
@@ -2036,7 +2076,7 @@ export default function AdminExpensesPage() {
                             </td>
 
                             {/* Actions */}
-                            <td className="py-3 px-4 text-right whitespace-nowrap">
+                            <td className="py-3 px-4 text-right whitespace-nowrap print:hidden">
                               <div className="flex items-center justify-end gap-1">
                                 <Button
                                   variant="ghost"
@@ -2166,7 +2206,7 @@ export default function AdminExpensesPage() {
                         <th className="py-3 px-4 text-right">Total Expenses</th>
                         <th className="py-3 px-4 text-right">Net Available Balance</th>
                         <th className="py-3 px-4 text-center">Status</th>
-                        <th className="py-3 px-4 text-right">Action</th>
+                        <th className="py-3 px-4 text-right print:hidden">Action</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-border">
@@ -2223,7 +2263,7 @@ export default function AdminExpensesPage() {
                                 </Badge>
                               )}
                             </td>
-                            <td className="py-3 px-4 text-right whitespace-nowrap">
+                            <td className="py-3 px-4 text-right whitespace-nowrap print:hidden">
                               <Button
                                 variant="outline"
                                 size="sm"

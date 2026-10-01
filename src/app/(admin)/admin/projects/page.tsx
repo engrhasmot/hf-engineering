@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -121,7 +121,7 @@ export default function AdminProjects() {
             Manage your portfolio projects and categories.
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex flex-wrap items-center gap-2.5 print:hidden">
           <Button
             variant="outline"
             onClick={() => setCategoryModalOpen(true)}
@@ -137,7 +137,7 @@ export default function AdminProjects() {
       </div>
 
       {/* Category Filter Pills */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-border">
+      <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-border print:hidden">
         <button
           onClick={() => setSelectedCategory("all")}
           className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold shrink-0 transition-all ${
@@ -195,8 +195,8 @@ export default function AdminProjects() {
                   <ImageIcon className="w-10 h-10 opacity-30" />
                 </div>
               )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-1 group-hover:translate-y-0">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity print:hidden" />
+              <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-1 group-hover:translate-y-0 print:hidden">
                 <Button
                   size="icon"
                   variant="secondary"

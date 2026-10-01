@@ -132,9 +132,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
+    <div className="flex h-screen overflow-hidden bg-background print:h-auto print:overflow-visible print:bg-white print:block">
       {/* Mobile Sidebar Toggle */}
-      <div className="md:hidden absolute top-4 left-4 z-50">
+      <div className="md:hidden absolute top-4 left-4 z-50 print:hidden">
         <Button variant="outline" size="icon" onClick={() => setSidebarOpen(!sidebarOpen)}>
           <Menu className="w-5 h-5" />
         </Button>
@@ -142,7 +142,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Sidebar */}
       <aside 
-        className={`fixed md:static inset-y-0 left-0 z-40 w-64 border-r border-border bg-card transform transition-transform duration-200 ease-in-out flex flex-col ${
+        className={`fixed md:static inset-y-0 left-0 z-40 w-64 border-r border-border bg-card transform transition-transform duration-200 ease-in-out flex flex-col print:hidden ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
@@ -214,19 +214,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Overlay for mobile */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          className="fixed inset-0 bg-black/50 z-30 md:hidden print:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto bg-muted/20 relative">
-        <div className="p-6 md:p-8 mt-12 md:mt-0 max-w-7xl mx-auto">
+      <main className="flex-1 overflow-y-auto bg-muted/20 relative print:overflow-visible print:bg-white print:p-0 print:m-0 print:w-full print:block">
+        <div className="p-6 md:p-8 mt-12 md:mt-0 max-w-7xl mx-auto print:p-0 print:m-0 print:max-w-none">
           {children}
         </div>
       </main>
       
-      <Toaster position="bottom-right" />
+      <div className="print:hidden">
+        <Toaster position="bottom-right" />
+      </div>
     </div>
   );
 }

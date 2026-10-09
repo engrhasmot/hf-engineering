@@ -142,7 +142,7 @@ export default function TestimonialCarousel() {
                 আপনার মূল্যবান অভিজ্ঞতা জানান
               </DialogTitle>
               <DialogDescription>
-                Triple H Plandraft & Engineering-এর সাথে আপনার কাজের অভিজ্ঞতা শেয়ার করুন।
+                HF Design & Engineering Solutions-এর সাথে আপনার কাজের অভিজ্ঞতা শেয়ার করুন।
               </DialogDescription>
             </DialogHeader>
 

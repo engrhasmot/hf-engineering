@@ -54,7 +54,7 @@ function daysSince(payment: Payment): number {
 function buildWhatsAppMessage(p: Payment): string {
   return `আসসালামুয়ালাইকুম ${p.clientName} ভাই/আপু,
 
-ট্রিপল এইচ পল্যান ড্রাফট থেকে জানাচ্ছি যে, আপনার *${p.projectTitle}* প্রজেক্টের পেমেন্ট বিষয়ে একটি বিনয়ী স্মরণ করিয়ে দিতে চাইছি।
+এইচএফ ডিজাইন অ্যান্ড ইঞ্জিনিয়ারিং থেকে জানাচ্ছি যে, আপনার *${p.projectTitle}* প্রজেক্টের পেমেন্ট বিষয়ে একটি বিনয়ী স্মরণ করিয়ে দিতে চাইছি।
 
 📋 সেবা: ${p.serviceType}
 💰 মোট: ৳${p.totalAmount.toLocaleString("en-BD")}
@@ -62,13 +62,13 @@ function buildWhatsAppMessage(p: Payment): string {
 ⏳ বকেয়া: ৳${p.dueAmount.toLocaleString("en-BD")}
 
 💳 অনলাইনে পেমেন্ট করতে বা TrxID পাঠাতে ভিজিট করুন:
-👉 https://triple-h-engineering.vercel.app/pay
+👉 https://hfengineeringbd.com/pay
 
 আপনার সুবিধামতো সময়ে পরিশোধ করার অনুরোধ রইলো। যেকোনো প্রয়োজনে আমাদের সাথে সরাসরি যোগাযোগ করুন।
 
 ধন্যবাদান্তে,
 ইঞ্জিনিয়ার মোঃ হাসমত আলী
-ট্রিপল এইচ পল্যান ড্রাফট ও ইঞ্জিনিয়ারিং
+এইচএফ ডিজাইন অ্যান্ড ইঞ্জিনিয়ারিং সলিউশনস
 📞 01778-506500, 01631-186218`;
 }
 

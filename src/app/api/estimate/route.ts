@@ -96,7 +96,7 @@ export async function POST(req: Request) {
     });
 
     sendEmail({
-      to: process.env.ADMIN_EMAIL || 'admin@tripleh.com.bd',
+      to: process.env.ADMIN_EMAIL || 'admin@hfengineeringbd.com',
       ...newInquiryEmail({
         name,
         phone,

@@ -19,7 +19,7 @@ const QUICK_ACTIONS: QuickAction[] = [
     id: "pricing",
     icon: Compass,
     labelBn: "প্ল্যান ড্রাফটিং ও নকশার খরচ",
-    labelEn: "Plan Drafting & Design Cost",
+    labelEn: "Building Design & Estimation Cost",
     message: "আসসালামু আলাইকুম, আমি আমার বাড়ির আর্কিটেকচারাল ২D/৩D প্ল্যান ও ড্রাফটিংয়ের খরচ সম্পর্কে বিস্তারিত জানতে চাই।",
   },
   {
@@ -34,7 +34,7 @@ const QUICK_ACTIONS: QuickAction[] = [
     icon: CreditCard,
     labelBn: "অনলাইনে বিকাশ/নগদে ফি পরিশোধ",
     labelEn: "Online Fee Payment (bKash/Nagad)",
-    message: "আসসালামু আলাইকুম, আমি ট্রিপল এইচ কনসালটেন্সির বিকাশ/নগদ (০১৬৩১১৮৬২১৮) পেমেন্ট সংক্রান্ত তথ্য জানতে চাই।",
+    message: "আসসালামু আলাইকুম, আমি এইচএফ ইঞ্জিনিয়ারিং কনসালটেন্সির বিকাশ/নগদ (০১৬৩১১৮৬২১৮) পেমেন্ট সংক্রান্ত তথ্য জানতে চাই।",
   },
   {
     id: "tracking",
@@ -92,7 +92,7 @@ export default function FloatingWhatsApp() {
                 <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center border-2 border-white/60 p-1 overflow-hidden shadow-sm">
                   <Image
                     src="/images/logo.png"
-                    alt="Triple H Logo"
+                    alt="HF Design & Engineering Solutions logo"
                     width={44}
                     height={44}
                     className="w-full h-full object-contain"
@@ -105,7 +105,7 @@ export default function FloatingWhatsApp() {
                   Engr. Md. Hasmot Ali
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-300" />
                 </h4>
-                <p className="text-[11px] text-white/80 leading-tight">Triple H Plandraft &amp; Engineering</p>
+                <p className="text-[11px] text-white/80 leading-tight">HF Design &amp; Engineering Solutions</p>
                 <div className="flex items-center gap-1.5 mt-1 text-[11px] text-emerald-200">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse"></span>
                   সক্রিয় আছেন (Online)

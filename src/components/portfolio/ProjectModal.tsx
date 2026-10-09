@@ -39,7 +39,7 @@ export default function ProjectModal({ project, children }: ProjectModalProps) {
   const afterImage = project.images.find(img => !img.isBefore) || project.images[0]; // fallback to first image
 
   const message = encodeURIComponent(
-    `Hi TRIPLE H PLANDRAFT & ENGINEERING, I am interested in your project: "${project.title}". Can we discuss something similar?`
+    `Hi HF DESIGN & ENGINEERING SOLUTIONS, I am interested in your project: "${project.title}". Can we discuss something similar?`
   );
   const PLACEHOLDER_IMAGE = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" fill="%23f1f5f9"><rect width="800" height="600"/><text x="400" y="300" text-anchor="middle" fill="%2394a3b8" font-size="20" font-family="sans-serif">No Image Available</text></svg>');
 const whatsappUrl = `https://wa.me/${SITE_CONFIG.whatsapp}?text=${message}`;

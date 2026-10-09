@@ -7,7 +7,7 @@
   <xsl:template match="/">
     <html lang="en">
       <head>
-        <title>Sitemap - TRIPLE H PLANDRAFT &amp; ENGINEERING</title>
+        <title>Sitemap - HF Design &amp; Engineering Solutions</title>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <style>
           * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -127,7 +127,7 @@
       <body>
         <header>
           <h1>Sitemap <xsl:value-of select="count(//sitemap:url)"/></h1>
-          <p>TRIPLE H PLANDRAFT &amp; ENGINEERING — All publicly accessible pages</p>
+          <p>HF DESIGN &amp; ENGINEERING SOLUTIONS — All publicly accessible pages</p>
         </header>
         <main>
           <table>
@@ -178,7 +178,7 @@
           </table>
         </main>
         <footer>
-          <a href="/">← Back to TRIPLE H PLANDRAFT &amp; ENGINEERING</a>
+          <a href="/">← Back to HF Design &amp; Engineering Solutions</a>
         </footer>
       </body>
     </html>

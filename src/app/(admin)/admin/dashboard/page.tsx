@@ -170,7 +170,7 @@ export default function AdminDashboard() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.setAttribute("href", url);
-    link.setAttribute("download", `tripleh_leads_${safeFormatDate(new Date(), "yyyy-MM-dd")}.csv`);
+    link.setAttribute("download", `hf_leads_${safeFormatDate(new Date(), "yyyy-MM-dd")}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -317,7 +317,7 @@ export default function AdminDashboard() {
                       )}
                       {waPhone && (
                         <a
-                          href={`https://wa.me/${waPhone}?text=${encodeURIComponent(`Hello ${aptName}, regarding your appointment today with Triple H Plandraft & Engineering...`)}`}
+                          href={`https://wa.me/${waPhone}?text=${encodeURIComponent(`Hello ${aptName}, regarding your appointment today with HF Design & Engineering Solutions...`)}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors font-medium border border-emerald-200"
@@ -480,7 +480,7 @@ export default function AdminDashboard() {
               <div>
                 <span className="text-muted-foreground block font-medium">প্রেরক (Office / Sender):</span>
                 <span className="font-mono font-bold text-foreground">+880 1778-506500</span>
-                <span className="text-[10px] text-muted-foreground block">Engr. Md. Hasmot Ali (Triple H)</span>
+                <span className="text-[10px] text-muted-foreground block">Engr. Md. Hasmot Ali (HF)</span>
               </div>
               <div>
                 <span className="text-muted-foreground block font-medium">প্রাপক (Recipient / Target):</span>

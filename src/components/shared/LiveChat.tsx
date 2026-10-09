@@ -12,13 +12,13 @@ interface ChatMessage {
 }
 
 const BOT_REPLIES: Record<string, string> = {
-  "hello": "Hello! Welcome to TRIPLE H PLANDRAFT & ENGINEERING. How can I help you today?",
+  "hello": "Hello! Welcome to HF Design & Engineering Solutions. How can I help you today?",
   "hi": "Hi there! How can we assist you with your construction or engineering needs?",
   "cost": "You can use our online Cost Estimator tool for a quick budget calculation. Visit /cost-estimator",
   "price": "You can use our online Cost Estimator tool for a quick budget calculation. Visit /cost-estimator",
   "service": "We offer: 2D Plans, 3D Exterior/Interior, Structural Design, BOQ Estimation, Plan Passing, and Site Supervision.",
-  "contact": "You can reach us at +880 1778-506500 or email info@tripleh.com.bd",
-  "phone": "Call us: +880 1778-506500 or +880 1631-186218",
+  "contact": "You can reach us at 01631-186218 or 01778-506500 or email info@hfengineeringbd.com",
+  "phone": "Call us: 01631-186218 or 01778-506500",
   "track": "To track your plan status, visit /track-plan and enter your File ID or phone number.",
   "appointment": "Book a free consultation at /book-appointment",
   "team": "We have a team of experienced engineers and architects. Visit /team to learn more.",
@@ -30,13 +30,13 @@ function getBotReply(msg: string): string {
   for (const [key, reply] of Object.entries(BOT_REPLIES)) {
     if (lower.includes(key)) return reply;
   }
-  return "Thank you for your message. Our team will get back to you shortly. For immediate assistance, please call +880 1778-506500.";
+  return "Thank you for your message. Our team will get back to you shortly. For immediate assistance, please call 01631-186218 or 01778-506500.";
 }
 
 export default function LiveChat() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
-    { role: "bot", text: "👋 Welcome to TRIPLE H PLANDRAFT & ENGINEERING! How can we help you?" },
+    { role: "bot", text: "👋 Welcome to HF Design & Engineering Solutions! How can we help you?" },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -77,10 +77,10 @@ export default function LiveChat() {
           {/* Header */}
           <div className="bg-accent text-primary-foreground px-5 py-4 flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center p-1 shrink-0 overflow-hidden shadow-xs">
-              <img src="/images/logo.png" alt="Triple H" className="w-full h-full object-contain" />
+              <img src="/images/logo.png" alt="HF Design & Engineering Solutions logo" className="w-full h-full object-contain" />
             </div>
             <div>
-              <p className="font-bold text-sm">Triple H Plandraft &amp; Engineering</p>
+              <p className="font-bold text-sm">HF Design &amp; Engineering Solutions</p>
               <p className="text-xs text-primary-foreground/80">Typically replies in a few minutes</p>
             </div>
           </div>

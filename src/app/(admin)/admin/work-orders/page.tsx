@@ -92,8 +92,8 @@ const STATUS_BADGE_CLASSES: Record<WorkOrderStatus, string> = {
 function getWhatsAppLink(phone: string, name?: string) {
   const clean = phone.replace(/[+\s-]/g, "").replace(/^0/, "880");
   const msg = name
-    ? `Hello ${name}, thank you for your work order with Triple H Plandraft & Engineering!`
-    : "Hello, thank you for your work order with Triple H Plandraft & Engineering!";
+    ? `Hello ${name}, thank you for your work order with HF Design & Engineering Solutions!`
+    : "Hello, thank you for your work order with HF Design & Engineering Solutions!";
   return `https://wa.me/${clean}?text=${encodeURIComponent(msg)}`;
 }
 

@@ -33,7 +33,7 @@ function normalizeBDPhone(phone: string): string {
 
 async function sendSSLWireless(to: string, message: string): Promise<SMSResult> {
   const apiKey = process.env.SMS_API_KEY;
-  const senderId = process.env.SMS_SENDER_ID || 'TRIPLEH';
+  const senderId = process.env.SMS_SENDER_ID || 'HFENGINEERING';
   const apiUrl = process.env.SMS_API_URL || 'https://api.sslcommerz.com/sms/v1/send';
 
   if (!apiKey) {
@@ -142,7 +142,7 @@ export function planStatusUpdateSMS(data: {
   msg += `নতুন অবস্থা: ${statusLabel}\n`;
   if (data.note) msg += `মন্তব্য: ${data.note}\n`;
   msg += `\nবিস্তারিত জানতে: ${getSiteUrl()}/track-plan${data.fileId ? `?query=${encodeURIComponent(data.fileId)}` : ''}\n`;
-  msg += `Triple H Plandraft & Engineering`;
+  msg += `HF Design & Engineering Solutions`;
 
   return msg;
 }
@@ -152,5 +152,5 @@ export function appointmentConfirmSMS(data: {
   date: string;
   time?: string;
 }): string {
-  return `প্রিয় ${data.clientName},\nআপনার অ্যাপয়েন্টমেন্ট ${data.date}${data.time ? ' সকাল ' + data.time : ''} নিশ্চিত করা হয়েছে।\nধন্যবাদ - Triple H Plandraft & Engineering`;
+  return `প্রিয় ${data.clientName},\nআপনার অ্যাপয়েন্টমেন্ট ${data.date}${data.time ? ' সকাল ' + data.time : ''} নিশ্চিত করা হয়েছে।\nধন্যবাদ - HF Design & Engineering Solutions`;
 }

@@ -9,9 +9,9 @@ const UserSchema = new mongoose.Schema({
 const User = mongoose.models.User || mongoose.model('User', UserSchema);
 
 async function testPassword() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/triple-h-db');
+  await mongoose.connect('mongodb://127.0.0.1:27017/hf-engineering-db');
   
-  const user = await User.findOne({ email: 'admin@tripleh.com.bd' });
+  const user = await User.findOne({ email: 'admin@hfengineeringbd.com' });
   if (!user) {
     console.log('User not found!');
     process.exit(1);

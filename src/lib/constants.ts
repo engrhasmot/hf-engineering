@@ -1,4 +1,5 @@
-export const CANONICAL_SITE_URL = 'https://triple-h-engineering.vercel.app';
+// TODO: Update CANONICAL_SITE_URL if your production domain differs from hfengineeringbd.com
+export const CANONICAL_SITE_URL = 'https://hfengineeringbd.com';
 
 export function getSiteUrl(): string {
   const envUrl = process.env.NEXT_PUBLIC_SITE_URL;
@@ -8,8 +9,7 @@ export function getSiteUrl(): string {
         ? envUrl
         : `https://${envUrl}`;
       const parsed = new URL(urlToParse);
-      // Strictly extract the origin (e.g. 'https://triple-h-engineering.vercel.app')
-      // and strip any trailing paths like '/services' or accidental sub-paths
+      // Strictly extract the origin
       if (parsed.hostname && parsed.hostname.includes('.')) {
         return parsed.origin;
       }
@@ -21,20 +21,30 @@ export function getSiteUrl(): string {
 }
 
 export const SITE_CONFIG = {
-  name: 'Triple H Plandraft & Engineering',
-  shortName: 'Triple H Plandraft & Engineering',
-  fullName: 'Triple H Plandraft & Engineering',
-  nameBn: 'ট্রিপল এইচ প্ল্যানড্রাফট ও ইঞ্জিনিয়ারিং',
+  name: 'HF Design & Engineering Solutions',
+  shortName: 'HF',
+  fullName: 'HF Design & Engineering Solutions',
+  nameBn: 'এইচএফ ডিজাইন অ্যান্ড ইঞ্জিনিয়ারিং সলিউশনস',
   slogan: 'পরিকল্পিত নকশা, নিরাপদ নির্মাণ',
   sloganEn: 'Planned Design, Safe Construction',
   description:
-    'Professional civil engineering consultancy specializing in 2D/3D architectural design, structural drafting, BOQ estimation, plan passing, and site supervision in Bangladesh.',
+    'Building design, 3D elevation, structural drawing, BOQ and plan approval in Savar, Dhaka.',
   url: getSiteUrl(),
-  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '8801778506500',
+  whatsapp: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '8801631186218',
+  // TODO: Verify exact Facebook page URL once configured
   facebook: 'https://www.facebook.com/profile.php?id=61592186641331',
-  email: 'info@tripleh.com.bd',
-  phone: '+880 1778-506500',
-  address: 'Dhaka, Bangladesh',
+  facebookPageName: 'HF Design & Engineering Solutions',
+  // TODO: Verify official domain & email address
+  email: 'info@hfengineeringbd.com',
+  phone: '01631-186218',
+  phoneSecondary: '01778-506500',
+  phoneDisplay: '01631-186218, 01778-506500',
+  address: 'আয়শা মঞ্জিল, বাড়ি ১৪/০৫, ওয়ার্ড নং ১, নয়াবাড়ি, সাভার রেডিও কলোনি, ঢাকা',
+  addressEn: 'Aysha Monjil, House 14/05, Ward No 1, Noyabari, Savar Radio Colony, Dhaka',
+  colors: {
+    navy: '#0B2A4A',
+    gold: '#F2A900',
+  },
 } as const;
 
 export const NAV_LINKS = [

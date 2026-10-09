@@ -64,7 +64,7 @@ export default function Navbar() {
           <Link href="/" className="flex-shrink-0 group flex items-center gap-2.5">
             <Image
               src="/images/logo.png"
-              alt="TRIPLE H PLANDRAFT & ENGINEERING"
+              alt="HF Design & Engineering Solutions logo"
               width={140}
               height={140}
               className="h-10 md:h-14 w-auto object-contain group-hover:opacity-80 transition-opacity"
@@ -72,10 +72,10 @@ export default function Navbar() {
             />
             <div className="flex flex-col leading-tight">
               <span className="text-base md:text-xl font-black tracking-tight text-accent group-hover:text-accent/80 transition-colors uppercase">
-                Triple H
+                HF
               </span>
-              <span className="text-[9px] md:text-[11px] font-semibold tracking-widest text-muted-foreground uppercase">
-                Plandraft &amp; Engineering
+              <span className="text-[9px] md:text-[11px] font-semibold tracking-wider text-muted-foreground uppercase">
+                Design &amp; Engineering
               </span>
             </div>
           </Link>

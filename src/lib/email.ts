@@ -26,7 +26,7 @@ export async function sendEmail(options: EmailOptions) {
         },
         body: JSON.stringify({
           personalizations: [{ to: [{ email: options.to }] }],
-          from: { email: process.env.EMAIL_FROM || 'noreply@tripleh.com.bd' },
+          from: { email: process.env.EMAIL_FROM || 'noreply@hfengineeringbd.com' },
           subject: options.subject,
           content: [{ type: 'text/html', value: options.html }],
         }),

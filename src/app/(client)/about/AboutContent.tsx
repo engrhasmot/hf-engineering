@@ -11,7 +11,7 @@ export function AboutHero() {
         animate={{ opacity: 1, y: 0 }}
         className="text-4xl md:text-6xl font-bold font-heading text-primary-foreground mb-6"
       >
-        About <span className="text-accent">TRIPLE H</span>
+        About <span className="text-accent">HF</span>
       </motion.h1>
       <motion.p
         initial={{ opacity: 0 }}
@@ -38,7 +38,7 @@ export function AboutStory() {
           >
             <h2 className="text-3xl md:text-4xl font-bold font-heading">Our Story</h2>
             <p className="text-muted-foreground leading-relaxed text-lg">
-              TRIPLE H PLANDRAFT & ENGINEERING is a premier civil engineering consultancy based in Dhaka, Bangladesh. We specialize in transforming architectural visions into structurally sound, legally approved, and beautifully designed buildings.
+              HF DESIGN & ENGINEERING SOLUTIONS is a premier civil engineering consultancy based in Dhaka, Bangladesh. We specialize in transforming architectural visions into structurally sound, legally approved, and beautifully designed buildings.
             </p>
             <p className="text-muted-foreground leading-relaxed">
               Founded by a team of experienced civil engineers and architects, we bridge the gap between traditional construction methods and modern engineering standards. From single-family homes to multi-story commercial complexes, every project receives the same meticulous attention to detail.
@@ -76,7 +76,7 @@ export function AboutWhyChoose() {
   return (
     <section className="py-24 bg-muted/30 border-t border-border">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold font-heading mb-6">Why Choose TRIPLE H?</h2>
+        <h2 className="text-3xl md:text-4xl font-bold font-heading mb-6">Why Choose HF?</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 text-left">
           {[
             {

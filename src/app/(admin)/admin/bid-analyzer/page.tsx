@@ -420,7 +420,7 @@ export default function ComparativeBidAnalyzerPage() {
 
         <div className="pt-8 flex justify-between items-end border-t border-border text-xs">
           <div>
-            <p className="text-muted-foreground">তৈরি করেছে: ট্রিপল এইচ ইঞ্জিনিয়ারিং কনসালটেন্সি</p>
+            <p className="text-muted-foreground">তৈরি করেছে: এইচএফ ইঞ্জিনিয়ারিং কনসালটেন্সি</p>
             <p className="text-muted-foreground font-mono">রিপোর্ট আইডি: BID-{Math.floor(1000 + Math.random() * 9000)}</p>
           </div>
           <div className="text-right space-y-1">

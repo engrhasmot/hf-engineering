@@ -92,7 +92,7 @@ export default function PileCalculatorPage() {
   </style>
 </head>
 <body>
-  <h2>TRIPLE H PLANDRAFT &amp; ENGINEERING</h2>
+  <h2>HF DESIGN &amp; ENGINEERING SOLUTIONS</h2>
   <div class="sub">PILING LOAD CAPACITY SUMMARY</div>
   <div class="divider"></div>
   <table>
@@ -122,7 +122,7 @@ export default function PileCalculatorPage() {
   <div class="divider"></div>
   <div class="footer">
     <p>Engineer: Md. Hasmot Ali (Chief Engineering Consultant)</p>
-    <p>Organization: Triple H Plandraft &amp; Engineering</p>
+    <p>Organization: HF Design &amp; Engineering Solutions</p>
     <p>Date: ${todayStr()}</p>
     <br/>
     <p><em>Note: This is a preliminary estimate based on BNBC method. Actual design requires soil test report and expert engineering review.</em></p>

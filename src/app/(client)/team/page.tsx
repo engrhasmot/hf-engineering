@@ -63,7 +63,7 @@ export default function TeamPage() {
 
   return (
     <div className="w-full">
-      <SEOHead title="Our Team" description="TRIPLE H এর অভিজ্ঞ ইঞ্জিনিয়ার ও আর্কিটেক্ট টিম সম্পর্কে জানুন।" />
+      <SEOHead title="Our Team" description="HF এর অভিজ্ঞ ইঞ্জিনিয়ার ও আর্কিটেক্ট টিম সম্পর্কে জানুন।" />
       <section className="bg-primary pt-32 pb-20 text-center px-4">
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
@@ -79,7 +79,7 @@ export default function TeamPage() {
           transition={{ duration: 0.6, delay: 0.15 }}
           className="text-primary-foreground/80 max-w-2xl mx-auto text-lg"
         >
-          Meet the skilled engineers and drafters behind every project at TRIPLE H.
+          Meet the skilled engineers and drafters behind every project at HF.
         </motion.p>
       </section>
 

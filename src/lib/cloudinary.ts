@@ -14,7 +14,7 @@ export default cloudinary;
  */
 export async function uploadImage(
   file: string,
-  folder: string = 'triple-h/projects'
+  folder: string = 'hf-engineering/projects'
 ) {
   return cloudinary.uploader.upload(file, {
     folder,

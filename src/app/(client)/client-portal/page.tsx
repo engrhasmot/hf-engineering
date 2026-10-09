@@ -426,7 +426,7 @@ export default function ClientPortalPage() {
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <div className="w-14 h-14 rounded-2xl bg-white border-2 border-accent/30 flex items-center justify-center p-1.5 shrink-0 shadow-xs">
-                    <img src="/images/logo.png" alt="Triple H" className="w-full h-full object-contain" />
+                    <img src="/images/logo.png" alt="HF Design & Engineering Solutions logo" className="w-full h-full object-contain" />
                   </div>
                   <div>
                     <div className="flex flex-wrap items-center gap-2">
@@ -434,7 +434,7 @@ export default function ClientPortalPage() {
                         স্বাগতম, {clientUser.name}
                       </h1>
                       <Badge className="bg-accent/15 text-accent border-accent/30 text-[11px] font-bold gap-1">
-                        <Sparkles className="w-3 h-3" /> Triple H VIP Client Portal
+                        <Sparkles className="w-3 h-3" /> HF VIP Client Portal
                       </Badge>
                     </div>
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground mt-1">
@@ -1196,7 +1196,7 @@ export default function ClientPortalPage() {
                     <Bell className="w-5 h-5 text-accent" /> অফিসিয়াল নোটিশ ও কারিগরি নির্দেশনা
                   </h3>
                   <p className="text-xs text-muted-foreground">
-                    ট্রিপল এইচ কনসালটেন্সির অফিসিয়াল বিজ্ঞপ্তি, সাইট কাজের সতর্কতা এবং ছুটির শিডিউল।
+                    এইচএফ কনসালটেন্সির অফিসিয়াল বিজ্ঞপ্তি, সাইট কাজের সতর্কতা এবং ছুটির শিডিউল।
                   </p>
                 </div>
                 <Link href="/notices" target="_blank">
@@ -1261,7 +1261,7 @@ export default function ClientPortalPage() {
                       <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-muted-foreground pt-1">
                         <span>প্রকাশক: <strong className="text-foreground">{notice.author}</strong></span>
                         <a
-                          href={`https://wa.me/?text=${encodeURIComponent(`📢 *${notice.title}*\n\n${notice.content}\n\n- ${notice.author}\nট্রিপল এইচ ইঞ্জিনিয়ারিং\nhttps://triple-h-engineering.vercel.app/client-portal`)}`}
+                          href={`https://wa.me/?text=${encodeURIComponent(`📢 *${notice.title}*\n\n${notice.content}\n\n- ${notice.author}\nএইচএফ ইঞ্জিনিয়ারিং\nhttps://hfengineeringbd.com/client-portal`)}`}
                           target="_blank"
                           rel="noreferrer"
                           className="inline-flex items-center gap-1 text-emerald-600 font-bold hover:underline"
@@ -1284,10 +1284,10 @@ export default function ClientPortalPage() {
                   <div className="border border-slate-300 rounded-xl p-6 bg-white shadow-sm space-y-6">
                     <div className="flex items-center justify-between border-b pb-4 border-slate-200">
                       <div className="flex items-center gap-3">
-                        <img src="/images/logo.png" alt="Triple H Logo" className="w-12 h-12 object-contain" />
+                        <img src="/images/logo.png" alt="HF Design & Engineering Solutions logo" className="w-12 h-12 object-contain" />
                         <div>
-                          <h2 className="text-xl font-black text-slate-900">Triple H Plandraft &amp; Engineering</h2>
-                          <p className="text-xs font-semibold text-accent uppercase">Plandraft &amp; Engineering Consultancy</p>
+                          <h2 className="text-xl font-black text-slate-900">HF Design &amp; Engineering Solutions</h2>
+                          <p className="text-xs font-semibold text-accent uppercase">Design &amp; Engineering Solutions</p>
                         </div>
                       </div>
                       <div className="text-right text-xs text-slate-600">
@@ -1359,11 +1359,11 @@ export default function ClientPortalPage() {
         <div className="text-center space-y-4">
           <div className="flex justify-center mb-2">
             <div className="w-16 h-16 rounded-2xl bg-white border border-border/80 shadow-md p-2 flex items-center justify-center">
-              <img src="/images/logo.png" alt="Triple H Logo" className="w-full h-full object-contain" />
+              <img src="/images/logo.png" alt="HF Design & Engineering Solutions logo" className="w-full h-full object-contain" />
             </div>
           </div>
           <Badge variant="outline" className="px-3 py-1 bg-accent/10 text-accent border-accent/20 text-xs font-semibold">
-            <ShieldCheck className="w-3.5 h-3.5 mr-1" /> Triple H Plandraft &amp; Engineering — Client Portal
+            <ShieldCheck className="w-3.5 h-3.5 mr-1" /> HF Design &amp; Engineering Solutions — Client Portal
           </Badge>
           <h1 className="text-3xl sm:text-4xl font-black text-foreground tracking-tight">
             ক্লায়েন্ট সেলফ-সার্ভিস ও প্রজেক্ট ট্র্যাকার
@@ -1639,7 +1639,7 @@ export default function ClientPortalPage() {
                           </Button>
                         </Link>
                         <a
-                          href={`https://wa.me/8801778506500?text=${encodeURIComponent(`Hello Triple H, I am checking my project ${project.projectTitle} (File: ${project.fileId})`)}`}
+                          href={`https://wa.me/8801778506500?text=${encodeURIComponent(`Hello HF, I am checking my project ${project.projectTitle} (File: ${project.fileId})`)}`}
                           target="_blank"
                           rel="noreferrer"
                         >

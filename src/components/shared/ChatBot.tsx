@@ -24,7 +24,7 @@ const SUGGESTED_QUESTIONS = [
 
 const WELCOME_MESSAGE: Message = {
   role: "bot",
-  content: `আস্সালামু আলাইকুম! 👋 **Triple H Plandraft & Engineering**-এ স্বাগতম!\n\nআমি আপনার AI-powered Engineering Assistant। আমি বুঝতে পারি আপনার প্রশ্নের অর্থ এবং সেরে উত্তর দিই!\n\n🏗️ আমি এই বিষয়ে সাহায্য করতে পারি:\n- 💰 নির্মাণ খরচ ও বাজেট\n- 📐 2D/3D Design ও নকশা\n- 📋 রাজউক প্ল্যান পাসিং\n- 🏗️ সাইট সুপারভিশন\n- 📞 যোগাযোগ ও অ্যাপয়েন্টমেন্ট\n\nআপনার প্রশ্ন লিখুন অথবা নিচে থেকে বাছাই করুন!`,
+  content: `আস্সালামু আলাইকুম! 👋 **HF Design & Engineering Solutions**-এ স্বাগতম!\n\nআমি আপনার AI-powered Engineering Assistant। আমি বুঝতে পারি আপনার প্রশ্নের অর্থ এবং সেরে উত্তর দিই!\n\n🏗️ আমি এই বিষয়ে সাহায্য করতে পারি:\n- 💰 নির্মাণ খরচ ও বাজেট\n- 📐 2D/3D Design ও নকশা\n- 📋 রাজউক ও পৌরসভা প্ল্যান পাসিং\n- 🏗️ সাইট সুপারভিশন\n- 📞 যোগাযোগ ও অ্যাপয়েন্টমেন্ট\n\nআপনার প্রশ্ন লিখুন অথবা নিচে থেকে বাছাই করুন!`,
   time: new Date().toLocaleTimeString("bn-BD", { hour: "2-digit", minute: "2-digit" }),
   followUps: ["নির্মাণ খরচ কত?", "2D Plan সম্পর্কে বলুন", "Appointment বুক করব", "আপনি কে?"],
 };
@@ -185,7 +185,7 @@ export default function ChatBot() {
               <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center shrink-0 relative p-1 overflow-hidden shadow-sm border border-white/40">
                 <Image
                   src="/images/logo.png"
-                  alt="Triple H"
+                  alt="HF Design & Engineering Solutions logo"
                   width={36}
                   height={36}
                   className="w-full h-full object-contain"
@@ -194,7 +194,7 @@ export default function ChatBot() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-bold text-primary-foreground text-sm leading-tight flex items-center gap-1.5 truncate">
-                  Triple H Plandraft &amp; Engineering
+                  HF Design &amp; Engineering Solutions
                   <Sparkles className="w-3.5 h-3.5 text-yellow-400 shrink-0" />
                 </p>
                 <p className="text-xs text-primary-foreground/70 flex items-center gap-1">
@@ -233,7 +233,7 @@ export default function ChatBot() {
                     msg.role === "bot" ? "bg-white border border-border p-0.5" : "bg-accent/10"
                   }`}>
                     {msg.role === "bot"
-                      ? <Image src="/images/logo.png" alt="Triple H" width={22} height={22} className="w-full h-full object-contain" />
+                      ? <Image src="/images/logo.png" alt="HF" width={22} height={22} className="w-full h-full object-contain" />
                       : <User className="w-4 h-4 text-accent" />
                     }
                   </div>
@@ -264,7 +264,7 @@ export default function ChatBot() {
                   className="flex gap-2"
                 >
                   <div className="w-7 h-7 rounded-full bg-white border border-border p-0.5 flex items-center justify-center shrink-0 overflow-hidden">
-                    <Image src="/images/logo.png" alt="Triple H" width={20} height={20} className="w-full h-full object-contain" />
+                    <Image src="/images/logo.png" alt="HF" width={20} height={20} className="w-full h-full object-contain" />
                   </div>
                   <div className="bg-secondary px-4 py-3 rounded-2xl rounded-tl-sm">
                     <div className="flex items-center gap-2">

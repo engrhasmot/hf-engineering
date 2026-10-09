@@ -29,7 +29,7 @@ export async function GET(
         status: plan.currentStatus,
         certifiedBy: "Engr. Hasmot Ali",
         designation: "Chief Structural Consultant, Member IEB",
-        authority: "Triple H Plandraft & Engineering (RAJUK & Pourashava Enlisted)",
+        authority: "HF Design & Engineering Solutions (RAJUK & Pourashava Enlisted)",
       });
     }
 
@@ -54,9 +54,9 @@ export async function GET(
         paidAmount: payment.paidAmount,
         issueDate: payment.createdAt,
         status: payment.status,
-        certifiedBy: "Triple H Accounts & Engineering Authority",
+        certifiedBy: "HF Accounts & Engineering Authority",
         designation: "Authorized Signatory",
-        authority: "Triple H Plandraft & Engineering",
+        authority: "HF Design & Engineering Solutions",
       });
     }
 
@@ -64,7 +64,7 @@ export async function GET(
     return NextResponse.json({
       success: true,
       verified: true,
-      documentType: "Triple H Official Quotation / Engineering Document",
+      documentType: "HF Official Quotation / Engineering Document",
       documentId: docId,
       title: "Engineering Consultancy & Plan Passing Services",
       clientName: "Valued Client",
@@ -72,8 +72,8 @@ export async function GET(
       status: "AUTHENTICATED",
       certifiedBy: "Engr. Hasmot Ali",
       designation: "Chief Consultant, Member IEB",
-      authority: "Triple H Plandraft & Engineering",
-      note: "This document is an authentic electronic record issued by Triple H Plandraft & Engineering."
+      authority: "HF Design & Engineering Solutions",
+      note: "This document is an authentic electronic record issued by HF Design & Engineering Solutions."
     });
   } catch (error: any) {
     console.error("Verification Error:", error);

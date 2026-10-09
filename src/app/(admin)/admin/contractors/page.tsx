@@ -81,7 +81,7 @@ function StarRating({ rating }: { rating: number }) {
 function buildWhatsAppLink(phone: string): string {
   const digits = phone.replace(/\D/g, '');
   const intl = digits.startsWith('0') ? '880' + digits.slice(1) : digits;
-  return `https://wa.me/${intl}?text=${encodeURIComponent('Hello, I got your contact from Triple H Engineering.')}`;
+  return `https://wa.me/${intl}?text=${encodeURIComponent('Hello, I got your contact from HF Design & Engineering Solutions.')}`;
 }
 
 export default function AdminContractorsPage() {

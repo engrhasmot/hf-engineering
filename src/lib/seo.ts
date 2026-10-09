@@ -10,7 +10,7 @@ interface SEOParams {
 }
 
 export function generateSEOMeta(params: SEOParams): Metadata {
-  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "TRIPLE H PLANDRAFT & ENGINEERING";
+  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "HF Design & Engineering Solutions";
   const siteUrl = getSiteUrl();
   const url = params.path ? `${siteUrl}${params.path.startsWith('/') ? params.path : `/${params.path}`}` : siteUrl;
 
@@ -33,7 +33,7 @@ export function setClientMeta(params: {
   description?: string;
   ogImage?: string;
 }) {
-  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "TRIPLE H PLANDRAFT & ENGINEERING";
+  const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "HF Design & Engineering Solutions";
 
   document.title = `${params.title} | ${siteName}`;
 

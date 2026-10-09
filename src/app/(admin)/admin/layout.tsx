@@ -150,14 +150,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="p-4 border-b border-border mt-12 md:mt-0 flex items-center gap-3">
           <Image
             src="/images/logo.png"
-            alt="Triple H Plandraft & Engineering"
+            alt="HF Design & Engineering Solutions"
             width={44}
             height={44}
             className="h-10 w-10 object-contain shrink-0"
           />
           <div className="flex flex-col min-w-0">
             <span className="text-xs font-black tracking-tight text-foreground leading-tight truncate">
-              Triple H Plandraft &amp; Engineering
+              HF Design &amp; Engineering Solutions
             </span>
             <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">
               Admin Portal

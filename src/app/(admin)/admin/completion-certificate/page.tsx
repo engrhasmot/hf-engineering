@@ -254,11 +254,11 @@ export default function CompletionCertificatePage() {
             <div className="text-center space-y-2 border-b-2 border-amber-500/40 pb-6">
               <div className="flex justify-center mb-2">
                 <div className="w-16 h-16 bg-white rounded-2xl border-2 border-amber-500/40 p-2 shadow-sm flex items-center justify-center">
-                  <img src="/images/logo.png" alt="Triple H" className="w-full h-full object-contain" />
+                  <img src="/images/logo.png" alt="HF Design & Engineering Solutions logo" className="w-full h-full object-contain" />
                 </div>
               </div>
               <div className="text-xs tracking-widest font-black uppercase text-amber-700 dark:text-amber-400">
-                TRIPLE H PLANDRAFT &amp; ENGINEERING
+                HF DESIGN &amp; ENGINEERING SOLUTIONS
               </div>
               <h2 className="text-2xl md:text-3xl font-black uppercase tracking-wider text-foreground font-serif">
                 CERTIFICATE OF STRUCTURAL SAFETY
@@ -313,7 +313,7 @@ export default function CompletionCertificatePage() {
               <div className="text-right space-y-1">
                 <div className="font-bold text-foreground text-sm">Engr. Md. Hasmot Ali</div>
                 <div className="text-muted-foreground font-semibold text-[11px]">Founder & Principal Engineer</div>
-                <div className="text-[10px] text-muted-foreground">Triple H Plandraft & Engineering</div>
+                <div className="text-[10px] text-muted-foreground">HF Design & Engineering Solutions</div>
                 <div className="pt-6 border-t border-foreground/30 w-44 ml-auto text-[10px] text-muted-foreground">
                   Seal & Signature
                 </div>

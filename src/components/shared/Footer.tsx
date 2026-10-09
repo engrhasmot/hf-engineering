@@ -18,7 +18,7 @@ export default function Footer() {
             <Link href="/" className="flex flex-col">
               <Image
                 src="/images/logo.png"
-                alt="TRIPLE H PLANDRAFT & ENGINEERING"
+                alt="HF Design & Engineering Solutions logo"
                 width={160}
                 height={160}
                 className="h-14 md:h-16 w-auto object-contain"
@@ -32,7 +32,7 @@ export default function Footer() {
                 href="https://www.facebook.com/profile.php?id=61592186641331"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Triple H Facebook Page"
+                aria-label="HF Design & Engineering Solutions Facebook Page"
                 className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-accent hover:text-primary transition-colors"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
@@ -110,7 +110,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center">
                 <Mail className="w-5 h-5 text-accent mr-3 shrink-0" />
-                <a href="mailto:info@tripleh.com.bd" className="text-sm text-primary-foreground/80 hover:text-white transition-colors">info@tripleh.com.bd</a>
+                <a href="mailto:info@hfengineeringbd.com" className="text-sm text-primary-foreground/80 hover:text-white transition-colors">info@hfengineeringbd.com</a>
               </li>
             </ul>
           </div>
@@ -119,7 +119,7 @@ export default function Footer() {
 
         <div className="border-t border-primary-foreground/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-primary-foreground/60 text-center md:text-left">
-            &copy; {currentYear} TRIPLE H Plandraft &amp; Engineering. All rights reserved.
+            &copy; {currentYear} HF Design &amp; Engineering Solutions. All rights reserved.
           </p>
         </div>
       </div>

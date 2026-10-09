@@ -163,7 +163,7 @@ export default function AdminQuotationsPage() {
 
     const message = [
       `*${docTitle}*`,
-      `*Triple H Plandraft & Engineering*`,
+      `*HF Design & Engineering Solutions*`,
       `Doc No: #${docNumber}`,
       `তারিখ: ${date}`,
       ``,
@@ -181,7 +181,7 @@ export default function AdminQuotationsPage() {
       advancePaid > 0 ? `⏳ বর্তমান বকেয়া: *৳${dueAmount.toLocaleString()}*` : null,
       ``,
       `📞 যোগাযোগ: 01778-506500, 01631-186218`,
-      `🌐 https://triple-h-engineering.vercel.app`,
+      `🌐 https://hfengineeringbd.com`,
     ]
       .filter(Boolean)
       .join("\n");
@@ -345,7 +345,7 @@ export default function AdminQuotationsPage() {
             <div className="relative w-16 h-16 shrink-0 mt-0.5 bg-slate-50 rounded-lg p-1 border border-slate-200/80 flex items-center justify-center print:border-none print:p-0 print:bg-transparent">
               <Image
                 src="/images/logo.png"
-                alt="Triple H Logo"
+                alt="HF Design & Engineering Solutions logo"
                 width={64}
                 height={64}
                 className="object-contain w-14 h-14"
@@ -354,7 +354,7 @@ export default function AdminQuotationsPage() {
             </div>
             <div>
               <h2 className="text-2xl md:text-3xl font-extrabold text-blue-950 tracking-tight leading-tight">
-                TRIPLE H PLANDRAFT & ENGINEERING
+                HF DESIGN & ENGINEERING SOLUTIONS
               </h2>
               <p className="text-xs text-slate-500 font-medium tracking-wide mt-0.5">
                 Architectural Design • Structural Engineering • Rajuk Approval • Supervision
@@ -363,7 +363,7 @@ export default function AdminQuotationsPage() {
                 House 14/05, Ward 01, Noyabari, Savar Radio Colony, Dhaka
               </p>
               <p className="text-xs text-slate-600">
-                📞 +880 1631-186218, +880 1778-506500 | ✉️ info@tripleh.com.bd
+                📞 +880 1631-186218, +880 1778-506500 | ✉️ info@hfengineeringbd.com
               </p>
             </div>
           </div>
@@ -579,17 +579,17 @@ export default function AdminQuotationsPage() {
           <div className="space-y-3">
             <div className="flex items-center gap-3">
               <img
-                src={`https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${encodeURIComponent(`https://triple-h-engineering.vercel.app/verify/${docNumber}`)}`}
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=${encodeURIComponent(`https://hfengineeringbd.com/verify/${docNumber}`)}`}
                 alt="Scan to Verify Document"
                 className="w-16 h-16 border border-slate-300 p-1 rounded bg-white shadow-xs"
               />
               <div className="text-[10px] text-slate-500 leading-tight">
                 <p className="font-bold text-slate-800 uppercase">Scan to Verify Authenticity</p>
-                <p>Triple H Digital Seal & IEB Approval</p>
+                <p>HF Digital Seal & IEB Approval</p>
                 <p className="font-mono text-blue-900 font-semibold mt-0.5">{docNumber}</p>
               </div>
             </div>
-            <p className="font-semibold text-slate-800">Thank you for choosing Triple H Plandraft &amp; Engineering!</p>
+            <p className="font-semibold text-slate-800">Thank you for choosing HF Design &amp; Engineering Solutions!</p>
             <p className="text-[11px]">This is an authenticated computer-generated official document.</p>
           </div>
 
@@ -598,7 +598,7 @@ export default function AdminQuotationsPage() {
               Engr. Hasmot Ali
             </div>
             <p className="text-[11px] font-medium text-slate-600">Chief Consultant, Member IEB</p>
-            <p className="text-[10px] text-slate-400">Triple H Plandraft &amp; Engineering</p>
+            <p className="text-[10px] text-slate-400">HF Design &amp; Engineering Solutions</p>
           </div>
         </div>
       </div>

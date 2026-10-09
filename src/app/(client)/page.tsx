@@ -76,8 +76,8 @@ export default function HomePage() {
   return (
     <main className="flex flex-col w-full">
       <SEOHead
-        title="TRIPLE H PLANDRAFT & ENGINEERING"
-        description="2D/3D Plan Drafting, Architectural Design, Rajuk Approval & Engineering Services in Bangladesh. Free cost estimator & plan tracking."
+        title="HF DESIGN & ENGINEERING SOLUTIONS"
+        description="Building design, 3D elevation, structural drawing, BOQ and plan approval in Savar, Dhaka."
       />
       {/* --- HERO SECTION --- */}
       <section className="relative w-full min-h-[90vh] flex items-center justify-center overflow-hidden bg-primary">

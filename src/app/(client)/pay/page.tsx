@@ -103,11 +103,11 @@ export default function OnlinePaymentPage() {
         <div className="text-center space-y-3">
           <div className="flex justify-center mb-2">
             <div className="w-16 h-16 rounded-2xl bg-white border border-border/80 shadow-md p-2 flex items-center justify-center">
-              <img src="/images/logo.png" alt="Triple H Logo" className="w-full h-full object-contain" />
+              <img src="/images/logo.png" alt="HF Design & Engineering Solutions logo" className="w-full h-full object-contain" />
             </div>
           </div>
           <Badge variant="outline" className="px-3 py-1 bg-emerald-500/10 text-emerald-700 border-emerald-500/20 text-xs font-semibold">
-            <ShieldCheck className="w-3.5 h-3.5 mr-1" /> Triple H Plandraft &amp; Engineering — Official Payment Gateway
+            <ShieldCheck className="w-3.5 h-3.5 mr-1" /> HF Design &amp; Engineering Solutions — Official Payment Gateway
           </Badge>
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground">
             অনলাইন ফি ও কিস্তি পরিশোধ

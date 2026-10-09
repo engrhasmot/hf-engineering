@@ -84,17 +84,17 @@ export default function PublicNoticesPage() {
         <div className="text-center space-y-3">
           <div className="flex justify-center mb-2">
             <div className="w-16 h-16 rounded-2xl bg-white border border-border/80 shadow-md p-2 flex items-center justify-center">
-              <img src="/images/logo.png" alt="Triple H Logo" className="w-full h-full object-contain" />
+              <img src="/images/logo.png" alt="HF Design & Engineering Solutions logo" className="w-full h-full object-contain" />
             </div>
           </div>
           <Badge variant="outline" className="px-3 py-1 bg-accent/10 text-accent border-accent/20 text-xs font-semibold">
-            <Bell className="w-3.5 h-3.5 mr-1" /> Triple H Plandraft &amp; Engineering — Official Circulars
+            <Bell className="w-3.5 h-3.5 mr-1" /> HF Design &amp; Engineering Solutions — Official Circulars
           </Badge>
           <h1 className="text-3xl sm:text-4xl font-black text-foreground tracking-tight">
             অফিসিয়াল নোটিশ বোর্ড ও কারিগরি নির্দেশনা
           </h1>
           <p className="text-muted-foreground text-sm sm:text-base max-w-2xl mx-auto">
-            ট্রিপল এইচ প্ল্যানড্রাফট ও ইঞ্জিনিয়ারিং কনসালটেন্সির অফিস বন্ধ ও ছুটির তালিকা, রাজউক ও পৌরসভা প্ল্যান অনুমোদনের নিয়মাবলী এবং ভবন নির্মাণ সাইট সতর্কতা।
+            এইচএফ ডিজাইন অ্যান্ড ইঞ্জিনিয়ারিং সলিউশনস কনসালটেন্সির অফিস বন্ধ ও ছুটির তালিকা, রাজউক ও পৌরসভা প্ল্যান অনুমোদনের নিয়মাবলী এবং ভবন নির্মাণ সাইট সতর্কতা।
           </p>
         </div>
 
@@ -194,7 +194,7 @@ export default function PublicNoticesPage() {
 
                     <div className="flex items-center gap-3">
                       <a
-                        href={`https://wa.me/?text=${encodeURIComponent(`📢 *${notice.title}*\n\n${notice.content}\n\n- ${notice.author}\nট্রিপল এইচ ইঞ্জিনিয়ারিং\nhttps://triple-h-engineering.vercel.app/notices`)}`}
+                        href={`https://wa.me/?text=${encodeURIComponent(`📢 *${notice.title}*\n\n${notice.content}\n\n- ${notice.author}\nএইচএফ ইঞ্জিনিয়ারিং\nhttps://hfengineeringbd.com/notices`)}`}
                         target="_blank"
                         rel="noreferrer"
                         className="inline-flex items-center gap-1 text-emerald-600 font-bold hover:underline"

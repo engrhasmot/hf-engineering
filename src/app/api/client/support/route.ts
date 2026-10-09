@@ -63,7 +63,7 @@ ${message.trim()}`,
 ${message.trim()}
 
 🔗 *অ্যাডমিন প্যানেল:*
-https://triple-h-engineering.vercel.app/admin/inquiries`;
+https://hfengineeringbd.com/admin/inquiries`;
 
       await sendWhatsApp(ADMIN_NOTIFY_WHATSAPP, adminMsg);
     } catch (waErr) {

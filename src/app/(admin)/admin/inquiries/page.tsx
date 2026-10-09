@@ -111,8 +111,8 @@ const SOURCE_LABELS: Record<InquirySource, string> = {
 function getWhatsAppLink(phone: string, name?: string) {
   const clean = phone.replace(/[+\s-]/g, "").replace(/^0/, "880");
   const msg = name
-    ? `Hello ${name}, thank you for contacting Triple H Plandraft & Engineering!`
-    : "Hello, thank you for contacting Triple H Plandraft & Engineering!";
+    ? `Hello ${name}, thank you for contacting HF Design & Engineering Solutions!`
+    : "Hello, thank you for contacting HF Design & Engineering Solutions!";
   return `https://wa.me/${clean}?text=${encodeURIComponent(msg)}`;
 }
 

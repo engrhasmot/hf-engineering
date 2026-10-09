@@ -13,14 +13,14 @@ const UserSchema = new mongoose.Schema(
 const User = mongoose.model('User', UserSchema);
 
 async function resetAdmin() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/triple-h-db');
+  await mongoose.connect('mongodb://127.0.0.1:27017/hf-engineering-db');
   
-  await User.deleteMany({ email: 'admin@tripleh.com.bd' });
+  await User.deleteMany({ email: 'admin@hfengineeringbd.com' });
   console.log('Deleted old admin user.');
 
   await User.create({
     name: 'Admin',
-    email: 'admin@tripleh.com.bd',
+    email: 'admin@hfengineeringbd.com',
     // Hash for 'admin123'
     password: '$2a$10$0s3SI9qWF/EWDLtRTmGUwOQWduBF/uBLDKs9M8dl2j9N.4BjCpMhS',
     role: 'admin',

@@ -24,7 +24,7 @@ if (!global.mongooseCache) {
 }
 
 async function dbConnect(): Promise<typeof mongoose> {
-  const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/triple-h-db';
+  const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/hf-engineering-db';
 
   if (cached.conn) {
     return cached.conn;

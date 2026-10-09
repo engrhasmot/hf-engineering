@@ -28,16 +28,19 @@ const hindSiliguri = Hind_Siliguri({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(getSiteUrl()),
   title: {
-    default: "Triple H Plandraft & Engineering | পরিকল্পিত নকশা, নিরাপদ নির্মাণ",
-    template: "%s | Triple H Plandraft & Engineering",
+    default: "HF Design & Engineering Solutions | পরিকল্পিত নকশা, নিরাপদ নির্মাণ",
+    template: "%s | HF Design & Engineering Solutions",
   },
   description:
-    "Professional civil engineering consultancy specializing in 2D/3D architectural design, structural drafting, BOQ estimation, plan passing, and site supervision in Bangladesh.",
+    "Building design, 3D elevation, structural drawing, BOQ and plan approval in Savar, Dhaka.",
   keywords: [
+    "HF Design & Engineering Solutions",
+    "HF Engineering",
     "civil engineering Bangladesh",
-    "architectural design",
-    "structural drafting",
+    "architectural design Savar",
+    "structural drafting Dhaka",
     "BOQ estimation",
     "plan passing",
     "site supervision",
@@ -45,7 +48,6 @@ export const metadata: Metadata = {
     "2D plans",
     "3D design",
     "construction",
-    "Triple H Plandraft & Engineering",
     "3D rendering",
     "RAJUK plan approval",
     "plan approval Bangladesh",
@@ -55,23 +57,25 @@ export const metadata: Metadata = {
     "residential building design",
     "commercial building design",
   ],
-  authors: [{ name: "Triple H Plandraft & Engineering" }],
+  authors: [{ name: "HF Design & Engineering Solutions" }],
+  manifest: "/site.webmanifest",
   icons: {
     icon: [
-      { url: "/images/logo.png", sizes: "any" },
-      { url: "/icon.png", type: "image/png" },
+      { url: "/favicon.ico" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
     ],
-    shortcut: "/images/logo.png",
-    apple: "/images/logo.png",
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
   openGraph: {
-    title: "Triple H Plandraft & Engineering",
+    title: "HF Design & Engineering Solutions",
     description:
-      "Planned Design, Safe Construction — Professional civil engineering consultancy in Bangladesh.",
+      "পরিকল্পিত নকশা, নিরাপদ নির্মাণ — Building design, 3D elevation, structural drawing, BOQ and plan approval in Savar, Dhaka.",
     type: "website",
     locale: "en_BD",
-    siteName: "Triple H Plandraft & Engineering",
-    images: [{ url: "/images/logo.png", width: 1024, height: 1024 }],
+    siteName: "HF Design & Engineering Solutions",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "HF Design & Engineering Solutions logo" }],
   },
 };
 
@@ -97,21 +101,22 @@ export default function RootLayout({
             {JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              name: "Triple H Plandraft & Engineering",
-              alternateName: "Triple H Plandraft & Engineering",
-              description: "Professional civil engineering consultancy in Bangladesh specializing in 2D/3D architectural design, structural drafting, BOQ estimation, plan passing, and site supervision.",
+              name: "HF Design & Engineering Solutions",
+              alternateName: "HF",
+              description: "Building design, 3D elevation, structural drawing, BOQ and plan approval in Savar, Dhaka.",
               url: getSiteUrl(),
               logo: `${getSiteUrl()}/images/logo.png`,
-              email: "info@tripleh.com.bd",
-              telephone: "+880-1778-506500",
+              email: "info@hfengineeringbd.com",
+              telephone: "+880-1631-186218",
               address: {
                 "@type": "PostalAddress",
-                streetAddress: "Aysha Monjil, House 14/05, Ward No 1",
-                addressLocality: "Noyabari, Savar Radio Colony, Dhaka",
+                streetAddress: "আয়শা মঞ্জিল, বাড়ি ১৪/০৫, ওয়ার্ড নং ১, নয়াবাড়ি",
+                addressLocality: "সাভার রেডিও কলোনি, ঢাকা",
                 addressCountry: "BD",
               },
               sameAs: [
-                `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "8801778506500"}`,
+                `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "8801631186218"}`,
+                "https://www.facebook.com/profile.php?id=61592186641331",
               ],
               knowsAbout: [
                 "Civil Engineering",

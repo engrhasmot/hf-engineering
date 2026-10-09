@@ -721,16 +721,16 @@ export default function PaymentsPage() {
                 {/* Header with Logo */}
                 <div className="flex items-center justify-between border-b pb-4 border-slate-200">
                   <div className="flex items-center gap-3">
-                    <img src="/images/logo.png" alt="Triple H Logo" className="w-14 h-14 object-contain" />
+                    <img src="/images/logo.png" alt="HF Design & Engineering Solutions logo" className="w-14 h-14 object-contain" />
                     <div>
-                      <h2 className="text-xl font-black text-slate-900 tracking-tight">Triple H Plandraft &amp; Engineering</h2>
-                      <p className="text-xs font-semibold text-accent tracking-wider uppercase">Plandraft &amp; Engineering Consultancy</p>
+                      <h2 className="text-xl font-black text-slate-900 tracking-tight">HF Design &amp; Engineering Solutions</h2>
+                      <p className="text-xs font-semibold text-accent tracking-wider uppercase">Design &amp; Engineering Solutions</p>
                       <p className="text-[11px] text-slate-500 mt-0.5">Civil Engineering · Architecture · RAJUK &amp; City Plan Passing</p>
                     </div>
                   </div>
                   <div className="text-right text-xs text-slate-600 space-y-0.5">
                     <p className="font-semibold text-slate-800">Helpline: +880 1778-506500</p>
-                    <p>info@tripleh.com.bd</p>
+                    <p>info@hfengineeringbd.com</p>
                     <p>Savar Radio Colony, Dhaka</p>
                   </div>
                 </div>
@@ -809,13 +809,13 @@ export default function PaymentsPage() {
                 <div className="flex flex-col sm:flex-row justify-between items-end gap-4 pt-2 border-t border-slate-200">
                   <div className="flex items-center gap-3">
                     <img
-                      src={`https://api.qrserver.com/v1/create-qr-code/?size=70x70&data=${encodeURIComponent(`https://triple-h-engineering.vercel.app/verify/${selectedReceipt.payment.planFileRef || selectedReceipt.payment._id}`)}`}
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=70x70&data=${encodeURIComponent(`https://hfengineeringbd.com/verify/${selectedReceipt.payment.planFileRef || selectedReceipt.payment._id}`)}`}
                       alt="Scan to Verify Receipt"
                       className="w-14 h-14 border border-slate-300 p-1 rounded bg-white"
                     />
                     <div className="text-[10px] text-slate-500 leading-tight">
                       <p className="font-bold text-slate-800 uppercase">Scan to Verify</p>
-                      <p>Triple H Authenticated Receipt</p>
+                      <p>HF Authenticated Receipt</p>
                       <p className="font-mono text-emerald-700 font-bold mt-0.5">
                         REC-{format(new Date(selectedReceipt.installment.paidOn), "yyyyMMdd")}-{selectedReceipt.payment._id?.slice(-4).toUpperCase() || "001"}
                       </p>
@@ -849,7 +849,7 @@ export default function PaymentsPage() {
                   <div>
                     <div className="border-t border-slate-400 w-36 mx-auto mb-1"></div>
                     <p className="font-bold text-slate-700">Authorized Signature</p>
-                    <p className="text-[10px] text-slate-500">Triple H Plandraft &amp; Engineering</p>
+                    <p className="text-[10px] text-slate-500">HF Design &amp; Engineering Solutions</p>
                   </div>
                 </div>
               </div>

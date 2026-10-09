@@ -51,7 +51,7 @@ const NOTICE_TEMPLATES = [
     content: `সম্মানিত ক্লায়েন্ট ও শুভানুধ্যায়ীগণ,
 আসসালামু আলাইকুম।
 
-পবিত্র ঈদুল ফিতর উপলক্ষে ট্রিপল এইচ কনসালটেন্সির প্রধান কার্যালয় আগামী [শুরুর তারিখ] হতে [শেষের তারিখ] পর্যন্ত বন্ধ থাকবে। আগামী [খোলার তারিখ] হতে যথারীতি সকল দাপ্তরিক কার্যক্রম ও ড্রয়িং ডেলিভারি শুরু হবে।
+পবিত্র ঈদুল ফিতর উপলক্ষে এইচএফ কনসালটেন্সির প্রধান কার্যালয় আগামী [শুরুর তারিখ] হতে [শেষের তারিখ] পর্যন্ত বন্ধ থাকবে। আগামী [খোলার তারিখ] হতে যথারীতি সকল দাপ্তরিক কার্যক্রম ও ড্রয়িং ডেলিভারি শুরু হবে।
 
 জরুরি সাইট পরিদর্শন বা পরামর্শের জন্য আমাদের হটলাইনে যোগাযোগ করতে পারেন:
 📞 01778-506500
@@ -59,7 +59,7 @@ const NOTICE_TEMPLATES = [
 আপনাকে ও আপনার পরিবারকে জানাই পবিত্র ঈদুল ফিতরের আন্তরিক শুভেচ্ছা ও ঈদ মোবারক!
 
 - ইঞ্জিনিয়ার মোঃ হাসমত আলী
-ট্রিপল এইচ ইঞ্জিনিয়ারিং কনসালটেন্সি`,
+এইচএফ ইঞ্জিনিয়ারিং কনসালটেন্সি`,
   },
   {
     label: "🌧️ বর্ষায় ছাদ ঢালাই সতর্কতা",
@@ -91,7 +91,7 @@ const NOTICE_TEMPLATES = [
 ৪. বিএনবিসি কোড অনুযায়ী স্ট্রাকচারাল ডিজাইন ও সিভিল ইঞ্জিনিয়ারের দায়বদ্ধতা অঙ্গীকারনামা।
 
 আপনার ফাইলের সর্বশেষ অগ্রগতি জানতে ভিজিট করুন:
-🌐 https://triple-h-engineering.vercel.app/client-portal`,
+🌐 https://hfengineeringbd.com/client-portal`,
   },
   {
     label: "🧪 সয়েল টেস্ট ও সার্ভে অফার",
@@ -464,7 +464,7 @@ export default function AdminNoticesPage() {
                   <span>প্রকাশক: <strong className="text-foreground">{notice.author}</strong></span>
                   <span>তারিখ: {format(new Date(notice.publishedAt || notice.createdAt), "dd MMM yyyy, hh:mm a")}</span>
                   <a
-                    href={`https://wa.me/?text=${encodeURIComponent(`📢 *${notice.title}*\n\n${notice.content}\n\n- ${notice.author}\nট্রিপল এইচ ইঞ্জিনিয়ারিং\nhttps://triple-h-engineering.vercel.app/client-portal`)}`}
+                    href={`https://wa.me/?text=${encodeURIComponent(`📢 *${notice.title}*\n\n${notice.content}\n\n- ${notice.author}\nএইচএফ ইঞ্জিনিয়ারিং\nhttps://hfengineeringbd.com/client-portal`)}`}
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center gap-1 text-emerald-600 font-bold hover:underline"

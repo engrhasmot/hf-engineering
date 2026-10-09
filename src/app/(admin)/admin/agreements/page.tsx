@@ -51,7 +51,7 @@ interface AgreementItem {
 }
 
 const DEFAULT_TERMS = [
-  "১ম পক্ষ (ট্রিপল এইচ) বাংলাদেশ ন্যাশনাল বিল্ডিং কোড (BNBC) ও রাজউক/পৌরসভার বিধি মেনে নিরাপদ নকশা প্রণয়ন করবে।",
+  "১ম পক্ষ (এইচএফ) বাংলাদেশ ন্যাশনাল বিল্ডিং কোড (BNBC) ও রাজউক/পৌরসভার বিধি মেনে নিরাপদ নকশা প্রণয়ন করবে।",
   "২য় পক্ষ (মালিক) তার জমির সঠিক সীমানা ও কাগজপত্রের সঠিকতার জন্য দায়বদ্ধ থাকবেন।",
   "অনুমোদিত ড্রয়িং চূড়ান্ত হওয়ার পর বড় ধরণের আর্কিটেকচারাল পরিবর্তনে অতিরিক্ত ফি প্রযোজ্য হতে পারে।",
   "চুক্তিকৃত সাইট ভিজিট পূর্বে আলোচনা সাপেক্ষে নির্ধারিত তারিখে পরিচালিত হবে।",
@@ -267,7 +267,7 @@ export default function AdminAgreementsPage() {
 
   const handleWhatsAppShare = (item: AgreementItem) => {
     const lines = [
-      `📑 *কাজের চুক্তিনামা — Triple H Engineering*`,
+      `📑 *কাজের চুক্তিনামা — HF Design & Engineering Solutions*`,
       `চুক্তি নম্বর: *${item.agreementNumber}*`,
       ``,
       `প্রিয় ${item.clientName},`,
@@ -299,7 +299,7 @@ export default function AdminAgreementsPage() {
             <Scroll className="w-7 h-7 text-accent" /> ক্লায়েন্ট চুক্তিপত্র জেনারেটর
           </h1>
           <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-            পেশাদার ইঞ্জিনিয়ারিং চুক্তিনামা তৈরি, ট্রিপল এইচ প্যাড বা ৩০০ টাকার নন-জুডিশিয়াল স্ট্যাম্পে প্রিন্ট ও হোয়াটসঅ্যাপ শেয়ার
+            পেশাদার ইঞ্জিনিয়ারিং চুক্তিনামা তৈরি, এইচএফ প্যাড বা ৩০০ টাকার নন-জুডিশিয়াল স্ট্যাম্পে প্রিন্ট ও হোয়াটসঅ্যাপ শেয়ার
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -474,7 +474,7 @@ export default function AdminAgreementsPage() {
                     onChange={(e) => setLayoutMode(e.target.value as any)}
                     className="mt-1 w-full h-9 rounded-md border border-input bg-background px-3 py-1 text-xs"
                   >
-                    <option value="pad">অফিসিয়াল লেটারহেড প্যাড (Triple H Pad)</option>
+                    <option value="pad">অফিসিয়াল লেটারহেড প্যাড (HF Pad)</option>
                     <option value="stamp300">৩০০ টাকার স্ট্যাম্প পেপার (Govt Stamp)</option>
                   </select>
                 </div>
@@ -860,14 +860,14 @@ export default function AdminAgreementsPage() {
                     <div className="flex items-center gap-3">
                       <Image
                         src="/images/logo.png"
-                        alt="Triple H"
+                        alt="HF Design & Engineering Solutions logo"
                         width={64}
                         height={64}
                         className="h-14 w-auto object-contain"
                       />
                       <div>
                         <h1 className="text-xl font-black tracking-tight text-slate-950 font-sans uppercase">
-                          Triple H Plandraft &amp; Engineering
+                          HF Design &amp; Engineering Solutions
                         </h1>
                         <p className="text-[10px] font-semibold text-slate-600 font-sans tracking-wider uppercase">
                           পরিকল্পিত নকশা, নিরাপদ নির্মাণ • কনসালটেন্সি ও সুপারভিশন
@@ -899,7 +899,7 @@ export default function AdminAgreementsPage() {
                   <p className="font-bold font-sans text-slate-900">১ম পক্ষ (পরামর্শক / ইঞ্জিনিয়ারিং প্রতিষ্ঠান):</p>
                   <p>
                     <span className="font-semibold">ইঞ্জিনিয়ার মোঃ হাসমত আলী</span>, ম্যানেজিং ডিরেক্টর,{" "}
-                    <span className="font-semibold">ট্রিপল এইচ প্ল্যানড্রাফট অ্যান্ড ইঞ্জিনিয়ারিং কনসালটেন্সি</span>,
+                    <span className="font-semibold">এইচএফ ডিজাইন অ্যান্ড ইঞ্জিনিয়ারিং সলিউশনস</span>,
                     নয়াবাড়ী, রেডিও কলোনি, সাভার, ঢাকা।
                   </p>
                 </div>
@@ -992,7 +992,7 @@ export default function AdminAgreementsPage() {
                     ১ম পক্ষ (পরামর্শকের স্বাক্ষর ও সিল)
                   </div>
                   <p className="text-[11px] text-slate-600">ইঞ্জিনিয়ার মোঃ হাসমত আলী</p>
-                  <p className="text-[10px] text-slate-500">Managing Director, Triple H</p>
+                  <p className="text-[10px] text-slate-500">Managing Director, HF</p>
                 </div>
                 <div>
                   <div className="border-t border-slate-800 pt-1.5 font-bold">

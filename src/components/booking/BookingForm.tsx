@@ -80,7 +80,7 @@ export default function BookingForm() {
   };
 
   const getWhatsAppLink = () => {
-    const message = `Hi TRIPLE H PLANDRAFT & ENGINEERING,
+    const message = `Hi HF DESIGN & ENGINEERING SOLUTIONS,
 I just booked a site visit via your website!
 *Details:*
 - Name: ${name}

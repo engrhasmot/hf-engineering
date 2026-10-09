@@ -455,11 +455,11 @@ export default function AdminPlanTrackerPage() {
   const handleWhatsAppUpdate = (plan: any) => {
     const statusText = STATUS_CONFIG[plan.currentStatus]?.label || plan.currentStatus;
     const progress = plan.progressPercentage || 0;
-    const queryUrl = `https://triple-h-engineering.vercel.app/track-plan?query=${encodeURIComponent(
+    const queryUrl = `https://hfengineeringbd.com/track-plan?query=${encodeURIComponent(
       plan.fileId
     )}`;
 
-    const text = `*🏗️ ট্রিপল এইচ কনসালটেন্সি — প্ল্যান ট্র্যাকিং আপডেট*\n\n` +
+    const text = `*🏗️ এইচএফ কনসালটেন্সি — প্ল্যান ট্র্যাকিং আপডেট*\n\n` +
       `শ্রদ্ধেয় *${plan.clientName}*,\n` +
       `আপনার প্রজেক্ট: *${plan.projectTitle}*\n` +
       `ফাইল নম্বর: *${plan.fileId}*\n` +
@@ -1405,18 +1405,18 @@ export default function AdminPlanTrackerPage() {
                 <div className="flex items-center gap-3.5">
                   <img
                     src="/images/logo.png"
-                    alt="Triple H Logo"
+                    alt="HF Design & Engineering Solutions logo"
                     className="w-16 h-16 object-contain shrink-0"
                   />
                   <div>
                     <h2 className="text-2xl font-black tracking-tight text-emerald-900">
-                      TRIPLE H PLANDRAFT &amp; ENGINEERING
+                      HF DESIGN &amp; ENGINEERING SOLUTIONS
                     </h2>
                     <p className="text-xs text-gray-700 font-medium">
                       Architectural, Structural Design, Soil Testing &amp; Digital Land Survey
                     </p>
                     <p className="text-[11px] text-gray-500">
-                      Head Office: Savar Radio Colony, Dhaka | Helpline: 01778-506500 | Web: triple-h-engineering.vercel.app
+                      Head Office: Savar Radio Colony, Dhaka | Helpline: 01778-506500 | Web: hfengineeringbd.com
                     </p>
                   </div>
                 </div>
@@ -1513,7 +1513,7 @@ export default function AdminPlanTrackerPage() {
                   <div className="w-52 border-t border-gray-400 pt-1">
                     <p className="font-bold text-gray-900">ইঞ্জিনিয়ার মোঃ হাসমত আলী</p>
                     <p className="text-[10px] text-emerald-800 font-semibold">প্রতিষ্ঠাতা ও প্রধান পরামর্শক</p>
-                    <p className="text-[10px] text-gray-600">ট্রিপল এইচ প্ল্যানড্রাফট ও ইঞ্জিনিয়ারিং</p>
+                    <p className="text-[10px] text-gray-600">এইচএফ ডিজাইন অ্যান্ড ইঞ্জিনিয়ারিং সলিউশনস</p>
                   </div>
                 </div>
               </div>

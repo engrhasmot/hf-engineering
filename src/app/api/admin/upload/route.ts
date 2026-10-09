@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'File too large. Maximum size is 10 MB' }, { status: 400 });
     }
 
-    const folder = (formData.get('folder') as string) || 'triple-h/uploads';
+    const folder = (formData.get('folder') as string) || 'hf-engineering/uploads';
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 

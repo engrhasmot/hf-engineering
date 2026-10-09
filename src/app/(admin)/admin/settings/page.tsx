@@ -322,7 +322,7 @@ export default function AdminSettingsPage() {
               <div className="flex items-start gap-2.5">
                 <Globe className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-semibold text-foreground">Triple H Plandraft &amp; Engineering</p>
+                  <p className="font-semibold text-foreground">HF Design &amp; Engineering Solutions</p>
                   <p className="text-muted-foreground">Architectural, Structural Design &amp; Plan Passing</p>
                 </div>
               </div>
@@ -337,7 +337,7 @@ export default function AdminSettingsPage() {
                 <Mail className="w-4 h-4 text-muted-foreground shrink-0 mt-0.5" />
                 <div>
                   <p className="font-semibold text-foreground">Official Email</p>
-                  <p className="text-muted-foreground font-mono">info@tripleh.com.bd</p>
+                  <p className="text-muted-foreground font-mono">info@hfengineeringbd.com</p>
                 </div>
               </div>
               <div className="flex items-start gap-2.5">

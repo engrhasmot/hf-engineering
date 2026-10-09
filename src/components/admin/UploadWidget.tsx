@@ -22,7 +22,7 @@ export function UploadWidget({
   onUpload,
   accept = "image/*",
   maxSizeMB = 5,
-  folder = "triple-h/uploads",
+  folder = "hf-engineering/uploads",
 }: UploadWidgetProps) {
   const [state, setState] = useState<"idle" | "dragging" | "uploading" | "preview" | "error">("idle");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);

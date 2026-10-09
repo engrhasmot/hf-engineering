@@ -272,7 +272,7 @@ export default function AdminInspectionsPage() {
         : "অননুমোদিত ❌";
 
     const lines = [
-      `🏗️ *সাইট পরিদর্শন রিপোর্ট — Triple H Engineering*`,
+      `🏗️ *সাইট পরিদর্শন রিপোর্ট — HF Design & Engineering Solutions*`,
       `রিপোর্ট নং: *${item.reportNumber}*`,
       ``,
       `প্রিয় ${item.clientName},`,
@@ -822,14 +822,14 @@ export default function AdminInspectionsPage() {
                   <div className="flex items-center gap-3">
                     <Image
                       src="/images/logo.png"
-                      alt="Triple H"
+                      alt="HF Design & Engineering Solutions logo"
                       width={64}
                       height={64}
                       className="h-14 w-auto object-contain"
                     />
                     <div>
                       <h1 className="text-xl font-black tracking-tight text-slate-950 uppercase">
-                        Triple H Plandraft &amp; Engineering
+                        HF Design &amp; Engineering Solutions
                       </h1>
                       <p className="text-[10px] font-semibold text-slate-600 tracking-wider uppercase">
                         পরিকল্পিত নকশা, নিরাপদ নির্মাণ • কনসালটেন্সি ও সুপারভিশন
@@ -943,7 +943,7 @@ export default function AdminInspectionsPage() {
                     পরিদর্শনকারী ইঞ্জিনিয়ারের স্বাক্ষর ও সিল
                   </div>
                   <p className="text-slate-600">{viewItem.inspectorName}</p>
-                  <p className="text-[10px] text-slate-500">Managing Director, Triple H</p>
+                  <p className="text-[10px] text-slate-500">Managing Director, HF</p>
                 </div>
                 <div>
                   <div className="border-t border-slate-800 pt-1.5 font-bold">

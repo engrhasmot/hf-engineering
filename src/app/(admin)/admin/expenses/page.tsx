@@ -682,7 +682,7 @@ export default function AdminExpensesPage() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `triple_h_sample_expense_template.csv`;
+    link.download = `hf_sample_expense_template.csv`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -828,7 +828,7 @@ export default function AdminExpensesPage() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `triple_h_project_expenses_${format(new Date(), "yyyy-MM-dd")}.csv`;
+    link.download = `hf_project_expenses_${format(new Date(), "yyyy-MM-dd")}.csv`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -856,12 +856,12 @@ export default function AdminExpensesPage() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/images/logo.png"
-              alt="Triple H Plandraft & Engineering"
+              alt="HF Design & Engineering Solutions"
               className="h-12 w-12 object-contain"
             />
             <div>
               <h1 className="text-xl font-black tracking-tight text-slate-900 leading-tight">
-                Triple H Plandraft &amp; Engineering
+                HF Design &amp; Engineering Solutions
               </h1>
               <p className="text-xs text-slate-600">
                 House #23, Road #4, Sector #10, Uttara, Dhaka | Phone: +880 1711-000000
@@ -2292,7 +2292,7 @@ export default function AdminExpensesPage() {
       <div className="print-only border-t-2 border-slate-800 pt-6 mt-12 text-xs text-slate-600">
         <div className="flex justify-between items-end">
           <div className="space-y-1">
-            <p className="font-bold text-slate-800 text-sm">Triple H Plandraft &amp; Engineering</p>
+            <p className="font-bold text-slate-800 text-sm">HF Design &amp; Engineering Solutions</p>
             <p className="text-[11px] text-slate-500">
               This statement is a system-generated official record of project income, funds &amp; expenses.
             </p>

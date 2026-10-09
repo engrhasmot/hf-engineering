@@ -51,7 +51,7 @@ export default function EstimatePDFExport({ result, clientName, clientPhone }: P
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cost Estimate — Triple H Engineering</title>
+  <title>Cost Estimate — HF Design & Engineering Solutions</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Segoe UI', Arial, sans-serif; color: #1a1a2e; background: #fff; }
@@ -121,13 +121,13 @@ export default function EstimatePDFExport({ result, clientName, clientPhone }: P
   <!-- Header -->
   <div class="header">
     <div>
-      <div class="company-name">TRIPLE H PLANDRAFT & ENGINEERING</div>
+      <div class="company-name">HF DESIGN & ENGINEERING SOLUTIONS</div>
       <div class="company-slogan">পরিকল্পিত নকশা, নিরাপদ নির্মাণ • Planned Design, Safe Construction</div>
     </div>
     <div class="company-contact">
       Aysha Monjil, House 14/05, Ward No 1, Noyabari, Savar Radio Colony, Dhaka<br/>
-      📞 01778-506500 | 01631-186218<br/>
-      📧 info@tripleh.com.bd
+      📞 01631-186218 | 01778-506500<br/>
+      📧 info@hfengineeringbd.com
     </div>
   </div>
 
@@ -220,7 +220,7 @@ export default function EstimatePDFExport({ result, clientName, clientPhone }: P
   <!-- Footer -->
   <div class="footer">
     <div class="footer-left">
-      <div class="footer-brand">Triple H Plandraft & Engineering</div>
+      <div class="footer-brand">HF Design & Engineering Solutions</div>
       Aysha Monjil, House 14/05, Ward No 1, Noyabari, Savar Radio Colony, Dhaka, Bangladesh
     </div>
     <div class="footer-right">

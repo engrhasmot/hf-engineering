@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Services",
-  description: "2D/3D Plan Drafting, Architectural Design, Rajuk Approval, BOQ ও Site Supervision সেবা।",
+  description: "Building design, 3D elevation, structural drawing, BOQ and plan approval in Savar, Dhaka.",
 };
 
 export default function ServicesPage() {

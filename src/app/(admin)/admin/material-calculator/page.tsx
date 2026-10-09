@@ -314,7 +314,7 @@ export default function AdminMaterialCalculatorPage() {
   const handleWhatsAppSend = () => {
     const lines = [
       `🏗️ *কনস্ট্রাকশন ম্যাটেরিয়াল এস্টিমেট (Material BOQ)*`,
-      `*Triple H Plandraft & Engineering*`,
+      `*HF Design & Engineering Solutions*`,
       ``,
       `প্রিয় ${clientName || "ক্লায়েন্ট"},`,
       `আপনার প্রজেক্ট "*${projectTitle}*" এর আনুমানিক মূল নির্মাণ সামগ্রীর হিসাব প্রস্তুত করা হয়েছে:`,
@@ -1020,14 +1020,14 @@ export default function AdminMaterialCalculatorPage() {
                   <div className="flex items-center gap-3">
                     <Image
                       src="/images/logo.png"
-                      alt="Triple H"
+                      alt="HF Design & Engineering Solutions logo"
                       width={64}
                       height={64}
                       className="h-14 w-auto object-contain"
                     />
                     <div>
                       <h1 className="text-xl font-black tracking-tight text-slate-950 uppercase">
-                        Triple H Plandraft &amp; Engineering
+                        HF Design &amp; Engineering Solutions
                       </h1>
                       <p className="text-[10px] font-semibold text-slate-600 tracking-wider uppercase">
                         পরিকল্পিত নকশা, নিরাপদ নির্মাণ • কনসালটেন্সি ও সুপারভিশন
@@ -1139,14 +1139,14 @@ export default function AdminMaterialCalculatorPage() {
                   <div className="border-t border-slate-800 pt-1.5 font-bold">
                     হিসাব প্রস্তুতকারী
                   </div>
-                  <p className="text-slate-600">Triple H Estimating Team</p>
+                  <p className="text-slate-600">HF Estimating Team</p>
                 </div>
                 <div>
                   <div className="border-t border-slate-800 pt-1.5 font-bold">
                     অনুমোদনকারী প্রকৌশলী
                   </div>
                   <p className="text-slate-600">ইঞ্জিনিয়ার মোঃ হাসমত আলী</p>
-                  <p className="text-[10px] text-slate-500">Managing Director, Triple H</p>
+                  <p className="text-[10px] text-slate-500">Managing Director, HF</p>
                 </div>
               </div>
             </div>

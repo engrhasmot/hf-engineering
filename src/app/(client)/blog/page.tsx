@@ -30,7 +30,7 @@ export default function BlogPage() {
   const [activeCategory, setActiveCategory] = useState<string>("All");
 
   useEffect(() => {
-    document.title = "Blog & Articles | TRIPLE H PLANDRAFT & ENGINEERING";
+    document.title = "Blog & Articles | HF DESIGN & ENGINEERING SOLUTIONS";
   }, []);
 
   useEffect(() => {

@@ -10,7 +10,7 @@ interface SEOHeadProps {
 
 export default function SEOHead({ title, description, ogImage }: SEOHeadProps) {
   useEffect(() => {
-    const siteName = "TRIPLE H PLANDRAFT & ENGINEERING";
+    const siteName = "HF Design & Engineering Solutions";
     const fullTitle = `${title} | ${siteName}`;
 
     document.title = fullTitle;

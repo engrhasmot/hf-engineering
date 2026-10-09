@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
         try {
           const bytes = await file.arrayBuffer();
           const buffer = Buffer.from(bytes);
-          const uploadRes = await uploadBufferToCloudinary(buffer, "triple-h/client-sketches");
+          const uploadRes = await uploadBufferToCloudinary(buffer, "hf-engineering/client-sketches");
           sketchUrl = uploadRes?.secure_url || "";
         } catch (uploadErr) {
           console.error("Cloudinary sketch upload warning:", uploadErr);
@@ -117,7 +117,7 @@ export async function POST(req: NextRequest) {
     // 3. Dispatch WhatsApp alert to Engr. Hasmot Ali (+880 1778-506500)
     const adminMsg = [
       `📐 *নতুন জমির খসড়া স্কেচ ও প্ল্যান রিকোয়েস্ট!*`,
-      `Triple H Plandraft & Engineering`,
+      `HF Design & Engineering Solutions`,
       ``,
       `👤 নাম: *${name}*`,
       `📞 ফোন: *${phone}*`,
@@ -140,7 +140,7 @@ export async function POST(req: NextRequest) {
     const clientConfirm = [
       `আসসালামুয়ালাইকুম *${name}*,`,
       ``,
-      `ট্রিপল এইচ ইঞ্জিনিয়ারিং কনসালটেন্সিতে আপনার জমির পরিমাপ ও প্রাথমিক স্কেচ রিকোয়েস্ট সফলভাবে জমা হয়েছে ✅`,
+      `এইচএফ ইঞ্জিনিয়ারিং কনসালটেন্সিতে আপনার জমির পরিমাপ ও প্রাথমিক স্কেচ রিকোয়েস্ট সফলভাবে জমা হয়েছে ✅`,
       ``,
       `🏗️ প্রজেক্ট: *${projectTitle}*`,
       `🔖 ট্র্যাকিং রেফারেন্স: *WO-${workOrder._id.toString().slice(-6).toUpperCase()}*`,

@@ -35,7 +35,7 @@ export async function POST(req: Request) {
     });
 
     sendEmail({
-      to: process.env.ADMIN_EMAIL || 'admin@tripleh.com.bd',
+      to: process.env.ADMIN_EMAIL || 'admin@hfengineeringbd.com',
       subject: `New Work Order Request from ${parsed.data.name}`,
       html: `A new work order request has been submitted.\n\nName: ${parsed.data.name}\nPhone: ${parsed.data.phone}\nProject: ${parsed.data.projectTitle}\nLocation: ${parsed.data.projectLocation}\nRequirements:\n${parsed.data.requirements}`,
     }).catch(err => console.error('Email notification failed:', err));

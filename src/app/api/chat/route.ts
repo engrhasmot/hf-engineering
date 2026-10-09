@@ -25,7 +25,7 @@ const KB: KBEntry[] = [
       if (hasHistory) {
         return `আবার স্বাগতম! 😊 আপনার আগের প্রশ্নের উত্তর দিতে পারিনি? নতুন কিছু জানতে চান?\n\nআমি এখনও সাহায্য করতে পারি:\n- 💰 খরচের হিসাব\n- 📐 নকশা সেবা\n- 📋 প্ল্যান পাসিং`;
       }
-      return `আস্সালামু আলাইকুম! 👋 **Triple H Plandraft & Engineering**-এ স্বাগতম!\n\nআমি আপনার AI Engineering Assistant। আমি বুঝতে পারি আপনার প্রশ্নের অর্থ এবং সেরে উত্তর দিতে পারি!\n\n🏗️ আমি এই বিষয়ে সাহায্য করতে পারি:\n- 💰 নির্মাণ খরচ ও বাজেট\n- 📐 2D/3D Design ও নকশা\n- 📋 রাজউক/পৌরসভা প্ল্যান পাসিং\n- 🏗️ সাইট সুপারভিশন\n- 📊 BOQ ও এস্টিমেট\n\nআপনার প্রশ্ন লিখুন অথবা নিচে থেকে বাছাই করুন!`;
+      return `আস্সালামু আলাইকুম! 👋 **HF Design & Engineering Solutions**-এ স্বাগতম!\n\nআমি আপনার AI Engineering Assistant। আমি বুঝতে পারি আপনার প্রশ্নের অর্থ এবং সেরে উত্তর দিতে পারি!\n\n🏗️ আমি এই বিষয়ে সাহায্য করতে পারি:\n- 💰 নির্মাণ খরচ ও বাজেট\n- 📐 2D/3D Design ও নকশা\n- 📋 রাজউক/পৌরসভা প্ল্যান পাসিং\n- 🏗️ সাইট সুপারভিশন\n- 📊 BOQ ও এস্টিমেট\n\nআপনার প্রশ্ন লিখুন অথবা নিচে থেকে বাছাই করুন!`;
     },
     followUps: ["নির্মাণ খরচ কত?", "2D Plan সম্পর্কে বলুন", "Appointment বুক করব"],
   },
@@ -110,14 +110,14 @@ const KB: KBEntry[] = [
   // ── Location / Address ──
   {
     patterns: [/address|ঠিকানা|location|অবস্থান|where|কোথায়|office|অফিস|savar|dhaka|ashulia|জিরাবো|রেডিও|colony|মানজিল/i],
-    response: `**আমাদের অফিস:**\n\n📍 Aysha Monjil, House 14/05, Ward No 1\nNoyabari, Savar Radio Colony, Dhaka\n\n🕐 **অফিস সময়:**\nশনি–বৃহস্পতি: সকাল ৯টা – রাত ৯টা\nশুক্রবার: সকাল ১০টা – সন্ধ্যা ৬টা\n\n📞 **ফোন:** 01631-186218, 01778-506500\n📧 **ইমেইল:** info@tripleh.com.bd\n\n🗺️ [Google Maps-এ দেখুন](https://maps.app.goo.gl/wdBzkKfqCw4Kbggs7)`,
+    response: `**আমাদের অফিস:**\n\n📍 Aysha Monjil, House 14/05, Ward No 1\nNoyabari, Savar Radio Colony, Dhaka\n\n🕐 **অফিস সময়:**\nশনি–বৃহস্পতি: সকাল ৯টা – রাত ৯টা\nশুক্রবার: সকাল ১০টা – সন্ধ্যা ৬টা\n\n📞 **ফোন:** 01631-186218, 01778-506500\n📧 **ইমেইল:** info@hfengineeringbd.com\n\n🗺️ [Google Maps-এ দেখুন](https://maps.app.goo.gl/wdBzkKfqCw4Kbggs7)`,
     followUps: ["Map দেখুন", "Appointment বুক করুন", "ফোন নম্বর দিন"],
     context: "location",
   },
   // ── Contact / Phone ──
   {
     patterns: [/contact|যোগাযোগ|phone|ফোন|call|কল|number|নম্বর|mobile|মোবাইল|whatsapp/i],
-    response: `**আমাদের সাথে যোগাযোগ করুন:**\n\n📞 **Engineer Hasmot:** 01631-186218\n📞 **Office:** 01778-506500\n📧 **ইমেইল:** info@tripleh.com.bd\n💬 **WhatsApp:** +8801778506500\n\n👉 [Contact Page](/contact)\n👉 [WhatsApp Chat](https://wa.me/8801778506500)\n\n⏰ সকাল ৯টা – রাত ৯টা পর্যন্ত পাওয়া যায়।`,
+    response: `**আমাদের সাথে যোগাযোগ করুন:**\n\n📞 **Engineer Hasmot:** 01631-186218\n📞 **Office:** 01778-506500\n📧 **ইমেইল:** info@hfengineeringbd.com\n💬 **WhatsApp:** +8801778506500\n\n👉 [Contact Page](/contact)\n👉 [WhatsApp Chat](https://wa.me/8801778506500)\n\n⏰ সকাল ৯টা – রাত ৯টা পর্যন্ত পাওয়া যায়।`,
     followUps: ["WhatsApp এ কথা বলুন", "কল করুন", "ইমেইল পাঠান"],
     context: "contact",
   },
@@ -144,14 +144,14 @@ const KB: KBEntry[] = [
   // ── Complaint / Problem ──
   {
     patterns: [/complaint|অভিযোগ|problem|সমস্যা|issue|বিষয়|bad|খারাপ|worst|সবচেয়ে খারাপ|angry|রাগ|frustrated|হতাশ/i],
-    response: `আমি আপনার হতাশা বুঝতে পারছি। 🙏\n\n**আমাদের সাথে সরাসরি যোগাযোগ করুন:**\n\n📞 **Engineer Hasmot:** 01631-186218\n📞 **Office:** 01778-506500\n📧 **ইমেইল:** info@tripleh.com.bd\n💬 **WhatsApp:** +8801778506500\n\n⏰ সকাল ৯টা – রাত ৯টা আমরা সাহায্য করতে প্রস্তুত।`,
+    response: `আমি আপনার হতাশা বুঝতে পারছি। 🙏\n\n**আমাদের সাথে সরাসরি যোগাযোগ করুন:**\n\n📞 **Engineer Hasmot:** 01631-186218\n📞 **Office:** 01778-506500\n📧 **ইমেইল:** info@hfengineeringbd.com\n💬 **WhatsApp:** +8801778506500\n\n⏰ সকাল ৯টা – রাত ৯টা আমরা সাহায্য করতে প্রস্তুত।`,
     followUps: ["কল করুন", "WhatsApp এ পাঠান", "ফিরে যান"],
     context: "complaint",
   },
   // ── Who are you ──
   {
     patterns: [/কি|কোন|who|what|কে|তুমি কি|আপনি কি|তোমার নাম|your.?name|bot|চ্যাটবট|ai/i],
-    response: `আমি **Triple H Assistant** 🤖\n\nআমি একটি AI-powered ChatBot যে আপনাকে **Triple H Plandraft & Engineering**-এর সেবা সম্পর্কে জানাতে পারি।\n\nআমি বুঝতে পারি:\n- ✅ আপনার প্রশ্নের অর্থ\n- ✅ Context (আগের কথা মনে রাখি)\n- ✅ বাংলা ও ইংরেজি\n\nতবে জটিল বিষয়ে **Engineer Hasmot** (01631-186218) এর সাথে কথা বলুন!`,
+    response: `আমি **HF Assistant** 🤖\n\nআমি একটি AI-powered ChatBot যে আপনাকে **HF Design & Engineering Solutions**-এর সেবা সম্পর্কে জানাতে পারি।\n\nআমি বুঝতে পারি:\n- ✅ আপনার প্রশ্নের অর্থ\n- ✅ Context (আগের কথা মনে রাখি)\n- ✅ বাংলা ও ইংরেজি\n\nতবে জটিল বিষয়ে **Engineer Hasmot** (01631-186218) এর সাথে কথা বলুন!`,
     followUps: ["সেবা সম্পর্কে বলুন", "যোগাযোগ করুন", "Portfolio দেখুন"],
   },
   // ── How / কীভাবে ──
@@ -249,7 +249,7 @@ function modifyWithContext(response: string, sentiment: string, ctx?: string): s
 }
 
 // ─── Default Response ────────────────────────────────────────────────────────
-const DEFAULT_RESPONSE = `ধন্যবাদ আপনার প্রশ্নের জন্য! 🙏\n\nআমি এই বিষয়ে নিশ্চিত নই, তবে আমাদের Engineering Team সরাসরি সাহায্য করতে পারবে:\n\n📞 **01778-506500** (সকাল ৯টা – রাত ৯টা)\n💬 [WhatsApp-এ Message করুন](https://wa.me/8801778506500)\n📧 info@tripleh.com.bd\n\nঅথবা এই বিষয়গুলো জিজ্ঞেস করতে পারেন:`;
+const DEFAULT_RESPONSE = `ধন্যবাদ আপনার প্রশ্নের জন্য! 🙏\n\nআমি এই বিষয়ে নিশ্চিত নই, তবে আমাদের Engineering Team সরাসরি সাহায্য করতে পারবে:\n\n📞 **01778-506500** (সকাল ৯টা – রাত ৯টা)\n💬 [WhatsApp-এ Message করুন](https://wa.me/8801778506500)\n📧 info@hfengineeringbd.com\n\nঅথবা এই বিষয়গুলো জিজ্ঞেস করতে পারেন:`;
 
 const DEFAULT_FOLLOWUPS = ["নির্মাণ খরচ কত?", "2D Plan সম্পর্কে বলুন", "যোগাযোগ করুন", "Portfolio দেখুন"];
 

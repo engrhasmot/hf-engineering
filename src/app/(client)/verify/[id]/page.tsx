@@ -84,7 +84,7 @@ export default function DocumentVerificationPage({
               </div>
               <div>
                 <h1 className="text-lg font-black tracking-wide uppercase">Officially Verified Document</h1>
-                <p className="text-xs text-emerald-100">Triple H Plandraft &amp; Engineering Digital Seal</p>
+                <p className="text-xs text-emerald-100">HF Design &amp; Engineering Solutions Digital Seal</p>
               </div>
             </div>
             <Badge className="bg-white text-emerald-800 font-extrabold uppercase text-xs">
@@ -95,9 +95,9 @@ export default function DocumentVerificationPage({
           <CardContent className="p-6 sm:p-8 space-y-6 text-foreground">
             {/* Seal & Intro */}
             <div className="flex items-center gap-4 pb-6 border-b border-border">
-              <img src="/images/logo.png" alt="Triple H Logo" className="w-16 h-16 object-contain" />
+              <img src="/images/logo.png" alt="HF Design & Engineering Solutions logo" className="w-16 h-16 object-contain" />
               <div>
-                <h2 className="text-xl font-black tracking-tight text-foreground">Triple H Plandraft &amp; Engineering</h2>
+                <h2 className="text-xl font-black tracking-tight text-foreground">HF Design &amp; Engineering Solutions</h2>
                 <p className="text-xs font-bold text-accent uppercase tracking-wider">Civil Engineering &amp; Consultancy</p>
                 <p className="text-[11px] text-muted-foreground mt-0.5">
                   Civil Engineering · Architecture · RAJUK &amp; Municipality Plan Passing
@@ -159,7 +159,7 @@ export default function DocumentVerificationPage({
 
             {/* Legal Notice */}
             <p className="text-[11px] text-center text-muted-foreground leading-relaxed pt-2">
-              This digital certificate verifies that the referenced engineering drawing, bill, or plan document was lawfully prepared and sanctioned under the authority of Triple H Plandraft &amp; Engineering.
+              This digital certificate verifies that the referenced engineering drawing, bill, or plan document was lawfully prepared and sanctioned under the authority of HF Design &amp; Engineering Solutions.
             </p>
           </CardContent>
         </Card>

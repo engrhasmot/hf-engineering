@@ -175,7 +175,7 @@ export function newEstimateWhatsApp(data: {
     ``,
     `Time: ${nowBD()}`,
     ``,
-    `Triple H Plandraft & Engineering`,
+    `HF Design & Engineering Solutions`,
   ].join('\n');
 }
 
@@ -215,7 +215,7 @@ export function newBookingWhatsApp(data: {
   lines.push(``);
   lines.push(`Submitted: ${nowBD()}`);
   lines.push(``);
-  lines.push(`Triple H Plandraft & Engineering`);
+  lines.push(`HF Design & Engineering Solutions`);
 
   return lines.join('\n');
 }
@@ -245,7 +245,7 @@ export function clientEstimateConfirmWhatsApp(data: {
     ``,
     `আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব।`,
     ``,
-    `ধন্যবাদ — *Triple H Plandraft & Engineering*`,
+    `ধন্যবাদ — *HF Design & Engineering Solutions*`,
     `📞 01778-506500`,
   ].join('\n');
 }
@@ -278,7 +278,7 @@ export function clientBookingConfirmWhatsApp(data: {
     ``,
     `আমরা নির্ধারিত সময়ে আপনার সাথে যোগাযোগ করব।`,
     ``,
-    `ধন্যবাদ — *Triple H Plandraft & Engineering*`,
+    `ধন্যবাদ — *HF Design & Engineering Solutions*`,
     `📞 01778-506500`,
   ].join('\n');
 }
@@ -296,7 +296,7 @@ export function clientWorkOrderConfirmWhatsApp(data: {
     ``,
     `আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব।`,
     ``,
-    `ধন্যবাদ — *Triple H Plandraft & Engineering*`,
+    `ধন্যবাদ — *HF Design & Engineering Solutions*`,
     `📞 01778-506500`,
   ].join('\n');
 }
@@ -322,7 +322,7 @@ export function newWorkOrderWhatsApp(data: {
   lines.push(``);
   lines.push(`Submitted: ${nowBD()}`);
   lines.push(``);
-  lines.push(`Triple H Plandraft & Engineering`);
+  lines.push(`HF Design & Engineering Solutions`);
   return lines.join('\n');
 }
 
@@ -354,7 +354,7 @@ export function planStatusClientWhatsApp(data: {
   lines.push(`🔍 লাইভ স্ট্যাটাস দেখতে ক্লিক করুন:`);
   lines.push(trackUrl);
   lines.push(``);
-  lines.push(`ধন্যবাদ — *Triple H Plandraft & Engineering*`);
+  lines.push(`ধন্যবাদ — *HF Design & Engineering Solutions*`);
   lines.push(`📞 01778-506500, 01631-186218`);
   return lines.join('\n');
 }
@@ -379,8 +379,8 @@ export function dailySummaryWhatsApp(data: {
   const payments = data.paymentsReceivedLast24h !== undefined ? `৳${data.paymentsReceivedLast24h.toLocaleString('en-BD')}` : '৳০';
 
   const lines = [
-    `📊 *ট্রিপল এইচ — দৈনিক কার্যবিবরণী (Daily Report)*`,
-    `🏢 *Triple H Plandraft & Engineering*`,
+    `📊 *এইচএফ — দৈনিক কার্যবিবরণী (Daily Report)*`,
+    `🏢 *HF Design & Engineering Solutions*`,
     `📞 প্রেরক (Office): ${sender}`,
     `📱 প্রাপক (Target): ${recipient}`,
     `📅 তারিখ: ${data.date}`,
@@ -404,7 +404,7 @@ export function dailySummaryWhatsApp(data: {
     ``,
     `ধন্যবাদান্তে,`,
     `ইঞ্জিনিয়ার মোঃ হাসমত আলী (Managing Director)`,
-    `ট্রিপল এইচ ইঞ্জিনিয়ারিং কনসালটেন্সি`,
+    `এইচএফ ডিজাইন অ্যান্ড ইঞ্জিনিয়ারিং সলিউশনস`,
   ];
 
   return lines.join('\n');
@@ -425,7 +425,7 @@ export function newChatLeadWhatsApp(data: {
     ``,
     `Dashboard: ${getSiteUrl()}/admin/inquiries`,
     ``,
-    `Triple H Plandraft & Engineering`,
+    `HF Design & Engineering Solutions`,
   ].join('\n');
 }
 
@@ -441,7 +441,7 @@ export function paymentReceiptWhatsApp(data: {
 }): string {
   const lines = [
     `🧾 *মানি রিসিট (Money Receipt)*`,
-    `*Triple H Plandraft & Engineering*`,
+    `*HF Design & Engineering Solutions*`,
     ``,
     `প্রিয় ${data.clientName},`,
     `আপনার পেমেন্ট সফলভাবে জমা হয়েছে ✅`,
@@ -479,7 +479,7 @@ export function newReviewAdminWhatsApp(data: {
     `⚠️ এটি বর্তমানে Pending আছে। অনুমোদন করতে ভিজিট করুন:`,
     `🌐 ${getSiteUrl()}/admin/testimonials`,
     ``,
-    `Triple H Plandraft & Engineering`,
+    `HF Design & Engineering Solutions`,
   ].join('\n');
 }
 
@@ -495,7 +495,7 @@ export function newPaymentSubmissionWhatsApp(data: {
 }): string {
   const lines = [
     `🔔 *নতুন অনলাইন পেমেন্ট সাবমিশন!*`,
-    `Triple H Plandraft & Engineering`,
+    `HF Design & Engineering Solutions`,
     ``,
     `👤 ক্লায়েন্ট: *${data.clientName}*`,
     `📞 ফোন: ${data.phone}`,
@@ -530,7 +530,7 @@ export function inspectionReportWhatsApp(data: {
 
   const lines = [
     `🏗️ *সাইট পরিদর্শন ফিল্ড রিপোর্ট (Site Inspection Report)*`,
-    `*Triple H Plandraft & Engineering*`,
+    `*HF Design & Engineering Solutions*`,
     `রিপোর্ট নং: *${data.reportNumber}*`,
     ``,
     `প্রিয় ${data.clientName},`,

@@ -639,11 +639,11 @@ export default function CastingQCPage() {
               <div className="text-center space-y-1 border-b border-border pb-4">
                 <div className="flex justify-center mb-1">
                   <div className="w-12 h-12 bg-white rounded-xl border border-border/60 p-1 flex items-center justify-center">
-                    <img src="/images/logo.png" alt="Triple H" className="w-full h-full object-contain" />
+                    <img src="/images/logo.png" alt="HF Design & Engineering Solutions logo" className="w-full h-full object-contain" />
                   </div>
                 </div>
                 <div className="text-xs font-bold tracking-widest text-amber-700 dark:text-amber-400 uppercase">
-                  Triple H Plandraft &amp; Engineering
+                  HF Design &amp; Engineering Solutions
                 </div>
                 <h2 className="text-xl font-black uppercase tracking-wider">
                   CONCRETE STRENGTH QUALITY CERTIFICATE
@@ -728,7 +728,7 @@ export default function CastingQCPage() {
                 </div>
                 <div className="text-right space-y-1">
                   <div className="font-bold text-foreground">Engr. Md. Hasmot Ali</div>
-                  <div className="text-muted-foreground font-semibold">Triple H Plandraft & Engineering</div>
+                  <div className="text-muted-foreground font-semibold">HF Design & Engineering Solutions</div>
                   <div className="pt-4 border-t border-foreground/30 w-44 ml-auto text-[10px] text-muted-foreground">
                     Authorized Signatory & Seal
                   </div>

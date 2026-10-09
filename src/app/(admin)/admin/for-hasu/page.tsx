@@ -370,7 +370,7 @@ export default function ForHasuMasterPage() {
 
   // WhatsApp Share master function
   const shareCalculationOnWhatsApp = () => {
-    let text = `*ট্রিপল এইচ ইঞ্জিনিয়ারিং কনসালটেন্সি*\n*ইঞ্জিনিয়ার মোঃ হাসমত আলী (AUST)*\n\n`;
+    let text = `*এইচএফ ইঞ্জিনিয়ারিং কনসালটেন্সি*\n*ইঞ্জিনিয়ার মোঃ হাসমত আলী (AUST)*\n\n`;
 
     if (activeTab === 'land-far') {
       text += `📐 *জমি পরিমাপ ও রাজউক FAR রিপোর্ট:*\n• জমির পরিমাণ: ${landValue} ${landUnit} (${Math.round(landInSqft)} sft / ${landInKatha.toFixed(2)} কাঠা)\n• রাস্তার মাপ: ${roadWidth} ফুট\n• অনুমোদনযোগ্য FAR: ${farCalculation.far}\n• সর্বোচ্চ গ্রাউন্ড কভারেজ: ${farCalculation.mgcPercent}%\n• মোট অনুমোদনযোগ্য ফ্লোর স্পেস: ${Math.round(farCalculation.totalPermissibleFloorAreaSqft)} sft\n• সম্ভাব্য তলা: ~${farCalculation.estimatedFloors} তলা\n`;
@@ -401,7 +401,7 @@ export default function ForHasuMasterPage() {
       text += `☀️ *ছাদের সোলার ও নেট মিটারিং রিপোর্ট:*\n• ব্যবহারযোগ্য ছাদ: ${solarUsableAreaSqft} sft (${totalPanels} টি ৫৫০W প্যানেল)\n• মোট ক্ষমতা: ${totalSolarKwp} kWp\n• মাসিক বিদ্যুৎ উৎপাদন: ~${monthlySolarUnits} ইউনিট\n• মাসিক বিদ্যুৎ বিল সাশ্রয়: ~৳ ${monthlySavingsTk.toLocaleString('en-BD')}\n• পে-ব্যাক সময়: ~${paybackYears} বছর\n`;
     }
 
-    text += `\n📞 কনসালটেন্সি ও ড্রয়িং: 01778-506500 | 01631-186218\n🌐 triple-h-engineering.vercel.app`;
+    text += `\n📞 কনসালটেন্সি ও ড্রয়িং: 01778-506500 | 01631-186218\n🌐 hfengineeringbd.com`;
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
   };
 

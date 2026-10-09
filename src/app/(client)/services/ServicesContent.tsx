@@ -87,7 +87,7 @@ export function ServicesHero() {
         transition={{ delay: 0.2 }}
         className="text-lg text-primary-foreground/80 max-w-2xl mx-auto"
       >
-        From the first sketch to the final brick. TRIPLE H provides end-to-end civil engineering solutions.
+        From the first sketch to the final brick. HF provides end-to-end civil engineering solutions.
       </motion.p>
     </section>
   );

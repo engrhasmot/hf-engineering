@@ -307,7 +307,7 @@ export async function POST(req: NextRequest) {
     // 1. Upload blueprint to Cloudinary
     let blueprintUrl = "";
     try {
-      const uploadRes = await uploadBufferToCloudinary(imageBuffer, "triple-h/blueprints");
+      const uploadRes = await uploadBufferToCloudinary(imageBuffer, "hf-engineering/blueprints");
       blueprintUrl = uploadRes?.secure_url || "";
     } catch (uploadErr) {
       console.error("[Cloudinary] Blueprint upload error:", uploadErr);
@@ -356,7 +356,7 @@ export async function POST(req: NextRequest) {
     const typeLabel = { residential: "আবাসিক", commercial: "বাণিজ্যিক", industrial: "শিল্প" }[typeSafe];
     const adminMsg = [
       `🏗️ *নতুন AI BOQ বিশ্লেষণ সম্পন্ন!*`,
-      `Triple H Plandraft & Engineering`,
+      `HF Design & Engineering Solutions`,
       ``,
       `👤 ক্লায়েন্ট: *${name}*`,
       `📞 ফোন: *${phone}*`,

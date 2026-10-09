@@ -501,11 +501,11 @@ export default function SoilTestPage() {
               <div className="text-center border-b border-border pb-3 space-y-1">
                 <div className="flex justify-center mb-1">
                   <div className="w-12 h-12 bg-white rounded-xl border border-border/60 p-1 flex items-center justify-center">
-                    <img src="/images/logo.png" alt="Triple H" className="w-full h-full object-contain" />
+                    <img src="/images/logo.png" alt="HF Design & Engineering Solutions logo" className="w-full h-full object-contain" />
                   </div>
                 </div>
                 <div className="text-[11px] font-bold tracking-widest text-primary uppercase">
-                  Triple H Plandraft &amp; Engineering
+                  HF Design &amp; Engineering Solutions
                 </div>
                 <h2 className="text-base font-black uppercase tracking-wider">
                   GEOTECHNICAL SOIL INVESTIGATION REPORT
@@ -585,7 +585,7 @@ export default function SoilTestPage() {
                   <div className="font-bold text-foreground">Engr. Md. Hasmot Ali</div>
                   <div className="text-muted-foreground text-[10px]">Founder & Chief Consultant</div>
                   <div className="w-32 border-b border-border mt-3 mb-1 ml-auto" />
-                  <div className="text-[10px] text-muted-foreground">Triple H Plandraft &amp; Engineering</div>
+                  <div className="text-[10px] text-muted-foreground">HF Design &amp; Engineering Solutions</div>
                 </div>
               </div>
             </div>

@@ -23,7 +23,7 @@ export default function VerifyIndexPage() {
       <div className="max-w-xl w-full space-y-6 text-center">
         <div className="space-y-3">
           <Badge variant="outline" className="px-3 py-1 bg-emerald-500/10 text-emerald-700 border-emerald-500/20 text-xs font-semibold">
-            <ShieldCheck className="w-3.5 h-3.5 mr-1" /> Triple H Engineering Authentication
+            <ShieldCheck className="w-3.5 h-3.5 mr-1" /> HF Engineering Authentication
           </Badge>
           <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-foreground">
             ডকুমেন্ট ও ড্রয়িং ভেরিফিকেশন

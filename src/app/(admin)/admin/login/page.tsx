@@ -58,7 +58,7 @@ export default function AdminLogin() {
           </div>
           <CardTitle className="text-2xl font-bold">Admin Portal</CardTitle>
           <CardDescription>
-            Enter your credentials to access the TRIPLE H dashboard.
+            Enter your credentials to access the HF dashboard.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -70,7 +70,7 @@ export default function AdminLogin() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="admin@tripleh.com.bd"
+                  placeholder="admin@hfengineeringbd.com"
                   className="pl-9"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}

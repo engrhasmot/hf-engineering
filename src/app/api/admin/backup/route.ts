@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
     backupData._exportedBy = (payload as any).email as any;
 
     const jsonStr = JSON.stringify(backupData, null, 2);
-    const fileName = `tripleh_backup_${new Date().toISOString().split("T")[0]}.json`;
+    const fileName = `hf_backup_${new Date().toISOString().split("T")[0]}.json`;
 
     return new NextResponse(jsonStr, {
       status: 200,

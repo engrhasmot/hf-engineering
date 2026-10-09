@@ -91,7 +91,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h4 className="font-bold text-lg text-foreground mb-1">Email</h4>
-                  <p className="text-muted-foreground">info@tripleh.com.bd</p>
+                  <p className="text-muted-foreground">info@hfengineeringbd.com</p>
                 </div>
               </div>
 

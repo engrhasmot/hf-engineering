@@ -74,6 +74,11 @@ const nextConfig: NextConfig = {
         destination: "/pay",
         permanent: false,
       },
+      {
+        source: "/hasmot",
+        destination: "/card",
+        permanent: false,
+      },
     ];
   },
 };

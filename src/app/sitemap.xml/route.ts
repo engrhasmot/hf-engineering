@@ -21,6 +21,7 @@ export async function GET() {
     { loc: `${BASE_URL}/blog`, lastmod: new Date(), changefreq: "weekly", priority: "0.8" },
     { loc: `${BASE_URL}/faq`, lastmod: new Date(), changefreq: "monthly", priority: "0.6" },
     { loc: `${BASE_URL}/team`, lastmod: new Date(), changefreq: "monthly", priority: "0.7" },
+    { loc: `${BASE_URL}/card`, lastmod: new Date(), changefreq: "monthly", priority: "0.8" },
   ];
 
   const pages = [...staticPages];

@@ -25,115 +25,115 @@ const services = [
     id: "2d-plan",
     icon: PencilRuler,
     title: "2D Architectural & Structural Plan",
-    titleBn: "২ডি আর্কিটেকচারাল ও স্ট্রাকচারাল প্ল্যান",
     image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=900&auto=format&fit=crop",
-    badge: "সবচেয়ে জনপ্রিয়",
+    badge: "Most Popular",
     badgeColor: "bg-accent text-accent-foreground",
     description:
-      "আমাদের মূল সেবা। AutoCAD-এ নিখুঁত ২ডি ফ্লোর প্ল্যান, এলিভেশন এবং স্ট্রাকচারাল ড্রয়িং তৈরি করি যা নির্মাণে শতভাগ নির্ভুল।",
+      "Our core service. We draft meticulous 2D floor plans, elevations, and structural drawings using AutoCAD, ensuring absolute precision for construction.",
     scope: [
-      "ফ্লোর প্ল্যান লেআউট",
-      "এলিভেশন ও সেকশন ড্রয়িং",
-      "ফাউন্ডেশন ডিটেইলস",
-      "কলাম ও বিম লেআউট",
-      "প্লাম্বিং ও ইলেকট্রিক্যাল ড্রাফট",
+      "Floor Plan Layouts",
+      "Elevation & Section Drawings",
+      "Foundation Details",
+      "Column & Beam Layouts",
+      "Plumbing & Electrical Drafts",
     ],
-    deliveryDays: "৭–১৫ দিন",
-    startingPrice: "৳ ৫,০০০ থেকে শুরু",
-    ctaText: "প্ল্যান বানান",
+    deliveryDays: "7–15 Days",
+    startingPrice: "From ৳5,000",
+    ctaText: "Get a Plan",
     ctaHref: "/book-appointment",
+    waText: "I am interested in 2D Architectural & Structural Plan.",
   },
   {
     id: "3d-design",
     icon: Building2,
     title: "3D Exterior & Interior Renderings",
-    titleBn: "৩ডি এক্সটেরিয়র ও ইন্টেরিয়র ডিজাইন",
     image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=900&auto=format&fit=crop",
-    badge: "ভিজ্যুয়াল",
+    badge: "Visualization",
     badgeColor: "bg-purple-600 text-white",
     description:
-      "আপনার স্বপ্নের বাড়ি নির্মাণের আগেই দেখুন। Revit, SketchUp ও Lumion ব্যবহার করে ফটোরিয়েলিস্টিক ৩ডি মডেল ও অ্যানিমেশন তৈরি করি।",
+      "Visualize your future building before a single brick is laid. We create highly detailed, photorealistic 3D models and animations using Revit, SketchUp, and Lumion.",
     scope: [
-      "ফটোরিয়েলিস্টিক এক্সটেরিয়র ভিউ",
-      "ইন্টেরিয়র ডিজাইন ও ম্যাটেরিয়াল সিলেকশন",
-      "দিন/রাতের আলো সিমুলেশন",
-      "৩ডি ওয়াকথ্রু অ্যানিমেশন",
+      "Photorealistic Exterior Views",
+      "Interior Design & Material Selection",
+      "Day / Night Lighting Simulations",
+      "3D Walkthrough Animations",
     ],
-    deliveryDays: "৫–১০ দিন",
-    startingPrice: "৳ ৩,০০০ থেকে শুরু",
-    ctaText: "৩ডি ডিজাইন পান",
+    deliveryDays: "5–10 Days",
+    startingPrice: "From ৳3,000",
+    ctaText: "Get 3D Design",
     ctaHref: "/book-appointment",
+    waText: "I am interested in 3D Exterior & Interior Renderings.",
   },
   {
     id: "boq",
     icon: Calculator,
     title: "BOQ Construction Cost Estimation",
-    titleBn: "BOQ নির্মাণ খরচ হিসাব",
     image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=900&auto=format&fit=crop",
-    badge: "সাশ্রয়ী",
+    badge: "Budget Smart",
     badgeColor: "bg-emerald-600 text-white",
     description:
-      "বাজেট ঠিক রাখুন। প্রয়োজনীয় সকল নির্মাণসামগ্রীর পরিমাণ ও বর্তমান বাজারমূল্য হিসাব করে সঠিক খরচের প্রাক্কলন দিই।",
+      "Never go over budget. We calculate the exact quantities of all materials required and provide current market rates for highly accurate cost prediction.",
     scope: [
-      "রড/স্টিল পরিমাণ গণনা",
-      "সিমেন্ট, বালু ও ইটের হিসাব",
-      "শ্রমিক খরচের প্রজেকশন",
-      "ফিনিশিং ম্যাটেরিয়াল বাজেট",
+      "Rod / Steel Quantity Calculation",
+      "Cement, Sand & Brick Estimation",
+      "Labor Cost Projections",
+      "Finishing Material Budgeting",
     ],
-    deliveryDays: "৩–৫ দিন",
-    startingPrice: "৳ ২,০০০ থেকে শুরু",
-    ctaText: "খরচ হিসাব করুন",
+    deliveryDays: "3–5 Days",
+    startingPrice: "From ৳2,000",
+    ctaText: "Estimate Cost",
     ctaHref: "/cost-estimator",
+    waText: "I am interested in BOQ Construction Cost Estimation.",
   },
   {
     id: "plan-passing",
     icon: FileCheck2,
     title: "Municipal Plan Passing Approvals",
-    titleBn: "সরকারি প্ল্যান পাসিং অনুমোদন",
     image: "https://images.unsplash.com/photo-1568992687947-868a62a9f521?q=80&w=900&auto=format&fit=crop",
-    badge: "লিগ্যাল ক্লিয়ারেন্স",
+    badge: "Legal Clearance",
     badgeColor: "bg-blue-600 text-white",
     description:
-      "আমরা সব কাগজপত্রের ঝামেলা সামলাই। ইউনিয়ন পরিষদ থেকে পৌরসভা ও রাজউক পর্যন্ত আপনার বিল্ডিং প্ল্যানের আইনি অনুমোদন নিশ্চিত করি।",
+      "We handle all the paperwork and bureaucracy. From Union Parishad to Paurashava and RAJUK, we ensure your building plan receives full legal approval.",
     scope: [
-      "কাগজপত্র প্রস্তুতি",
-      "মাটি পরীক্ষার রিপোর্ট",
-      "কর্তৃপক্ষের সাথে যোগাযোগ",
-      "রিয়েলটাইম ফাইল ট্র্যাকিং",
+      "Documentation Preparation",
+      "Soil Test Reports",
+      "Authority Liaison",
+      "Real-time File Tracking",
     ],
-    deliveryDays: "১–৩ মাস",
-    startingPrice: "৳ ১০,০০০ থেকে শুরু",
-    ctaText: "প্ল্যান পাস করান",
+    deliveryDays: "1–3 Months",
+    startingPrice: "From ৳10,000",
+    ctaText: "Start Approval",
     ctaHref: "/book-appointment",
+    waText: "I am interested in Municipal Plan Passing Approvals.",
   },
   {
     id: "supervision",
     icon: HardHat,
     title: "On-site Technical Supervision",
-    titleBn: "সাইটে টেকনিক্যাল তদারকি",
-    image: "https://images.unsplash.com/photo-1504307651254-35680f356f12?q=80&w=900&auto=format&fit=crop",
-    badge: "নির্মাণকালীন",
+    image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=900&auto=format&fit=crop",
+    badge: "During Construction",
     badgeColor: "bg-orange-600 text-white",
     description:
-      "নির্মাণের গুরুত্বপূর্ণ ধাপে আমাদের ইঞ্জিনিয়াররা আপনার সাইট পরিদর্শন করেন এবং ঠিকাদার ড্রয়িং মতো কাজ করছে কিনা নিশ্চিত করেন।",
+      "Our engineers visit your site during critical construction phases to ensure the contractor is following the structural design perfectly and materials meet quality standards.",
     scope: [
-      "ফাউন্ডেশন ঢালাই পরিদর্শন",
-      "কলাম ও ছাদ ঢালাই তদারকি",
-      "নির্মাণসামগ্রীর মান যাচাই",
-      "নিরাপত্তা প্রোটোকল বাস্তবায়ন",
+      "Foundation Pouring Inspection",
+      "Column & Roof Casting Supervision",
+      "Material Quality Checking",
+      "Safety Protocol Enforcement",
     ],
-    deliveryDays: "নির্মাণকালীন সময়",
-    startingPrice: "চুক্তিভিত্তিক",
-    ctaText: "তদারকি বুক করুন",
+    deliveryDays: "Throughout Construction",
+    startingPrice: "Contract-based",
+    ctaText: "Book Supervision",
     ctaHref: "/book-appointment",
+    waText: "I am interested in On-site Technical Supervision.",
   },
 ];
 
 const stats = [
-  { icon: Users, value: "৫০০+", label: "সন্তুষ্ট ক্লায়েন্ট" },
-  { icon: Building2, value: "৮০০+", label: "প্রজেক্ট সম্পন্ন" },
-  { icon: Star, value: "১০+", label: "বছরের অভিজ্ঞতা" },
-  { icon: Clock, value: "৯৮%", label: "সময়মতো ডেলিভারি" },
+  { icon: Users, value: "500+", label: "Happy Clients" },
+  { icon: Building2, value: "800+", label: "Projects Completed" },
+  { icon: Star, value: "10+", label: "Years Experience" },
+  { icon: Clock, value: "98%", label: "On-time Delivery" },
 ];
 
 export function ServicesHero() {
@@ -141,9 +141,12 @@ export function ServicesHero() {
     <section className="bg-primary pt-32 pb-24 text-center px-4 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }} />
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }}
+        />
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto">
@@ -162,7 +165,7 @@ export function ServicesHero() {
           transition={{ delay: 0.1 }}
           className="text-4xl md:text-6xl font-bold font-heading text-primary-foreground mb-6"
         >
-          আমাদের <span className="text-accent">সেবাসমূহ</span>
+          Our <span className="text-accent">Services</span>
         </motion.h1>
 
         <motion.p
@@ -171,7 +174,8 @@ export function ServicesHero() {
           transition={{ delay: 0.2 }}
           className="text-lg text-primary-foreground/80 max-w-2xl mx-auto mb-10"
         >
-          প্রথম স্কেচ থেকে চূড়ান্ত ইট পর্যন্ত। HF সম্পূর্ণ সিভিল ইঞ্জিনিয়ারিং সমাধান দেয়।
+          From the first sketch to the final brick. HF provides complete end-to-end
+          civil engineering solutions for your dream project.
         </motion.p>
 
         {/* Quick Nav Pills */}
@@ -190,7 +194,7 @@ export function ServicesHero() {
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-primary-foreground text-xs font-medium transition-colors border border-white/20"
               >
                 <Icon className="w-3.5 h-3.5" />
-                {s.titleBn.split(" ").slice(0, 2).join(" ")}
+                {s.title.split(" ").slice(0, 2).join(" ")}
               </a>
             );
           })}
@@ -206,9 +210,14 @@ export function ServicesHero() {
           {stats.map((stat, i) => {
             const Icon = stat.icon;
             return (
-              <div key={i} className="bg-white/10 rounded-xl p-4 border border-white/15 text-center">
+              <div
+                key={i}
+                className="bg-white/10 rounded-xl p-4 border border-white/15 text-center"
+              >
                 <Icon className="w-5 h-5 text-accent mx-auto mb-2" />
-                <p className="text-2xl font-bold text-primary-foreground font-heading">{stat.value}</p>
+                <p className="text-2xl font-bold text-primary-foreground font-heading">
+                  {stat.value}
+                </p>
                 <p className="text-xs text-primary-foreground/70 mt-0.5">{stat.label}</p>
               </div>
             );
@@ -252,7 +261,9 @@ export function ServicesList() {
               >
                 <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-border group">
                   {/* Badge */}
-                  <div className={`absolute top-4 left-4 z-20 px-3 py-1 rounded-full text-xs font-bold ${svc.badgeColor} shadow`}>
+                  <div
+                    className={`absolute top-4 left-4 z-20 px-3 py-1 rounded-full text-xs font-bold ${svc.badgeColor} shadow`}
+                  >
                     {svc.badge}
                   </div>
 
@@ -278,19 +289,19 @@ export function ServicesList() {
                   />
                 </div>
 
-                {/* Delivery & Price Info below image */}
+                {/* Delivery & Price Info */}
                 <div className="mt-4 flex gap-3">
                   <div className="flex-1 flex items-center gap-2 bg-secondary/50 border border-border rounded-xl px-4 py-3">
                     <Clock className="w-4 h-4 text-accent shrink-0" />
                     <div>
-                      <p className="text-[10px] text-muted-foreground">ডেলিভারি সময়</p>
+                      <p className="text-[10px] text-muted-foreground">Delivery Time</p>
                       <p className="text-sm font-semibold text-foreground">{svc.deliveryDays}</p>
                     </div>
                   </div>
                   <div className="flex-1 flex items-center gap-2 bg-secondary/50 border border-border rounded-xl px-4 py-3">
                     <Star className="w-4 h-4 text-accent shrink-0" />
                     <div>
-                      <p className="text-[10px] text-muted-foreground">মূল্য</p>
+                      <p className="text-[10px] text-muted-foreground">Starting Price</p>
                       <p className="text-sm font-semibold text-foreground">{svc.startingPrice}</p>
                     </div>
                   </div>
@@ -315,10 +326,7 @@ export function ServicesList() {
                   </span>
                 </div>
 
-                <div>
-                  <h2 className="text-3xl font-bold font-heading text-foreground mb-1">{svc.titleBn}</h2>
-                  <p className="text-sm text-muted-foreground font-mono">{svc.title}</p>
-                </div>
+                <h2 className="text-3xl font-bold font-heading text-foreground">{svc.title}</h2>
 
                 <p className="text-lg text-muted-foreground leading-relaxed">{svc.description}</p>
 
@@ -326,7 +334,7 @@ export function ServicesList() {
                 <div className="bg-secondary/40 p-5 rounded-xl border border-border">
                   <h4 className="font-semibold mb-4 text-primary flex items-center gap-2 text-sm">
                     <CheckCircle2 className="w-4 h-4 text-accent" />
-                    কাজের পরিধি (Scope of Work)
+                    Scope of Work
                   </h4>
                   <ul className="space-y-2.5">
                     {svc.scope.map((item, i) => (
@@ -346,14 +354,17 @@ export function ServicesList() {
                     </Button>
                   </Link>
                   <a
-                    href={`https://wa.me/8801778506500?text=${encodeURIComponent(`আমি ${svc.titleBn} সম্পর্কে জানতে চাই।`)}`}
+                    href={`https://wa.me/8801778506500?text=${encodeURIComponent(svc.waText)}`}
                     target="_blank"
                     rel="noreferrer"
                     className="flex-1"
                   >
-                    <Button variant="outline" className="w-full font-semibold border-green-500 text-green-600 hover:bg-green-50">
+                    <Button
+                      variant="outline"
+                      className="w-full font-semibold border-green-500 text-green-600 hover:bg-green-50 hover:text-green-700"
+                    >
                       <MessageCircle className="w-4 h-4 mr-2" />
-                      WhatsApp করুন
+                      WhatsApp Us
                     </Button>
                   </a>
                 </div>
@@ -372,24 +383,32 @@ export function ServicesList() {
         className="mt-28 mx-4 sm:mx-6 lg:mx-8 max-w-5xl lg:mx-auto"
       >
         <div className="bg-primary rounded-2xl p-10 md:p-14 text-center relative overflow-hidden">
-          <div className="absolute inset-0 opacity-5" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='1' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E")`,
-          }} />
+          <div
+            className="absolute inset-0 opacity-5"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='1' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E")`,
+            }}
+          />
           <div className="relative z-10">
             <h3 className="text-2xl md:text-3xl font-bold font-heading text-primary-foreground mb-4">
-              আজই শুরু করুন আপনার স্বপ্নের বাড়ি
+              Ready to Start Your Dream Project?
             </h3>
             <p className="text-primary-foreground/75 mb-8 max-w-xl mx-auto">
-              বিনামূল্যে পরামর্শ নিন। আমাদের অভিজ্ঞ ইঞ্জিনিয়ার দল আপনার প্রজেক্ট নিয়ে কথা বলতে প্রস্তুত।
+              Get a free consultation today. Our experienced engineering team is ready
+              to discuss your project requirements.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/book-appointment">
                 <Button size="lg" variant="secondary" className="font-bold px-8">
-                  অ্যাপয়েন্টমেন্ট নিন <ArrowRight className="w-5 h-5 ml-2" />
+                  Book an Appointment <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
               <a href="tel:+8801778506500">
-                <Button size="lg" variant="outline" className="font-bold px-8 border-white/30 text-primary-foreground hover:bg-white/10">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="font-bold px-8 border-white/30 text-primary-foreground hover:bg-white/10 hover:text-primary-foreground"
+                >
                   <Phone className="w-5 h-5 mr-2" />
                   01778-506500
                 </Button>

@@ -3,12 +3,13 @@ import { ServicesHero, ServicesList } from "./ServicesContent";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "সেবাসমূহ | HF Design & Engineering Solutions",
+  title: "Services | HF Design & Engineering Solutions",
   description:
-    "২ডি প্ল্যান, ৩ডি ডিজাইন, BOQ হিসাব, সরকারি প্ল্যান পাসিং এবং নির্মাণ তদারকি — সাভার ও ঢাকায় সম্পূর্ণ সিভিল ইঞ্জিনিয়ারিং সেবা।",
+    "2D plans, 3D design, BOQ estimation, government plan passing and on-site supervision — complete civil engineering services in Savar & Dhaka.",
   openGraph: {
-    title: "সেবাসমূহ | HF Design & Engineering Solutions",
-    description: "বিল্ডিং ডিজাইন, ৩ডি এলিভেশন, স্ট্রাকচারাল ড্রয়িং, BOQ এবং প্ল্যান পাসিং সেবা।",
+    title: "Services | HF Design & Engineering Solutions",
+    description:
+      "Building design, 3D elevation, structural drawing, BOQ and plan passing services in Bangladesh.",
   },
 };
 
@@ -22,49 +23,65 @@ export default function ServicesPage() {
       <section className="py-24 bg-muted/30 border-t border-border">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold font-heading mb-4">সচরাচর জিজ্ঞাসা (FAQ)</h2>
-            <p className="text-muted-foreground">বাংলাদেশে বিল্ডিং প্ল্যান অনুমোদন সম্পর্কে সাধারণ প্রশ্নাবলী।</p>
+            <h2 className="text-3xl font-bold font-heading mb-4">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-muted-foreground">
+              Common questions about building plan approvals and our services in Bangladesh.
+            </p>
           </div>
 
-          <Accordion defaultValue={["item-1"]} className="w-full bg-card rounded-xl shadow-sm border border-border px-6">
+          <Accordion
+            defaultValue={["item-1"]}
+            className="w-full bg-card rounded-xl shadow-sm border border-border px-6"
+          >
             <AccordionItem value="item-1">
               <AccordionTrigger className="text-left font-semibold">
-                প্ল্যান পাসিংয়ের জন্য কী কী কাগজপত্র লাগে?
+                What documents are needed for Plan Passing?
               </AccordionTrigger>
               <AccordionContent className="text-muted-foreground leading-relaxed">
-                সাধারণত মূল জমির দলিল, নামজারি (মিউটেশন), CS/RS/SA খতিয়ান, হালনাগাদ ভূমি কর রশিদ (খাজনা), মাটি পরীক্ষার রিপোর্ট এবং আমাদের আর্কিটেকচারাল ও স্ট্রাকচারাল ওয়ার্কিং ড্রয়িং প্রয়োজন হয়।
+                Generally, you need the original land deed (Dalil), Mutation (Namjari),
+                CS/RS/SA Khatian, up-to-date land tax receipt (Khajna), a soil test report,
+                and our Architectural & Structural working drawings.
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-2">
               <AccordionTrigger className="text-left font-semibold">
-                ইউনিয়ন পরিষদের অনুমোদন পেতে কতদিন লাগে?
+                How long does Union Parishad approval take?
               </AccordionTrigger>
               <AccordionContent className="text-muted-foreground leading-relaxed">
-                সাধারণত ইউনিয়ন পরিষদের অনুমোদন ১ থেকে ২ সপ্তাহ লাগে, যদি জমির সকল কাগজ পরিষ্কার থাকে এবং সীমানা নিয়ে কোনো বিরোধ না থাকে। পৌরসভা বা রাজউকের অনুমোদনে ১–৩ মাস সময় লাগতে পারে।
+                Typically, Union Parishad approvals take 1 to 2 weeks, provided all your
+                land documents are clear and there are no boundary disputes. Paurashava or
+                RAJUK approvals take longer — usually 1 to 3 months.
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-3">
               <AccordionTrigger className="text-left font-semibold">
-                আপনারা কি সরাসরি নির্মাণ কাজ তদারক করেন?
+                Do you supervise the construction directly?
               </AccordionTrigger>
               <AccordionContent className="text-muted-foreground leading-relaxed">
-                হ্যাঁ, আমাদের ইঞ্জিনিয়ারদের সাইট তদারকির জন্য নিয়োগ দেওয়া যায়। ফাউন্ডেশন ঢালাই ও ছাদ ঢালাইয়ের সময় ঠিকাদার আমাদের স্ট্রাকচারাল ডিজাইন মেনে চলছে কিনা নিশ্চিত করতে এটি অত্যন্ত গুরুত্বপূর্ণ।
+                Yes, our engineers can be hired for on-site technical supervision. We highly
+                recommend this for foundation pouring and roof casting to ensure the
+                contractor strictly follows our structural design.
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-4">
               <AccordionTrigger className="text-left font-semibold">
-                ৩ডি ডিজাইন কি নির্মাণের আগে দেখতে পাবো?
+                Can I see a 3D design before construction starts?
               </AccordionTrigger>
               <AccordionContent className="text-muted-foreground leading-relaxed">
-                অবশ্যই। আমরা নির্মাণ শুরুর আগেই ফটোরিয়েলিস্টিক ৩ডি এক্সটেরিয়র ও ইন্টেরিয়র ভিউ প্রদান করি, যাতে আপনি পরিবর্তন করতে পারেন এবং নিশ্চিত হয়ে নির্মাণ করতে পারেন।
+                Absolutely. We provide photorealistic 3D exterior and interior views before
+                construction begins, so you can request changes and build with full
+                confidence.
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-5">
               <AccordionTrigger className="text-left font-semibold">
-                সার্ভিস ফি কীভাবে পরিশোধ করবো?
+                How do I make payment for your services?
               </AccordionTrigger>
               <AccordionContent className="text-muted-foreground leading-relaxed">
-                বিকাশ, নগদ, রকেট এবং ব্যাংক ট্রান্সফারের মাধ্যমে পরিশোধ করা যায়। সাধারণত ৫০% অগ্রিম এবং ডেলিভারির পর বাকি ৫০% নেওয়া হয়।
+                We accept bKash, Nagad, Rocket, and bank transfer. Typically, 50% is paid
+                in advance and the remaining 50% upon delivery of the final files.
               </AccordionContent>
             </AccordionItem>
           </Accordion>

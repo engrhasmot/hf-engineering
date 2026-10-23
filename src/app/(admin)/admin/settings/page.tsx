@@ -15,8 +15,15 @@ import {
   CheckCircle2, 
   ExternalLink,
   Eye,
-  EyeOff
+  EyeOff,
+  RefreshCw,
+  Send,
+  QrCode,
+  AlertCircle,
+  WifiOff,
+  Wifi
 } from "lucide-react";
+import WhatsAppIcon from "@/components/shared/WhatsAppIcon";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -51,8 +58,15 @@ export default function AdminSettingsPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [savingPassword, setSavingPassword] = useState(false);
 
+  // WhatsApp Status
+  const [waStatus, setWaStatus] = useState<any>(null);
+  const [waLoading, setWaLoading] = useState(false);
+  const [waTesting, setWaTesting] = useState(false);
+  const [testPhone, setTestPhone] = useState("+8801778506500");
+
   useEffect(() => {
     fetchProfile();
+    fetchWaStatus();
   }, []);
 
   const fetchProfile = async () => {
@@ -68,6 +82,54 @@ export default function AdminSettingsPage() {
       toast.error("Failed to load profile details");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchWaStatus = async () => {
+    setWaLoading(true);
+    try {
+      const res = await adminFetch("/api/admin/whatsapp-status");
+      const data = await res.json();
+      setWaStatus(data);
+    } catch {
+      toast.error("হোয়াটসঅ্যাপ স্ট্যাটাস লোড করা যায়নি");
+    } finally {
+      setWaLoading(false);
+    }
+  };
+
+  const handleTestWhatsApp = async () => {
+    setWaTesting(true);
+    try {
+      const res = await adminFetch("/api/admin/whatsapp-status", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "test", phone: testPhone }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success("টেস্ট মেসেজ পাঠানো হয়েছে! হোয়াটসঅ্যাপ চেক করুন।");
+      } else {
+        toast.error("মেসেজ পাঠানো যায়নি: " + (data.message || "Unknown error"));
+      }
+    } catch {
+      toast.error("অনুরোধ ব্যর্থ হয়েছে");
+    } finally {
+      setWaTesting(false);
+    }
+  };
+
+  const handleRebootWa = async () => {
+    try {
+      await adminFetch("/api/admin/whatsapp-status", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "reboot" }),
+      });
+      toast.success("WhatsApp ইনস্ট্যান্স রিস্টার্ট হচ্ছে...");
+      setTimeout(fetchWaStatus, 3000);
+    } catch {
+      toast.error("রিস্টার্ট ব্যর্থ হয়েছে");
     }
   };
 
@@ -354,6 +416,118 @@ export default function AdminSettingsPage() {
                   </a>
                 </div>
               </div>
+            </CardContent>
+          </Card>
+
+          {/* WhatsApp Connection Status */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base flex items-center gap-2">
+                <Wifi className="w-4 h-4 text-green-500" /> হোয়াটসঅ্যাপ সংযোগ
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {waLoading ? (
+                <div className="flex items-center gap-2 text-xs text-muted-foreground py-2">
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                  <span>স্ট্যাটাস লোড হচ্ছে...</span>
+                </div>
+              ) : waStatus ? (
+                <>
+                  {/* Status Badge */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-muted-foreground">সংযোগ অবস্থা:</span>
+                    {waStatus.stateInstance === "authorized" ? (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-xs font-semibold">
+                        <Wifi className="w-3 h-3" /> সংযুক্ত ✓
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-red-100 text-red-700 text-xs font-semibold">
+                        <WifiOff className="w-3 h-3" /> সংযুক্ত নয়
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-muted-foreground">Instance ID:</span>
+                    <span className="font-mono font-semibold">{waStatus.idInstance}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-muted-foreground">নম্বর:</span>
+                    <span className="font-mono font-semibold">{waStatus.adminPhone}</span>
+                  </div>
+
+                  {/* QR Code (if not authorized) */}
+                  {waStatus.stateInstance !== "authorized" && waStatus.qrCodeBase64 && (
+                    <div className="border rounded-lg p-3 bg-muted/30 text-center space-y-2">
+                      <p className="text-xs font-semibold text-foreground flex items-center justify-center gap-1">
+                        <QrCode className="w-4 h-4" /> QR কোড স্ক্যান করুন
+                      </p>
+                      <img
+                        src={`data:image/png;base64,${waStatus.qrCodeBase64}`}
+                        alt="WhatsApp QR Code"
+                        className="w-44 h-44 mx-auto rounded border"
+                      />
+                      <p className="text-[11px] text-muted-foreground">
+                        আপনার ফোনের WhatsApp খুলুন → Linked Devices → Link a Device → এই QR কোড স্ক্যান করুন
+                      </p>
+                    </div>
+                  )}
+
+                  {waStatus.stateInstance !== "authorized" && !waStatus.qrCodeBase64 && (
+                    <div className="flex items-center gap-2 p-2.5 rounded-lg bg-amber-50 border border-amber-200 text-xs text-amber-700">
+                      <AlertCircle className="w-4 h-4 shrink-0" />
+                      <span>QR কোড লোড হয়নি। পুনরায় চেষ্টা করুন।</span>
+                    </div>
+                  )}
+
+                  {/* Test Message */}
+                  {waStatus.stateInstance === "authorized" && (
+                    <div className="space-y-2 pt-1 border-t border-border">
+                      <p className="text-xs font-medium text-foreground">টেস্ট মেসেজ পাঠান:</p>
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          value={testPhone}
+                          onChange={(e) => setTestPhone(e.target.value)}
+                          placeholder="+8801XXXXXXXXX"
+                          className="flex-1 text-xs border border-border rounded-md px-2.5 py-1.5 bg-background focus:outline-none focus:ring-1 focus:ring-accent font-mono"
+                        />
+                        <button
+                          onClick={handleTestWhatsApp}
+                          disabled={waTesting}
+                          className="flex items-center gap-1 px-3 py-1.5 rounded-md bg-green-600 text-white text-xs font-semibold hover:bg-green-700 disabled:opacity-60 transition-colors"
+                        >
+                          {waTesting ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
+                          পাঠান
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-2 pt-1 border-t border-border">
+                    <button
+                      onClick={fetchWaStatus}
+                      disabled={waLoading}
+                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-md border border-border text-xs hover:bg-muted/50 transition-colors"
+                    >
+                      <RefreshCw className="w-3.5 h-3.5" /> রিফ্রেশ
+                    </button>
+                    <button
+                      onClick={handleRebootWa}
+                      className="flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-md border border-amber-300 text-xs text-amber-700 hover:bg-amber-50 transition-colors"
+                    >
+                      <AlertCircle className="w-3.5 h-3.5" /> রিস্টার্ট
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div className="flex items-center gap-2 p-2.5 rounded-lg bg-red-50 border border-red-200 text-xs text-red-700">
+                  <WifiOff className="w-4 h-4 shrink-0" />
+                  <span>স্ট্যাটাস পাওয়া যায়নি। পৃষ্ঠা রিলোড করুন।</span>
+                </div>
+              )}
             </CardContent>
           </Card>
 

@@ -591,8 +591,7 @@ export default function HomePage() {
                 <a href="tel:+8801778506500">
                   <Button
                     size="lg"
-                    variant="outline"
-                    className="h-14 px-10 text-lg font-bold border-white/30 text-primary-foreground hover:bg-white/10 hover:text-primary-foreground"
+                    className="h-14 px-10 text-lg font-bold bg-white/15 border border-white/30 text-white hover:bg-white/25 hover:text-white"
                   >
                     <Phone className="mr-2 w-5 h-5" /> Call Now
                   </Button>

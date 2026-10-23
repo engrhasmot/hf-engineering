@@ -2,13 +2,26 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
-  ArrowRight, Calculator, ShieldCheck, Search, Phone,
-  MessageCircle, PencilRuler, Building2, FileCheck2,
-  HardHat, BarChart3, CheckCircle2, Star, Clock,
-  Award, Users, ChevronLeft, ChevronRight, MapPin,
-  Layers, Ruler, Home, ChevronDown,
+  ArrowRight,
+  Calculator,
+  ShieldCheck,
+  MapPin,
+  Search,
+  Phone,
+  MessageCircle,
+  PencilRuler,
+  Building2,
+  FileCheck2,
+  HardHat,
+  BarChart3,
+  CheckCircle2,
+  Star,
+  Clock,
+  Award,
+  Users,
+  ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -19,96 +32,122 @@ import dynamic from "next/dynamic";
 
 const TestimonialCarousel = dynamic(
   () => import("@/components/testimonials/TestimonialCarousel"),
-  { loading: () => <div className="h-40 flex items-center justify-center"><div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" /></div> }
+  {
+    loading: () => (
+      <div className="flex justify-center py-20">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      </div>
+    ),
+  }
 );
 
-/* ─── Animated Counter ─── */
 function AnimatedCounter({ value, suffix = "" }: { value: string; suffix?: string }) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
   const [inView, setInView] = useState(false);
   const target = parseInt(value.replace(/[^0-9]/g, ""), 10) || 0;
   const isText = isNaN(parseInt(value, 10));
+
   useEffect(() => {
-    const el = ref.current; if (!el) return;
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setInView(true); obs.disconnect(); } }, { threshold: 0.5 });
-    obs.observe(el); return () => obs.disconnect();
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) { setInView(true); observer.disconnect(); }
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
+
   useEffect(() => {
     if (!inView || isText) return;
-    let s = 0; const step = Math.ceil(target / (1500 / 16));
-    const t = setInterval(() => { s += step; if (s >= target) { setCount(target); clearInterval(t); } else setCount(s); }, 16);
-    return () => clearInterval(t);
+    let start = 0;
+    const duration = 1500;
+    const step = Math.ceil(target / (duration / 16));
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) { setCount(target); clearInterval(timer); }
+      else setCount(start);
+    }, 16);
+    return () => clearInterval(timer);
   }, [inView, target, isText]);
+
   if (isText) return <>{value}</>;
   return <span ref={ref}>{count}{suffix}</span>;
 }
 
-/* ─── Hero slides ─── */
-const heroSlides = [
-  { image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=900&auto=format&fit=crop", label: "Modern Residence" },
-  { image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=900&auto=format&fit=crop", label: "3D Interior" },
-  { image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=900&auto=format&fit=crop", label: "Commercial Building" },
-];
-
-/* ─── Services ─── */
 const services = [
-  { icon: Ruler, title: "2D Architectural Plan", desc: "Detailed floor plans and working drawings.", href: "/services#2d-plan" },
-  { icon: Building2, title: "3D Elevation & Interior", desc: "Realistic 3D exterior visualization and interior design.", href: "/services#3d-design" },
-  { icon: Layers, title: "Structural Design", desc: "Structural analysis, design and construction drawings.", href: "/services#2d-plan" },
-  { icon: BarChart3, title: "BOQ & Cost Estimation", desc: "Material quantities, cost estimates and project budgeting.", href: "/services#boq" },
-  { icon: FileCheck2, title: "Plan Approval", desc: "Drawing preparation and assistance with approval documentation.", href: "/services#plan-passing" },
+  {
+    icon: PencilRuler,
+    title: "2D Architectural & Structural Plan",
+    desc: "Precision AutoCAD drafting with meticulous floor plans, elevations, and structural drawings.",
+    href: "/services#2d-plan",
+    color: "bg-blue-50 text-blue-600 border-blue-100",
+  },
+  {
+    icon: Building2,
+    title: "3D Exterior & Interior Renderings",
+    desc: "Photorealistic 3D models in Revit & SketchUp — see your home before it's built.",
+    href: "/services#3d-design",
+    color: "bg-purple-50 text-purple-600 border-purple-100",
+  },
+  {
+    icon: BarChart3,
+    title: "BOQ Construction Cost Estimation",
+    desc: "Accurate Bill of Quantities with current market rates so you never go over budget.",
+    href: "/services#boq",
+    color: "bg-emerald-50 text-emerald-600 border-emerald-100",
+  },
+  {
+    icon: FileCheck2,
+    title: "Municipal Plan Passing Approvals",
+    desc: "We handle RAJUK, Paurashava & Union Parishad paperwork — hassle-free approvals.",
+    href: "/services#plan-passing",
+    color: "bg-blue-50 text-blue-700 border-blue-100",
+  },
+  {
+    icon: HardHat,
+    title: "On-site Technical Supervision",
+    desc: "Expert engineers overseeing foundation pouring, concrete casting & material quality.",
+    href: "/services#supervision",
+    color: "bg-orange-50 text-orange-600 border-orange-100",
+  },
+  {
+    icon: Calculator,
+    title: "Free Cost Estimation Tool",
+    desc: "Use our online calculator to instantly estimate your construction budget.",
+    href: "/cost-estimator",
+    color: "bg-accent/10 text-accent border-accent/20",
+  },
 ];
 
-/* ─── Projects ─── */
-const projectFilters = ["All", "Residential", "Commercial", "Interior Design", "Structural Design"];
-const projects = [
-  { title: "Modern Residence", location: "Savar, Dhaka", category: "Residential", image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=600&auto=format&fit=crop" },
-  { title: "Commercial Building", location: "Dhanmondi, Dhaka", category: "Commercial", image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=600&auto=format&fit=crop" },
-  { title: "Interior Design", location: "Uttara, Dhaka", category: "Interior Design", image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=600&auto=format&fit=crop" },
-  { title: "Structural Design", location: "Gazipur, Dhaka", category: "Structural Design", image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=600&auto=format&fit=crop" },
-];
-
-/* ─── Process Steps ─── */
 const processSteps = [
-  { num: "01", title: "Consultation", desc: "Discuss your idea and requirements." },
-  { num: "02", title: "Analysis", desc: "Site analysis and feasibility study." },
-  { num: "03", title: "Design & Drawing", desc: "2D/3D design and technical drawings." },
-  { num: "04", title: "Review & Revision", desc: "Get your feedback and make changes." },
-  { num: "05", title: "Final Delivery", desc: "Hand over complete drawings and documents." },
+  { step: "01", title: "Free Consultation", desc: "Share your land details and building requirements with our engineers." },
+  { step: "02", title: "Design & Drawing", desc: "We create your 2D plan and 3D rendering within the agreed timeline." },
+  { step: "03", title: "Plan Approval", desc: "Our team handles all government authority paperwork for legal clearance." },
+  { step: "04", title: "Site Supervision", desc: "Engineers visit your site to ensure quality construction throughout." },
 ];
 
-/* ─── Why Us ─── */
 const whyUs = [
-  { icon: Award, title: "Professional Design", desc: "Modern and functional design solutions." },
-  { icon: CheckCircle2, title: "Detailed Drawings", desc: "Accurate and professional working drawings." },
-  { icon: ShieldCheck, title: "Structural Support", desc: "Safe and durable structures." },
-  { icon: BarChart3, title: "Transparent Estimates", desc: "Clear and detailed cost estimation." },
-  { icon: MessageCircle, title: "Client Communication", desc: "Always connected, always supportive." },
+  { icon: Award, title: "10+ Years Experience", desc: "A decade of trusted engineering solutions across Savar and Dhaka." },
+  { icon: CheckCircle2, title: "100% Legal Compliance", desc: "All designs adhere to Bangladesh National Building Code (BNBC)." },
+  { icon: Clock, title: "On-time Delivery", desc: "We commit to deadlines. 98% of our projects are delivered on schedule." },
+  { icon: Users, title: "500+ Happy Clients", desc: "Homeowners and businesses who built their dreams with HF." },
+  { icon: Star, title: "RAJUK Registered", desc: "Officially registered with RAJUK and local municipal authorities." },
+  { icon: ShieldCheck, title: "Transparent Pricing", desc: "No hidden charges. Fixed quotation before work begins." },
 ];
 
 export default function HomePage() {
   const router = useRouter();
   const [trackQuery, setTrackQuery] = useState("");
-  const [activeSlide, setActiveSlide] = useState(0);
-  const [activeFilter, setActiveFilter] = useState("All");
-
-  /* Hero auto-slide */
-  useEffect(() => {
-    const t = setInterval(() => setActiveSlide(s => (s + 1) % heroSlides.length), 5000);
-    return () => clearInterval(t);
-  }, []);
-
-  const prevSlide = () => setActiveSlide(s => (s - 1 + heroSlides.length) % heroSlides.length);
-  const nextSlide = () => setActiveSlide(s => (s + 1) % heroSlides.length);
-
-  const filteredProjects = activeFilter === "All"
-    ? projects
-    : projects.filter(p => p.category === activeFilter);
 
   const handleTrack = (e: React.FormEvent) => {
     e.preventDefault();
-    if (trackQuery.trim()) router.push(`/track-plan?query=${encodeURIComponent(trackQuery)}`);
+    if (trackQuery.trim()) {
+      router.push(`/track-plan?query=${encodeURIComponent(trackQuery)}`);
+    }
   };
 
   return (
@@ -118,374 +157,446 @@ export default function HomePage() {
         description="Building design, 3D elevation, structural drawing, BOQ and plan approval in Savar, Dhaka."
       />
 
-      {/* ══════════════════════════════════════════
-          HERO — split layout
-      ══════════════════════════════════════════ */}
-      <section className="relative w-full min-h-[90vh] bg-primary overflow-hidden flex items-center">
+      {/* ─── HERO ─── */}
+      <section className="relative w-full min-h-[92vh] flex items-center justify-center overflow-hidden bg-primary">
+        {/* Background image */}
+        <div className="absolute inset-0">
+          <Image
+            src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1800&auto=format&fit=crop"
+            alt="Engineering Blueprint"
+            fill
+            className="object-cover object-center opacity-10"
+            priority
+          />
+        </div>
         {/* Blueprint grid */}
-        <div className="absolute inset-0 opacity-10 pointer-events-none"
-          style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.15) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.15) 1px,transparent 1px)", backgroundSize: "40px 40px" }} />
+        <div
+          className="absolute inset-0 opacity-15 pointer-events-none"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px)",
+            backgroundSize: "40px 40px",
+          }}
+        />
 
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16 grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-16 md:mt-0">
+          {/* Pill badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/20 border border-accent/30 text-accent text-sm font-medium mb-8"
+          >
+            <ShieldCheck className="w-4 h-4" />
+            RAJUK Registered · Savar, Dhaka
+          </motion.div>
 
-          {/* Left: text */}
-          <div>
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-              className="flex items-center gap-2 mb-6">
-              <span className="h-px w-10 bg-accent" />
-              <span className="text-accent text-xs font-bold uppercase tracking-widest">Architectural & Engineering Consultancy</span>
-            </motion.div>
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-5xl md:text-7xl font-extrabold text-primary-foreground font-heading tracking-tight mb-6 bengali-text"
+          >
+            পরিকল্পিত নকশা,{" "}
+            <span className="text-accent">নিরাপদ নির্মাণ</span>
+          </motion.h1>
 
-            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}
-              className="text-5xl md:text-6xl font-extrabold font-heading text-primary-foreground leading-tight mb-6 bengali-text">
-              পরিকল্পিত নকশা,<br />
-              <span className="text-accent">নিরাপদ নির্মাণ</span>
-            </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-lg md:text-xl text-primary-foreground/80 mb-10 max-w-3xl mx-auto"
+          >
+            Expert 2D/3D Design, BOQ Estimation, Plan Passing & Site Supervision.
+            <br className="hidden md:block" />
+            From the first sketch to the final brick — HF has you covered.
+          </motion.p>
 
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
-              className="text-primary-foreground/75 text-base md:text-lg mb-8 max-w-lg bengali-text">
-              আপনার ঘরের বাড়ি, অফিস বা যেকোনো স্থাপনার জন্য আমরা দিচ্ছি আধুনিক ডিজাইন ও প্রকৌশল সমাধান।
-            </motion.p>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14"
+          >
+            <Link href="/book-appointment" prefetch>
+              <Button
+                size="lg"
+                className="bg-accent hover:bg-accent/90 text-primary-foreground font-bold h-14 px-8 text-lg w-full sm:w-auto shadow-lg shadow-accent/30 transition-transform hover:-translate-y-1"
+              >
+                Book Free Consultation <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+            <Link href="/cost-estimator" prefetch>
+              <Button
+                size="lg"
+                variant="outline"
+                className="h-14 px-8 text-lg font-bold border-2 border-primary-foreground/50 text-primary-foreground hover:bg-primary-foreground hover:text-primary w-full sm:w-auto transition-transform hover:-translate-y-1 bg-transparent"
+              >
+                <Calculator className="mr-2 h-5 w-5" /> Calculate Cost
+              </Button>
+            </Link>
+          </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
-              className="flex flex-wrap gap-4 mb-10">
-              <Link href="/book-appointment">
-                <Button size="lg" className="bg-accent hover:bg-accent/90 text-primary-foreground font-bold h-12 px-7 shadow-lg shadow-accent/30 hover:-translate-y-0.5 transition-transform">
-                  Free Consultation <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
-              </Link>
-              <Link href="/portfolio">
-                <Button size="lg" variant="outline" className="h-12 px-7 font-bold border-2 border-white/40 text-primary-foreground hover:bg-white/10 hover:text-primary-foreground bg-transparent hover:-translate-y-0.5 transition-transform">
-                  View Our Projects <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
-              </Link>
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}
-              className="flex flex-wrap gap-6 text-sm text-primary-foreground/70">
-              <a href="tel:+8801631186218" className="flex items-center gap-2 hover:text-accent transition-colors">
-                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
-                  <Phone className="w-3.5 h-3.5" />
-                </div>
-                <div>
-                  <p className="font-semibold text-primary-foreground text-sm">01631-186218</p>
-                  <p className="text-xs">Call Now</p>
-                </div>
-              </a>
-              <div className="w-px bg-white/20" />
-              <a href={`https://wa.me/8801778506500`} target="_blank" rel="noreferrer"
-                className="flex items-center gap-2 hover:text-green-400 transition-colors">
-                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
-                  <MessageCircle className="w-3.5 h-3.5" />
-                </div>
-                <div>
-                  <p className="font-semibold text-primary-foreground text-sm">01631-186218</p>
-                  <p className="text-xs">WhatsApp</p>
-                </div>
-              </a>
-            </motion.div>
-          </div>
-
-          {/* Right: image slider */}
-          <motion.div initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}
-            className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 h-[420px] md:h-[500px]">
-
-            {/* Cursive watermark */}
-            <div className="absolute top-4 right-4 z-20 text-right">
-              <p className="text-white/60 text-lg font-serif italic leading-tight">Build Your<br />Dream <span className="text-accent">With Us</span></p>
-            </div>
-
-            <AnimatePresence mode="wait">
-              <motion.div key={activeSlide} initial={{ opacity: 0, scale: 1.05 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.6 }} className="absolute inset-0">
-                <Image src={heroSlides[activeSlide].image} alt={heroSlides[activeSlide].label} fill className="object-cover" priority />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent" />
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Slide controls */}
-            <div className="absolute bottom-5 right-5 z-20 flex items-center gap-3">
-              <button onClick={prevSlide} className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center transition-colors">
-                <ChevronLeft className="w-4 h-4 text-white" />
-              </button>
-              <span className="text-white text-sm font-medium">{String(activeSlide + 1).padStart(2, "0")} / {String(heroSlides.length).padStart(2, "0")}</span>
-              <button onClick={nextSlide} className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/40 flex items-center justify-center transition-colors">
-                <ChevronRight className="w-4 h-4 text-white" />
-              </button>
-            </div>
+          {/* Quick contact row */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.7 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 text-sm text-primary-foreground/70"
+          >
+            <a
+              href="tel:+8801778506500"
+              className="flex items-center gap-2 hover:text-accent transition-colors"
+            >
+              <Phone className="w-4 h-4" /> 01778-506500
+            </a>
+            <span className="hidden sm:block opacity-40">|</span>
+            <a
+              href={`https://wa.me/8801778506500`}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 hover:text-green-400 transition-colors"
+            >
+              <MessageCircle className="w-4 h-4" /> WhatsApp Us
+            </a>
+            <span className="hidden sm:block opacity-40">|</span>
+            <span className="flex items-center gap-2">
+              <MapPin className="w-4 h-4" /> Savar Radio Colony, Dhaka
+            </span>
           </motion.div>
         </div>
 
         {/* Diagonal cut */}
-        <div className="absolute bottom-0 w-full h-12 bg-background" style={{ clipPath: "polygon(0 100%, 100% 0, 100% 100%)" }} />
+        <div
+          className="absolute bottom-0 w-full h-16 bg-background"
+          style={{ clipPath: "polygon(0 100%, 100% 0, 100% 100%)" }}
+        />
       </section>
 
-      {/* ══════════════════════════════════════════
-          SERVICES — left heading + right grid
-      ══════════════════════════════════════════ */}
-      <section className="py-24 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-3 gap-12 items-start">
-            {/* Left */}
-            <div className="lg:col-span-1">
-              <motion.span initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-                className="inline-flex items-center gap-2 text-accent font-bold text-xs uppercase tracking-widest mb-3">
-                <span className="h-px w-8 bg-accent" /> Our Services
-              </motion.span>
-              <motion.h2 initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                className="text-3xl md:text-4xl font-heading font-bold mb-4">
-                Complete Engineering Solutions
-              </motion.h2>
-              <p className="text-muted-foreground mb-8 leading-relaxed">
-                From concept to completion — professional design, engineering and consultancy for your project.
-              </p>
-              <Link href="/services">
-                <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground font-bold">
-                  Explore All Services <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
-              </Link>
-            </div>
-
-            {/* Right: vertical service list */}
-            <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
-              {services.map((svc, i) => {
-                const Icon = svc.icon;
-                return (
-                  <motion.div key={i} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}>
-                    <Link href={svc.href}
-                      className="flex items-start gap-4 p-5 rounded-xl border border-border hover:border-accent/40 hover:bg-accent/5 hover:shadow-md transition-all group">
-                      <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center shrink-0">
-                        <Icon className="w-5 h-5 text-accent" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-bold text-foreground group-hover:text-accent transition-colors mb-0.5">{svc.title}</h3>
-                        <p className="text-muted-foreground text-sm">{svc.desc}</p>
-                      </div>
-                      <span className="text-accent text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 mt-1 shrink-0">
-                        Learn More <ChevronRight className="w-3.5 h-3.5" />
-                      </span>
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════
-          STATS BAR — dark background
-      ══════════════════════════════════════════ */}
-      <section className="py-14 bg-primary">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 items-center">
+      {/* ─── STATS ─── */}
+      <section className="py-12 bg-background relative z-20 -mt-10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="glass-panel rounded-2xl p-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center shadow-xl">
             {[
-              { icon: Home, num: "800", suffix: "+", label: "Projects Completed", sub: "Trusted by our clients" },
-              { icon: FileCheck2, num: "500", suffix: "+", label: "Approved Plans", sub: "Quality & Compliance" },
-              { icon: Building2, num: "200", suffix: "+", label: "3D Elevations", sub: "Modern & Aesthetic" },
-              { icon: Users, num: "100", suffix: "%", label: "Client Satisfaction", sub: "Our Priority" },
-            ].map((s, i) => {
-              const Icon = s.icon;
-              return (
-                <motion.div key={i} initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                  className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
-                    <Icon className="w-6 h-6 text-accent" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-extrabold text-primary-foreground font-heading">
-                      <AnimatedCounter value={s.num} suffix={s.suffix} />
-                    </p>
-                    <p className="text-primary-foreground font-semibold text-sm leading-tight">{s.label}</p>
-                    <p className="text-primary-foreground/50 text-xs">{s.sub}</p>
-                  </div>
-                </motion.div>
-              );
-            })}
-            {/* Decorative text */}
-            <div className="hidden lg:block text-right">
-              <p className="text-2xl font-serif italic text-accent/80 leading-tight">Better Design<br />Stronger Tomorrow</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════
-          RECENT PROJECTS
-      ══════════════════════════════════════════ */}
-      <section className="py-24 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-            <div>
-              <span className="inline-flex items-center gap-2 text-accent font-bold text-xs uppercase tracking-widest mb-3">
-                <span className="h-px w-8 bg-accent" /> Our Featured Projects
-              </span>
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-3">Our Recent Projects</h2>
-              <p className="text-muted-foreground max-w-md">
-                Explore some of our completed and ongoing projects. Each project reflects our commitment to quality, innovation and client satisfaction.
-              </p>
-              <Link href="/portfolio" className="mt-4 inline-block">
-                <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground font-bold">
-                  View All Projects <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
-              </Link>
-            </div>
-            {/* Filter tabs */}
-            <div className="flex flex-wrap gap-2">
-              {projectFilters.map(f => (
-                <button key={f} onClick={() => setActiveFilter(f)}
-                  className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-colors ${activeFilter === f ? "bg-accent text-primary-foreground" : "bg-muted text-muted-foreground hover:bg-muted/80"}`}>
-                  {f}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {filteredProjects.map((proj, i) => (
-              <motion.div key={`${activeFilter}-${i}`} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
-                className="group rounded-2xl overflow-hidden border border-border shadow-sm hover:shadow-xl transition-all cursor-pointer">
-                <div className="relative h-52 overflow-hidden">
-                  <div className="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-full bg-accent text-primary-foreground text-xs font-bold">
-                    {proj.category}
-                  </div>
-                  <Image src={proj.image} alt={proj.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <button className="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-accent flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <ArrowRight className="w-4 h-4 text-primary-foreground" />
-                  </button>
-                </div>
-                <div className="p-4">
-                  <h3 className="font-bold text-foreground group-hover:text-accent transition-colors">{proj.title}</h3>
-                  <p className="text-muted-foreground text-sm flex items-center gap-1 mt-1">
-                    <MapPin className="w-3.5 h-3.5" /> {proj.location}
-                  </p>
-                </div>
+              { num: "500", label: "Happy Clients", suffix: "+" },
+              { num: "800", label: "Projects Completed", suffix: "+" },
+              { num: "10", label: "Years Experience", suffix: "+" },
+              { num: "100", label: "Client Satisfaction", suffix: "%" },
+            ].map((stat, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="space-y-2"
+              >
+                <h3 className="text-4xl font-extrabold text-accent">
+                  <AnimatedCounter value={stat.num} suffix={stat.suffix} />
+                </h3>
+                <p className="text-sm text-muted-foreground uppercase tracking-wider font-semibold">
+                  {stat.label}
+                </p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
-          3-COLUMN: WHY US | PROCESS | TESTIMONIALS
-      ══════════════════════════════════════════ */}
-      <section className="py-24 bg-muted/30 border-t border-border">
+      {/* ─── SERVICES GRID ─── */}
+      <section className="py-24 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-3 gap-12">
+          <div className="text-center mb-16">
+            <motion.span
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="inline-block text-accent font-semibold text-sm uppercase tracking-widest mb-3"
+            >
+              What We Do
+            </motion.span>
+            <motion.h2
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-3xl md:text-5xl font-heading font-bold mb-4"
+            >
+              Engineering Excellence
+            </motion.h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Comprehensive solutions from drafting the first line to pouring the final concrete.
+            </p>
+          </div>
 
-            {/* WHY CHOOSE US */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {services.map((svc, i) => {
+              const Icon = svc.icon;
+              return (
+                <Link href={svc.href} key={i} prefetch>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: i * 0.08 }}
+                    className="h-full glass-panel p-7 rounded-2xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group cursor-pointer border border-border"
+                  >
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-5 border ${svc.color} group-hover:scale-110 transition-transform`}>
+                      <Icon className="w-6 h-6" />
+                    </div>
+                    <h3 className="text-lg font-bold mb-2 group-hover:text-accent transition-colors">
+                      {svc.title}
+                    </h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed">{svc.desc}</p>
+                    <div className="mt-4 flex items-center text-xs font-semibold text-accent opacity-0 group-hover:opacity-100 transition-opacity">
+                      Learn More <ChevronRight className="w-3.5 h-3.5 ml-1" />
+                    </div>
+                  </motion.div>
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="text-center mt-12">
+            <Link href="/services" prefetch>
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-primary text-primary hover:bg-primary hover:text-primary-foreground font-bold px-8"
+              >
+                Explore All Services <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── HOW IT WORKS ─── */}
+      <section className="py-24 bg-background">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <span className="inline-block text-accent font-semibold text-sm uppercase tracking-widest mb-3">
+              Simple Process
+            </span>
+            <h2 className="text-3xl md:text-5xl font-heading font-bold mb-4">How It Works</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              4 straightforward steps from your idea to a completed, legally approved structure.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+            {/* Connector line (desktop) */}
+            <div className="hidden lg:block absolute top-10 left-[12%] right-[12%] h-px bg-border z-0" />
+
+            {processSteps.map((step, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.12 }}
+                className="relative z-10 text-center"
+              >
+                <div className="w-20 h-20 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-6 shadow-lg shadow-primary/20">
+                  <span className="text-3xl font-black text-accent font-heading">{step.step}</span>
+                </div>
+                <h3 className="text-lg font-bold mb-2">{step.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{step.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="text-center mt-14">
+            <Link href="/book-appointment">
+              <Button size="lg" className="font-bold px-10">
+                Start Your Project Today <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── WHY CHOOSE US ─── */}
+      <section className="py-24 bg-muted/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            {/* Left: Image */}
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+              className="relative rounded-2xl overflow-hidden shadow-2xl border border-border"
+            >
+              <Image
+                src="https://images.unsplash.com/photo-1504307651254-35680f356f12?q=80&w=900&auto=format&fit=crop"
+                alt="HF Engineering on-site supervision"
+                width={900}
+                height={600}
+                className="w-full h-[420px] object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/50 to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6">
+                <div className="bg-background/90 backdrop-blur rounded-xl p-4 flex items-center gap-4 border border-border">
+                  <div className="w-12 h-12 rounded-full bg-accent flex items-center justify-center shrink-0">
+                    <Award className="w-6 h-6 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-foreground text-sm">RAJUK Registered Firm</p>
+                    <p className="text-xs text-muted-foreground">Officially recognized by local authorities</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Right: Why us points */}
             <div>
-              <span className="inline-flex items-center gap-2 text-accent font-bold text-xs uppercase tracking-widest mb-3">
-                <span className="h-px w-8 bg-accent" /> Why Choose Us
+              <span className="inline-block text-accent font-semibold text-sm uppercase tracking-widest mb-3">
+                Why Choose Us
               </span>
-              <h2 className="text-2xl font-heading font-bold mb-3">Why Choose HF?</h2>
-              <p className="text-muted-foreground text-sm mb-6">We deliver reliable and innovative engineering solutions with a focus on quality, detail and client satisfaction.</p>
-              <div className="space-y-4">
+              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+                Bangladesh's Trusted Engineering Partner
+              </h2>
+              <p className="text-muted-foreground mb-8 leading-relaxed">
+                With over a decade of experience in Savar and greater Dhaka, HF Design & Engineering Solutions
+                has become the go-to firm for homeowners who want precision, transparency, and peace of mind.
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {whyUs.map((item, i) => {
                   const Icon = item.icon;
                   return (
-                    <motion.div key={i} initial={{ opacity: 0, x: -15 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-                      className="flex items-start gap-3">
-                      <div className="w-9 h-9 rounded-lg bg-primary flex items-center justify-center shrink-0">
-                        <Icon className="w-4 h-4 text-accent" />
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, y: 15 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.08 }}
+                      className="flex items-start gap-3 p-4 rounded-xl bg-background border border-border"
+                    >
+                      <div className="w-9 h-9 rounded-lg bg-accent/10 flex items-center justify-center shrink-0 mt-0.5">
+                        <Icon className="w-5 h-5 text-accent" />
                       </div>
                       <div>
                         <p className="font-semibold text-sm text-foreground">{item.title}</p>
-                        <p className="text-xs text-muted-foreground mt-0.5">{item.desc}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{item.desc}</p>
                       </div>
                     </motion.div>
                   );
                 })}
               </div>
             </div>
-
-            {/* PROCESS STEPS */}
-            <div>
-              <span className="inline-flex items-center gap-2 text-accent font-bold text-xs uppercase tracking-widest mb-3">
-                <span className="h-px w-8 bg-accent" /> Our Working Process
-              </span>
-              <h2 className="text-2xl font-heading font-bold mb-3">Simple Steps to Your Dream</h2>
-              <p className="text-muted-foreground text-sm mb-6">A clear and professional process to bring your project to life.</p>
-              <div className="space-y-4">
-                {processSteps.map((step, i) => (
-                  <motion.div key={i} initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                    className="flex items-start gap-4 relative">
-                    {/* Connector */}
-                    {i < processSteps.length - 1 && <div className="absolute left-[18px] top-10 w-px h-6 bg-border" />}
-                    <div className="w-9 h-9 rounded-full bg-primary border-2 border-accent flex items-center justify-center shrink-0 text-accent font-bold text-xs">
-                      {step.num}
-                    </div>
-                    <div>
-                      <p className="font-semibold text-sm text-foreground">{step.title}</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">{step.desc}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            {/* TESTIMONIALS */}
-            <div>
-              <span className="inline-flex items-center gap-2 text-accent font-bold text-xs uppercase tracking-widest mb-3">
-                <span className="h-px w-8 bg-accent" /> Testimonials
-              </span>
-              <h2 className="text-2xl font-heading font-bold mb-3">What Our Clients Say</h2>
-              <p className="text-muted-foreground text-sm mb-6">Real feedback from our valued clients.</p>
-              <TestimonialCarousel />
-            </div>
           </div>
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
-          TRACK PLAN
-      ══════════════════════════════════════════ */}
-      <section className="py-16 bg-background border-t border-border">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <ShieldCheck className="w-12 h-12 text-accent mx-auto mb-4" />
-          <h2 className="text-2xl md:text-3xl font-heading font-bold mb-3">Track Your Plan Passing File</h2>
-          <p className="text-muted-foreground mb-7">Enter your File ID to see exactly where your approval stands — no calls needed.</p>
-          <form onSubmit={handleTrack} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+      {/* ─── TRACK PLAN BANNER ─── */}
+      <section className="py-20 bg-primary text-primary-foreground relative overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: `url("https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=2000")`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-8">
+          <ShieldCheck className="w-16 h-16 text-accent mx-auto" />
+          <h2 className="text-3xl md:text-5xl font-heading font-bold">
+            Track Your Plan Passing File Instantly
+          </h2>
+          <p className="text-primary-foreground/80 text-lg">
+            No more calling the municipality. Enter your File ID to see exactly where your approval is.
+          </p>
+          <form onSubmit={handleTrack} className="flex flex-col sm:flex-row gap-4 justify-center max-w-xl mx-auto pt-2">
             <div className="relative flex-grow">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <input type="text" placeholder="Enter File ID (e.g. TH-2026-001)"
-                className="w-full h-12 pl-11 pr-4 rounded-lg border border-border bg-background text-foreground focus:ring-2 focus:ring-accent outline-none text-sm"
-                value={trackQuery} onChange={e => setTrackQuery(e.target.value)} required />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder="Enter File ID (e.g. TH-2026-001)"
+                className="w-full h-14 pl-12 pr-4 rounded-lg bg-background text-foreground focus:ring-2 focus:ring-accent outline-none"
+                value={trackQuery}
+                onChange={(e) => setTrackQuery(e.target.value)}
+                required
+              />
             </div>
-            <Button type="submit" className="h-12 px-7 bg-accent hover:bg-accent/90 text-primary-foreground font-bold">Track Now</Button>
+            <Button
+              type="submit"
+              className="h-14 px-8 bg-accent hover:bg-accent/90 text-primary-foreground font-bold text-lg"
+            >
+              Track Now
+            </Button>
           </form>
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════
-          FINAL CTA BANNER
-      ══════════════════════════════════════════ */}
-      <section className="relative py-20 bg-primary overflow-hidden">
-        <div className="absolute inset-0 opacity-10"
-          style={{ backgroundImage: `url("https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1800")`, backgroundSize: "cover", backgroundPosition: "center" }} />
-        <div className="relative z-10 max-w-5xl mx-auto px-4 text-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <PencilRuler className="w-6 h-6 text-accent" />
-              <span className="text-accent font-semibold text-sm uppercase tracking-widest">Start Your Project</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-primary-foreground mb-3 bengali-text">
-              আপনার স্বপ্নের প্রজেক্ট শুরু হোক সঠিক পরিকল্পনায়
-            </h2>
-            <p className="text-primary-foreground/70 mb-8 max-w-xl mx-auto">
-              আপনার প্রজেক্টের পরিকল্পনা নিয়ে আলোচনা করতে আজই আমাদের সাথে যোগাযোগ করুন।
+      {/* ─── TESTIMONIALS ─── */}
+      <section className="py-24 bg-muted/30">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <span className="inline-block text-accent font-semibold text-sm uppercase tracking-widest mb-3">
+              Client Reviews
+            </span>
+            <h2 className="text-3xl md:text-5xl font-heading font-bold mb-4">What Our Clients Say</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Hear from homeowners and businesses who trusted us with their construction journey.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/book-appointment">
-                <Button size="lg" className="bg-accent hover:bg-accent/90 text-primary-foreground font-bold h-12 px-8">
-                  Get a Consultation <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
-              </Link>
-              <Link href="/contact">
-                <Button size="lg" className="h-12 px-8 font-bold bg-white/15 text-white border border-white/30 hover:bg-white/25">
-                  Contact Us
-                </Button>
-              </Link>
+          </div>
+          <TestimonialCarousel />
+        </div>
+      </section>
+
+      {/* ─── FINAL CTA ─── */}
+      <section className="py-24 bg-background">
+        <div className="max-w-5xl mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-primary rounded-2xl p-12 md:p-16 text-center relative overflow-hidden"
+          >
+            <div
+              className="absolute inset-0 opacity-5"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='1' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E")`,
+              }}
+            />
+            <div className="relative z-10">
+              <h2 className="text-3xl md:text-5xl font-heading font-bold text-primary-foreground mb-4 bengali-text">
+                প্রস্তুত আপনার স্বপ্নের বাড়ি নির্মাণ শুরু করতে?
+              </h2>
+              <p className="text-xl text-primary-foreground/75 mb-10 max-w-2xl mx-auto">
+                Contact us today for a free consultation. Let our expert engineers guide your project from design to completion.
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Link href="/book-appointment" prefetch>
+                  <Button
+                    size="lg"
+                    variant="secondary"
+                    className="h-14 px-10 text-lg font-bold"
+                  >
+                    <MapPin className="mr-2 w-5 h-5" /> Book a Site Visit
+                  </Button>
+                </Link>
+                <a
+                  href={`https://wa.me/${SITE_CONFIG.whatsapp}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button
+                    size="lg"
+                    className="h-14 px-10 text-lg font-bold bg-[#25D366] hover:bg-[#20b858] text-white"
+                  >
+                    <MessageCircle className="mr-2 w-5 h-5" /> WhatsApp Us
+                  </Button>
+                </a>
+                <a href="tel:+8801778506500">
+                  <Button
+                    size="lg"
+                    className="h-14 px-10 text-lg font-bold bg-white/15 border border-white/30 text-white hover:bg-white/25 hover:text-white"
+                  >
+                    <Phone className="mr-2 w-5 h-5" /> Call Now
+                  </Button>
+                </a>
+              </div>
             </div>
           </motion.div>
         </div>

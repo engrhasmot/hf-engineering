@@ -113,7 +113,7 @@ export default function OnlinePaymentPage() {
             অনলাইন ফি ও কিস্তি পরিশোধ
           </h1>
           <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">
-            বিকাশ ও নগদ এর মাধ্যমে ঘরে বসেই আপনার ড্রয়িং, রাজউক অনুমোদন ও কনসালটেন্সির ফি পরিশোধ করুন।
+            বিকাশ ও নগদ এর মাধ্যমে ঘরে বসেই আপনার ড্রয়িং, প্ল্যান অনুমোদন ও কনসালটেন্সির ফি পরিশোধ করুন।
           </p>
         </div>
 
@@ -147,9 +147,9 @@ export default function OnlinePaymentPage() {
                   ক্লায়েন্ট পোর্টালে যান
                 </Button>
               </Link>
-              <a href="tel:+8801711285651">
+              <a href="tel:+8801778506500">
                 <Button variant="outline" className="gap-2">
-                  <Phone className="w-4 h-4" /> হেল্পলাইন: 01711-285651
+                  <Phone className="w-4 h-4" /> হেল্পলাইন: 01778-506500
                 </Button>
               </a>
             </div>

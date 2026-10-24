@@ -53,7 +53,7 @@ const AI_FEATURES = [
   {
     icon: <Brain className="w-5 h-5" />,
     title: "BNBC 2020 মান অনুসরণ",
-    desc: "বাংলাদেশ ন্যাশনাল বিল্ডিং কোড ও RAJUK বিধিমালা অনুযায়ী পরিমাণ নির্ধারণ",
+    desc: "বাংলাদেশ ন্যাশনাল বিল্ডিং কোড ও স্থানীয় পৌরসভা/কর্তৃপক্ষ বিধিমালা অনুযায়ী পরিমাণ নির্ধারণ",
   },
   {
     icon: <BarChart3 className="w-5 h-5" />,
@@ -81,7 +81,7 @@ export default function CostEstimatorPage() {
     <div className="w-full">
       <SEOHead
         title="নির্মাণ খরচ ক্যালকুলেটর ও AI BOQ Analyzer"
-        description="ফ্লোর প্ল্যান আপলোড করুন, AI দিয়ে রড, সিমেন্ট, বালি, ইটের পরিমাণ ও খরচ হিসাব করুন। BNBC 2020 ও RAJUK মান অনুযায়ী।"
+        description="ফ্লোর প্ল্যান আপলোড করুন, AI দিয়ে রড, সিমেন্ট, বালি, ইটের পরিমাণ ও খরচ হিসাব করুন। BNBC 2020 ও স্থানীয় বিল্ডিং কোড মান অনুযায়ী।"
       />
 
       {/* ── Hero ── */}
@@ -119,7 +119,7 @@ export default function CostEstimatorPage() {
             className="text-base md:text-xl text-primary-foreground/80 max-w-3xl mx-auto"
           >
             আপনার ফ্লোর প্ল্যান আপলোড করুন — AI ইঞ্জিন স্বয়ংক্রিয়ভাবে রড, সিমেন্ট, বালি, পাথর ও ইটের পরিমাণ
-            BNBC 2020 ও RAJUK মান অনুযায়ী নিমিষেই হিসাব করে দেবে।
+            BNBC 2020 ও পৌরসভা/বিল্ডিং কোড মান অনুযায়ী নিমিষেই হিসাব করে দেবে।
           </motion.p>
 
           {/* Trust Badges */}
@@ -193,6 +193,22 @@ export default function CostEstimatorPage() {
         </div>
       </section>
 
+      {/* ── Live Construction Material Benchmark Strip ── */}
+      <section className="bg-muted/40 border-b border-border py-3">
+        <div className="max-w-5xl mx-auto px-4 flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div className="flex items-center gap-1.5 font-bold text-foreground">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span>কনস্ট্রাকশন মালামালের বাজারদর বেঞ্চমার্ক (সাভার/ঢাকা):</span>
+          </div>
+          <div className="flex flex-wrap items-center gap-3 sm:gap-5 text-muted-foreground">
+            <span>রড (60/72G): <strong className="text-foreground font-semibold">৳৯৪,০০০-৯৮,০০০/টন</strong></span>
+            <span>সিমেন্ট (PCC): <strong className="text-foreground font-semibold">৳৫৩০-৫৭০/ব্যাগ</strong></span>
+            <span>সিলেট বালু: <strong className="text-foreground font-semibold">৳৪৮-৫৮/cft</strong></span>
+            <span>ইট (১ম শ্রেণি): <strong className="text-foreground font-semibold">৳১২.৫০-১৪/টি</strong></span>
+          </div>
+        </div>
+      </section>
+
       {/* ── Content ── */}
       <section className="py-16 md:py-24 bg-background">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -220,8 +236,8 @@ export default function CostEstimatorPage() {
                   AI Blueprint BOQ Analyzer
                 </h2>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
-                  আপনার ২D ফ্লোর প্ল্যান বা আর্কিটেকচারাল ড্রয়িং আপলোড করুন। AI ইঞ্জিন BNBC 2020 ও RAJUK মান
-                  অনুযায়ী রড, সিমেন্ট, বালি, পাথর ও ইটের সম্পূর্ণ BOQ তৈরি করবে।
+                  আপনার ২D ফ্লোর প্ল্যান বা আর্কিটেকচারাল ড্রয়িং আপলোড করুন। AI ইঞ্জিন BNBC 2020 ও ন্যাশনাল
+                  বিল্ডিং কোড মান অনুযায়ী রড, সিমেন্ট, বালি, পাথর ও ইটের সম্পূর্ণ BOQ তৈরি করবে।
                 </p>
               </div>
               <BlueprintBOQAnalyzer />

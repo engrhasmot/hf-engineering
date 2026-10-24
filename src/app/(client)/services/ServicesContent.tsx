@@ -406,8 +406,7 @@ export function ServicesList() {
               <a href="tel:+8801778506500">
                 <Button
                   size="lg"
-                  variant="outline"
-                  className="font-bold px-8 border-white/30 text-primary-foreground hover:bg-white/10 hover:text-primary-foreground"
+                  className="font-bold px-8 bg-white/15 border border-white/30 text-white hover:bg-white/25 hover:text-white"
                 >
                   <Phone className="w-5 h-5 mr-2" />
                   01778-506500

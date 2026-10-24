@@ -18,7 +18,8 @@ import {
   Sparkles, 
   Loader2,
   Camera,
-  Compass
+  Compass,
+  ChevronDown
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -40,6 +41,25 @@ const BUILDING_TYPES = [
   { id: "Interior Architecture", label: "লাক্সারি ইন্টেরিয়র ডিজাইন", icon: "🛋️" },
 ];
 
+const SKETCH_FAQS = [
+  {
+    q: "সাদাকাগজে হাতে আঁকা স্কেচ কি গ্রহণযোগ্য?",
+    a: "হ্যাঁ, সম্পূর্ণ গ্রহণযোগ্য! কাগজের যেকোনো মাপজোখ, দৈর্ঘ্য ও প্রস্থ (ফুট বা ইঞ্চিতে), চারদিকের সীমানা এবং সামনের রাস্তার চওড়া লিখে মোবাইল দিয়ে একটি পরিষ্কার ছবি তুলে আপলোড করলেই হবে।"
+  },
+  {
+    q: "স্কেচ পাঠানোর পর কত সময়ের মধ্যে ড্রয়িং ফিডব্যাক পাবো?",
+    a: "আমাদের প্রধান প্রকৌশলী ইঞ্জিনিয়ার মোঃ হাসমত আলী ২৪ থেকে সর্বোচ্চ ৪৮ কর্মঘণ্টার মধ্যে আপনার জমির মাপ পর্যালোচনা করে সরাসরি ফোনে বা হোয়াটসঅ্যাপে ড্রয়িংয়ের প্রাথমিক দিকনির্দেশনা প্রদান করেন।"
+  },
+  {
+    q: "প্রাথমিক স্কেচ মূল্যায়ন কি সম্পূর্ণ ফ্রি?",
+    a: "হ্যাঁ, জমির প্রাথমিক সাইট সম্ভাব্যতা (Feasibility), সম্ভাব্য তলা সংখ্যা ও প্রাথমিক ফ্লোর প্ল্যান লেআউট কনসালটেন্সি সম্পূর্ণ ফ্রি। এরপর পূর্ণাঙ্গ ওয়ার্কিং ড্রয়িং ও অনুমোদনের কাজে গেলে নামমাত্র প্রফেশনাল ফি প্রযোজ্য হয়।"
+  },
+  {
+    q: "আমার জমির দলিল বা মৌজা ম্যাপের ছবি দিলে হবে?",
+    a: "অবশ্যই। দলিলের খতিয়ান/দাগের পরিমাপের অংশ বা মৌজা ম্যাপের ছবি দিলে আমাদের ইঞ্জিনিয়াররা আরও নিখুঁতভাবে রাস্তার সেটব্যাক ও বিএনবিসি বিধি অনুযায়ী ফ্লোর এলাকা হিসাব করতে পারবেন।"
+  }
+];
+
 export default function SketchUploadPage() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -54,6 +74,7 @@ export default function SketchUploadPage() {
 
   const [submitting, setSubmitting] = useState(false);
   const [successData, setSuccessData] = useState<any>(null);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -127,39 +148,72 @@ export default function SketchUploadPage() {
     <div className="min-h-screen bg-muted/20 py-12 px-4 sm:px-6 lg:px-8">
       <SEOHead
         title="জমির স্কেচ আপলোড ও ফ্রি প্ল্যান কনসালটেন্সি"
-        description="আপনার জমির খসড়া স্কেচ বা মাপ লিখে পাঠান। এইচএফ ইঞ্জিনিয়ারিং কনসালটেন্সির প্রধান প্রকৌশলী সরাসরি পর্যালোচনা করে খসড়া প্ল্যান দেবেন।"
+        description="আপনার জমির খসড়া স্কেচ বা মাপ লিখে পাঠান। এইচএফ ডিজাইন অ্যান্ড ইঞ্জিনিয়ারিং সলিউশনসের প্রধান প্রকৌশলী সরাসরি পর্যালোচনা করে খসড়া প্ল্যান দেবেন।"
       />
 
-      <div className="max-w-4xl mx-auto space-y-8">
-        {/* Hero Header */}
-        <div className="text-center space-y-3">
-          <Badge className="px-3 py-1 bg-accent/10 text-accent border-accent/30 text-xs font-bold gap-1.5">
-            <Sparkles className="w-3.5 h-3.5" /> ফ্রি আর্কিটেকচারাল স্কেচ ইভ্যালুয়েশন
+      <div className="max-w-4xl mx-auto space-y-10">
+        {/* Premium Hero Header */}
+        <div className="text-center space-y-4">
+          <Badge className="px-3.5 py-1.5 bg-accent/15 text-accent border border-accent/30 text-xs font-bold gap-1.5 shadow-xs">
+            <Sparkles className="w-3.5 h-3.5" /> ফ্রি আর্কিটেকচারাল স্কেচ ইভ্যালুয়েশন ও ফ্লোর লেআউট গাইড
           </Badge>
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-foreground">
-            জমির স্কেচ পাঠান, পান <span className="text-accent">পরিকল্পিত নকশা</span>
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-foreground font-heading leading-tight">
+            জমির স্কেচ পাঠান, পান <span className="text-accent underline decoration-accent/40 decoration-wavy">পরিকল্পিত সেরা নকশা</span>
           </h1>
           <p className="text-muted-foreground text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
             কাগজে হাতে আঁকা জমির মাপের ছবি তুলুন অথবা জমির দাগ/পরিমাপ লিখে জমা দিন। আমাদের প্রধান পরামর্শক{" "}
-            <strong className="text-foreground">ইঞ্জিনিয়ার মোঃ হাসমত আলী</strong> সরাসরি খসড়া ফ্লোর প্ল্যান পর্যালোচনা করবেন।
+            <strong className="text-foreground">ইঞ্জিনিয়ার মোঃ হাসমত আলী (B.Sc. Civil Engr, IEB M-38530)</strong> সরাসরি খসড়া ফ্লোর প্ল্যান পর্যালোচনা করবেন।
           </p>
+        </div>
+
+        {/* 3 Step Process Bar */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-card p-4 rounded-2xl border border-border shadow-xs">
+          <div className="flex items-center gap-3 p-2">
+            <div className="w-9 h-9 rounded-xl bg-accent/10 text-accent font-black text-sm flex items-center justify-center shrink-0">
+              ০১
+            </div>
+            <div>
+              <p className="text-xs font-bold text-foreground">জমির বিবরণ ও মাপ দিন</p>
+              <p className="text-[11px] text-muted-foreground">কাঠা/শতক ও রাস্তার মাপ লিখুন</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 p-2 border-t sm:border-t-0 sm:border-l border-border">
+            <div className="w-9 h-9 rounded-xl bg-accent/10 text-accent font-black text-sm flex items-center justify-center shrink-0">
+              ০২
+            </div>
+            <div>
+              <p className="text-xs font-bold text-foreground">হাতে আঁকা স্কেচ আপলোড</p>
+              <p className="text-[11px] text-muted-foreground">কাগজের ছবি বা মোবাইলে তোলা ছবি</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 p-2 border-t sm:border-t-0 sm:border-l border-border">
+            <div className="w-9 h-9 rounded-xl bg-emerald-500/15 text-emerald-600 font-black text-sm flex items-center justify-center shrink-0">
+              ০৩
+            </div>
+            <div>
+              <p className="text-xs font-bold text-emerald-700 dark:text-emerald-400">২৪ ঘণ্টায় এক্সপার্ট রিভিউ</p>
+              <p className="text-[11px] text-muted-foreground">সরাসরি হোয়াটসঅ্যাপ ও ফোনে পরামর্শ</p>
+            </div>
+          </div>
         </div>
 
         {/* Benefits Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <Card className="border-border bg-card/60 backdrop-blur shadow-sm">
+          <Card className="border-border bg-card/70 backdrop-blur shadow-xs hover:border-accent/40 transition-colors">
             <CardContent className="p-4 flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-accent/10 text-accent flex items-center justify-center font-bold shrink-0">
                 <Compass className="w-5 h-5" />
               </div>
               <div className="text-xs">
-                <p className="font-bold text-foreground">রাজউক ও বিএনবিসি মান</p>
+                <p className="font-bold text-foreground">ইমারত বিধিমালা ও বিএনবিসি মান</p>
                 <p className="text-muted-foreground">আইনসম্মত সেটব্যাক ও সর্বোচ্চ ফ্লোর হিসাব</p>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="border-border bg-card/60 backdrop-blur shadow-sm">
+          <Card className="border-border bg-card/70 backdrop-blur shadow-xs hover:border-emerald-500/40 transition-colors">
             <CardContent className="p-4 flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold shrink-0">
                 <ShieldCheck className="w-5 h-5" />
@@ -171,7 +225,7 @@ export default function SketchUploadPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-border bg-card/60 backdrop-blur shadow-sm">
+          <Card className="border-border bg-card/70 backdrop-blur shadow-xs hover:border-blue-500/40 transition-colors">
             <CardContent className="p-4 flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center font-bold shrink-0">
                 <MessageCircle className="w-5 h-5" />
@@ -187,11 +241,11 @@ export default function SketchUploadPage() {
         {/* Form Card */}
         <Card className="border-border shadow-xl bg-card overflow-hidden">
           <CardHeader className="bg-muted/40 border-b border-border pb-6">
-            <CardTitle className="text-xl font-bold flex items-center gap-2">
+            <CardTitle className="text-xl font-bold flex items-center gap-2 font-heading">
               <Ruler className="w-5 h-5 text-accent" /> জমির বিবরণ ও স্কেচ সাবমিশন ফর্ম
             </CardTitle>
             <CardDescription className="text-xs sm:text-sm">
-              ফর্মটি পূরণ করে নিচে আপনার হাতে আঁকা খসড়া স্কেচের ছবি বা জমির দলিল/নকশার কপি আপলোড করুন।
+              ফর্মটি পূরণ করে নিচে আপনার হাতে আঁকা খসড়া স্কেচের ছবি বা জমির নকশার কপি আপলোড করুন।
             </CardDescription>
           </CardHeader>
 
@@ -398,6 +452,59 @@ export default function SketchUploadPage() {
             </form>
           </CardContent>
         </Card>
+
+        {/* FAQs Accordion */}
+        <div className="bg-card rounded-2xl border border-border p-6 sm:p-8 space-y-4">
+          <div className="flex items-center gap-2 mb-2">
+            <HelpCircle className="w-5 h-5 text-accent" />
+            <h3 className="text-lg font-bold text-foreground font-heading">
+              স্কেচ আপলোড সংক্রান্ত সাধারণ প্রশ্নোত্তর
+            </h3>
+          </div>
+
+          <div className="space-y-2.5">
+            {SKETCH_FAQS.map((faq, idx) => {
+              const isOpen = openFaq === idx;
+              return (
+                <div key={idx} className="border border-border/80 rounded-xl overflow-hidden bg-muted/20">
+                  <button
+                    type="button"
+                    onClick={() => setOpenFaq(isOpen ? null : idx)}
+                    className="w-full p-4 text-left flex items-center justify-between gap-3 text-sm font-bold text-foreground hover:bg-muted/40 transition-colors"
+                  >
+                    <span>{faq.q}</span>
+                    <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform ${isOpen ? "rotate-180 text-accent" : ""}`} />
+                  </button>
+                  {isOpen && (
+                    <div className="px-4 pb-4 pt-1 text-xs text-muted-foreground leading-relaxed border-t border-border/40">
+                      {faq.a}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Direct Call / WhatsApp strip */}
+        <div className="p-4 rounded-2xl bg-accent/5 border border-accent/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+          <div>
+            <p className="text-xs font-bold text-foreground">সরাসরি কথা বলতে চান?</p>
+            <p className="text-[11px] text-muted-foreground">আমাদের প্রধান প্রকৌশলীর সাথে সরাসরি কথা বলে ড্রয়িং পরামর্শ নিন।</p>
+          </div>
+          <div className="flex gap-2">
+            <a href="tel:+8801778506500">
+              <Button size="sm" variant="outline" className="text-xs font-bold gap-1.5 h-9">
+                <Phone className="w-3.5 h-3.5" /> 01778-506500
+              </Button>
+            </a>
+            <a href="https://wa.me/8801778506500?text=আসসালামুয়ালাইকুম,%20আমার%20জমির%20একটি%20স্কেচ%20নিয়ে%20পরামর্শ%20করতে%20চাই।" target="_blank" rel="noreferrer">
+              <Button size="sm" className="bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs gap-1.5 h-9">
+                <MessageCircle className="w-3.5 h-3.5" /> হোয়াটসঅ্যাপ
+              </Button>
+            </a>
+          </div>
+        </div>
       </div>
 
       {/* Success Dialog */}

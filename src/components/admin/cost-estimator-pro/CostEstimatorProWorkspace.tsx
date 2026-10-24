@@ -160,6 +160,8 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
   const [labCatFilter, setLabCatFilter] = useState("All");
   const [estSearch, setEstSearch] = useState("");
   const [prjSearch, setPrjSearch] = useState("");
+  const [docBoqSearch, setDocBoqSearch] = useState("");
+  const [docCatFilter, setDocCatFilter] = useState("All");
 
   // --- MODAL STATES ---
   // Estimate View / Edit Modal
@@ -407,14 +409,17 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
     }
   };
 
-  // View single estimate
+  // View single estimate in full screen
   const handleViewEstimate = async (id: string) => {
     try {
       const res = await fetch(`/api/admin/cost-estimator-pro/estimates/${id}`);
       const data = await res.json();
       if (data.success) {
         setSelectedEstimate(data.data);
-        setViewModalOpen(true);
+        setTab("estimates");
+        if (typeof window !== "undefined") {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
       }
     } catch (err: any) {
       toast.error("Failed to load estimate details");
@@ -432,7 +437,7 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
       if (data.success) {
         toast.success(`Estimate ${refNo} deleted`);
         fetchAll();
-        setViewModalOpen(false);
+        setSelectedEstimate(null);
       } else {
         toast.error(data.error || "Failed to delete");
       }
@@ -475,7 +480,7 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
       if (data.success) {
         toast.success(`New revision ${data.data.estimateNumber} created!`);
         fetchAll();
-        setViewModalOpen(false);
+        setSelectedEstimate(data.data);
       }
     } catch (err: any) {
       toast.error(err.message);
@@ -1648,156 +1653,536 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
       )}
 
       {/* ========================================================================= */}
-      {/* 3. ESTIMATES LIST TAB */}
+      {/* 3. ESTIMATES LIST & FULL-SCREEN DOCUMENT VIEW TAB */}
       {/* ========================================================================= */}
       {currentTab === "estimates" && (
-        <Card className="border-border shadow-xs bg-card">
-          <CardHeader className="p-5 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div>
-              <CardTitle className="text-base font-bold font-heading">Saved Estimates &amp; Revisions</CardTitle>
-              <CardDescription className="text-xs">View, issue, export PDF/Excel, and manage revisions.</CardDescription>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="relative w-48 sm:w-64">
-                <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-muted-foreground" />
-                <Input
-                  placeholder="Search estimates..."
-                  value={estSearch}
-                  onChange={(e) => setEstSearch(e.target.value)}
-                  className="pl-8 h-8 text-xs bg-background"
-                />
+        selectedEstimate ? (
+          <div className="space-y-6 animate-in fade-in-50 duration-200">
+            {/* Top Fullscreen Document Header & Actions */}
+            <div className="bg-card border border-border rounded-2xl p-4 sm:p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setSelectedEstimate(null)}
+                    className="h-7 text-xs font-bold gap-1.5 text-muted-foreground hover:text-foreground cursor-pointer"
+                  >
+                    <ArrowLeft className="w-3.5 h-3.5" /> Back to Estimates List
+                  </Button>
+                  <Badge className="bg-[#0B2A4A] text-[#F2A900] font-mono text-xs">
+                    {selectedEstimate.estimateNumber} · Rev-{selectedEstimate.revision}
+                  </Badge>
+                  <Badge
+                    className={`text-[10px] font-bold ${
+                      selectedEstimate.status === "issued"
+                        ? "bg-emerald-500/10 text-emerald-700 border-emerald-500/20"
+                        : "bg-amber-500/10 text-amber-700 border-amber-500/20"
+                    }`}
+                  >
+                    {selectedEstimate.status?.toUpperCase()}
+                  </Badge>
+                </div>
+                <h2 className="text-xl sm:text-2xl font-black font-heading tracking-tight text-foreground">
+                  {selectedEstimate.projectName}
+                </h2>
+                <p className="text-xs text-muted-foreground flex flex-wrap items-center gap-2">
+                  <span>Client: <strong className="text-foreground">{selectedEstimate.clientName}</strong></span>
+                  <span>•</span>
+                  <span>Location: <strong className="text-foreground">{selectedEstimate.location}</strong></span>
+                  <span>•</span>
+                  <span>Created: {new Date(selectedEstimate.createdAt).toLocaleDateString()}</span>
+                  {selectedEstimate.validityDate && (
+                    <>
+                      <span>•</span>
+                      <span className="text-accent font-semibold">Valid Until: {new Date(selectedEstimate.validityDate).toLocaleDateString()}</span>
+                    </>
+                  )}
+                </p>
               </div>
-              <Button size="sm" onClick={() => setTab("new")} className="bg-[#0B2A4A] text-white text-xs font-bold gap-1.5 h-8">
-                <Plus className="w-4 h-4" /> New Estimate
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent className="p-0">
-            {filteredEstimates.length === 0 ? (
-              <div className="text-center py-16 text-muted-foreground text-xs space-y-2">
-                <FileText className="w-10 h-10 mx-auto opacity-30" />
-                <p>No saved estimates match your criteria.</p>
+
+              {/* Action Buttons Toolbar */}
+              <div className="flex flex-wrap items-center gap-2 self-start md:self-auto">
+                <a href={`/api/admin/cost-estimator-pro/export?format=pdf&estimateId=${selectedEstimate._id}`} download>
+                  <Button size="sm" className="bg-[#0B2A4A] hover:bg-[#123e6b] text-white text-xs font-bold h-8 gap-1.5 shadow-xs cursor-pointer">
+                    <Download className="w-3.5 h-3.5" /> Download PDF
+                  </Button>
+                </a>
+                <a href={`/api/admin/cost-estimator-pro/export?format=excel&estimateId=${selectedEstimate._id}`} download>
+                  <Button size="sm" variant="outline" className="text-xs font-bold h-8 gap-1.5 text-emerald-600 border-emerald-500/30 hover:bg-emerald-50 cursor-pointer">
+                    <FileSpreadsheet className="w-3.5 h-3.5" /> Export Excel
+                  </Button>
+                </a>
+
+                {selectedEstimate.status !== "issued" && (
+                  <Button
+                    size="sm"
+                    onClick={() => handleIssueEstimate(selectedEstimate._id)}
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs h-8 gap-1.5 cursor-pointer shadow-xs"
+                  >
+                    <CheckCircle2 className="w-3.5 h-3.5" /> Issue Officially
+                  </Button>
+                )}
+
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleReviseEstimate(selectedEstimate._id)}
+                  className="text-xs font-bold h-8 gap-1.5 cursor-pointer"
+                >
+                  <Copy className="w-3.5 h-3.5" /> Revise
+                </Button>
+
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => handleDeleteEstimate(selectedEstimate._id, selectedEstimate.estimateNumber)}
+                  className="text-rose-600 hover:text-rose-700 hover:bg-rose-50 text-xs font-bold h-8 gap-1 cursor-pointer"
+                >
+                  <Trash2 className="w-3.5 h-3.5" /> Delete
+                </Button>
               </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-xs text-left">
-                  <thead className="bg-muted/40 uppercase font-bold text-[10px] text-muted-foreground border-b border-border">
-                    <tr>
-                      <th className="p-3.5">Estimate ID</th>
-                      <th className="p-3.5">Project Name</th>
-                      <th className="p-3.5">Client</th>
-                      <th className="p-3.5">Built-up Area</th>
-                      <th className="p-3.5">Grand Total (BDT)</th>
-                      <th className="p-3.5">Rate / Sqft</th>
-                      <th className="p-3.5">Revision</th>
-                      <th className="p-3.5">Status</th>
-                      <th className="p-3.5 text-right">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-border">
-                    {filteredEstimates.map((est) => (
-                      <tr key={est._id} className="hover:bg-muted/20 transition-colors">
-                        <td className="p-3.5 font-mono font-bold text-accent">{est.estimateNumber}</td>
-                        <td className="p-3.5 font-bold text-foreground">{est.projectName}</td>
-                        <td className="p-3.5 text-muted-foreground">{est.clientName}</td>
-                        <td className="p-3.5 font-mono">{est.inputsSnapshot?.totalBuiltUpArea?.toLocaleString() || "-"} sft</td>
-                        <td className="p-3.5 font-mono font-bold text-foreground">৳{est.financials?.grandTotalCost?.toLocaleString() || "0"}</td>
-                        <td className="p-3.5 font-mono text-muted-foreground">৳{est.financials?.costPerSqFt || "-"}</td>
-                        <td className="p-3.5 font-bold">Rev-{est.revision}</td>
-                        <td className="p-3.5">
-                          <div className="flex flex-col gap-1">
-                            <Badge
-                              className={`text-[10px] font-bold w-fit ${
-                                est.status === "issued"
-                                  ? "bg-emerald-500/10 text-emerald-700 border-emerald-500/20"
-                                  : "bg-amber-500/10 text-amber-700 border-amber-500/20"
-                              }`}
-                            >
-                              {est.status?.toUpperCase()}
-                            </Badge>
-                            {est.clientStatus === "accepted" ? (
-                              <span className="text-[10px] font-bold text-emerald-600 flex items-center gap-0.5">
-                                <CheckCircle2 className="w-3 h-3" /> Client Accepted
-                              </span>
-                            ) : est.clientStatus === "revision_requested" ? (
-                              <span className="text-[10px] font-bold text-amber-600 flex items-center gap-0.5">
-                                <Clock className="w-3 h-3" /> Revision Req
-                              </span>
-                            ) : est.clientStatus === "viewed" ? (
-                              <span className="text-[10px] text-blue-600 font-medium">
-                                Viewed {est.clientViewCount}x
-                              </span>
-                            ) : (
-                              <span className="text-[10px] text-muted-foreground">Portal Sent</span>
-                            )}
-                          </div>
-                        </td>
-                        <td className="p-3.5 text-right space-x-1">
-                          <Button size="sm" variant="ghost" onClick={() => handleViewEstimate(est._id)} className="h-7 text-xs" title="View Details">
-                            <Eye className="w-3.5 h-3.5" />
-                          </Button>
-                          {est.shareToken && (
-                            <>
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => {
-                                  const url = `${window.location.origin}/view-estimate/${est.shareToken}`;
-                                  navigator.clipboard.writeText(url);
-                                  toast.success("Client Portal link copied!");
-                                }}
-                                className="h-7 text-[11px] px-2 font-bold text-[#0B2A4A] dark:text-[#F2A900] gap-1 cursor-pointer"
-                                title="Copy Client Proposal Link"
-                              >
-                                <Copy className="w-3 h-3" /> Link
-                              </Button>
-                              <a
-                                href={(() => {
-                                  const url = `${typeof window !== "undefined" ? window.location.origin : ""}/view-estimate/${est.shareToken}`;
-                                  const text = encodeURIComponent(
-                                    `Assalamu Alaikum ${est.clientName}, Here is the formal Civil Construction Estimate & BOQ for "${est.projectName}" prepared by HF Design & Engineering Solutions.\n\nTotal Estimated Cost: ৳${Math.round(est.financials?.grandTotalCost || 0).toLocaleString()}\n\nView Proposal Online:\n${url}`
-                                  );
-                                  return est.clientPhone
-                                    ? `https://wa.me/${est.clientPhone.replace(/[^0-9]/g, "")}?text=${text}`
-                                    : `https://wa.me/?text=${text}`;
-                                })()}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                <Button size="sm" variant="outline" className="h-7 text-[11px] px-2 font-bold text-emerald-600 gap-1 cursor-pointer" title="Share via WhatsApp">
-                                  <MessageSquare className="w-3 h-3" /> WA
-                                </Button>
-                              </a>
-                            </>
-                          )}
-                          <a href={`/api/admin/cost-estimator-pro/export?format=pdf&estimateId=${est._id}`} download>
-                            <Button size="sm" variant="outline" className="h-7 text-[11px] px-2 font-bold text-rose-600 gap-1">
-                              PDF
-                            </Button>
-                          </a>
-                          <a href={`/api/admin/cost-estimator-pro/export?format=excel&estimateId=${est._id}`} download>
-                            <Button size="sm" variant="outline" className="h-7 text-[11px] px-2 font-bold text-emerald-600 gap-1">
-                              XLS
-                            </Button>
-                          </a>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => handleDeleteEstimate(est._id, est.estimateNumber)}
-                            className="h-7 text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50"
-                            title="Delete Estimate"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </Button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+            </div>
+
+            {/* Client Interactive Proposal Portal Bar */}
+            {selectedEstimate.shareToken && (
+              <div className="bg-card border border-border rounded-2xl p-4 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-xs flex items-center gap-1.5 text-foreground">
+                      <ShieldCheck className="w-4 h-4 text-emerald-600" /> Client View Portal Link
+                    </span>
+                    {selectedEstimate.clientStatus === "accepted" ? (
+                      <Badge className="bg-emerald-600 text-white text-[10px]">Accepted by Client</Badge>
+                    ) : selectedEstimate.clientStatus === "revision_requested" ? (
+                      <Badge className="bg-amber-600 text-white text-[10px]">Revision Requested</Badge>
+                    ) : selectedEstimate.clientStatus === "viewed" ? (
+                      <Badge className="bg-blue-600 text-white text-[10px]">Viewed {selectedEstimate.clientViewCount || 1}x</Badge>
+                    ) : (
+                      <Badge variant="outline" className="text-[10px]">Ready to Share</Badge>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-muted-foreground font-mono truncate max-w-xl">
+                    {`${typeof window !== "undefined" ? window.location.origin : ""}/view-estimate/${selectedEstimate.shareToken}`}
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      const url = `${window.location.origin}/view-estimate/${selectedEstimate.shareToken}`;
+                      navigator.clipboard.writeText(url);
+                      toast.success("Client Portal link copied!");
+                    }}
+                    className="text-xs h-8 font-bold gap-1.5 cursor-pointer"
+                  >
+                    <Copy className="w-3.5 h-3.5" /> Copy Link
+                  </Button>
+                  <a
+                    href={(() => {
+                      const url = `${typeof window !== "undefined" ? window.location.origin : ""}/view-estimate/${selectedEstimate.shareToken}`;
+                      const text = encodeURIComponent(
+                        `Assalamu Alaikum ${selectedEstimate.clientName}, Here is the formal Civil Construction Estimate & BOQ for "${selectedEstimate.projectName}" prepared by HF Design & Engineering Solutions.\n\nTotal Estimated Cost: ৳${Math.round(selectedEstimate.financials?.grandTotalCost || 0).toLocaleString()}\n\nView Proposal Online:\n${url}`
+                      );
+                      return selectedEstimate.clientPhone
+                        ? `https://wa.me/${selectedEstimate.clientPhone.replace(/[^0-9]/g, "")}?text=${text}`
+                        : `https://wa.me/?text=${text}`;
+                    })()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button size="sm" variant="outline" className="text-xs h-8 font-bold gap-1 text-emerald-600 border-emerald-500/30 hover:bg-emerald-50 cursor-pointer">
+                      <MessageSquare className="w-3.5 h-3.5" /> WhatsApp Client
+                    </Button>
+                  </a>
+                  <a
+                    href={`/view-estimate/${selectedEstimate.shareToken}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button size="sm" className="bg-[#0B2A4A] text-white text-xs h-8 font-bold gap-1 cursor-pointer">
+                      <ExternalLink className="w-3.5 h-3.5" /> Open Client View
+                    </Button>
+                  </a>
+                </div>
               </div>
             )}
-          </CardContent>
-        </Card>
+
+            {/* Financial Summary Strip */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+              <Card className="border-border shadow-xs bg-[#0B2A4A] text-white">
+                <CardContent className="p-4 space-y-1">
+                  <span className="text-[10px] text-[#F2A900] uppercase font-bold tracking-wider">Grand Total Budget</span>
+                  <div className="text-xl sm:text-2xl font-black font-mono">
+                    ৳{Math.round(selectedEstimate.financials?.grandTotalCost || 0).toLocaleString()}
+                  </div>
+                  <p className="text-[11px] text-slate-300">All-inclusive construction cost</p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-border shadow-xs bg-card">
+                <CardContent className="p-4 space-y-1">
+                  <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Unit Cost / Sqft</span>
+                  <div className="text-xl sm:text-2xl font-black font-mono text-accent">
+                    ৳{Math.round(selectedEstimate.financials?.costPerSqFt || 0).toLocaleString()}
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">Per square foot of built-up area</p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-border shadow-xs bg-card">
+                <CardContent className="p-4 space-y-1">
+                  <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Base Material Cost</span>
+                  <div className="text-xl sm:text-2xl font-black font-mono text-foreground">
+                    ৳{Math.round(selectedEstimate.financials?.materialCostTotal || 0).toLocaleString()}
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">Cement, rebar, sand, bricks, chips</p>
+                </CardContent>
+              </Card>
+
+              <Card className="border-border shadow-xs bg-card">
+                <CardContent className="p-4 space-y-1">
+                  <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Base Labour Cost</span>
+                  <div className="text-xl sm:text-2xl font-black font-mono text-foreground">
+                    ৳{Math.round(selectedEstimate.financials?.labourCostTotal || 0).toLocaleString()}
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">Masonry, bar-bending, casting trades</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Category Breakdown Progress Cards */}
+            {selectedEstimate.financials?.categoryTotals && selectedEstimate.financials.categoryTotals.length > 0 && (
+              <Card className="border-border shadow-xs bg-card">
+                <CardHeader className="p-4 border-b border-border">
+                  <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-heading">
+                    Work Package Cost Distribution
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                    {selectedEstimate.financials.categoryTotals.map((cat: any, idx: number) => (
+                      <div key={idx} className="bg-muted/30 border border-border rounded-xl p-3 space-y-1">
+                        <div className="flex items-center justify-between text-xs font-semibold">
+                          <span className="text-foreground">{cat.category}</span>
+                          <span className="font-mono text-muted-foreground text-[11px]">{cat.percentage}%</span>
+                        </div>
+                        <div className="text-base font-black font-mono text-foreground">
+                          ৳{Math.round(cat.cost).toLocaleString()}
+                        </div>
+                        <div className="w-full bg-muted rounded-full h-1.5 overflow-hidden">
+                          <div
+                            className="bg-[#0B2A4A] dark:bg-[#F2A900] h-full rounded-full"
+                            style={{ width: `${Math.min(100, Math.max(5, cat.percentage))}%` }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Full-Width Detailed BOQ Table */}
+            <Card className="border-border shadow-xs bg-card overflow-hidden">
+              <CardHeader className="p-5 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <CardTitle className="text-base font-bold font-heading flex items-center gap-2">
+                    <FileText className="w-4 h-4 text-accent" /> Itemized Bill of Quantities (BOQ)
+                  </CardTitle>
+                  <CardDescription className="text-xs">
+                    Complete civil engineering quantities, specifications, and unit rates ({selectedEstimate.boqItems?.length || 0} items).
+                  </CardDescription>
+                </div>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                  <div className="relative">
+                    <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                      placeholder="Search BOQ items..."
+                      value={docBoqSearch}
+                      onChange={(e) => setDocBoqSearch(e.target.value)}
+                      className="pl-8 text-xs h-8 w-full sm:w-52"
+                    />
+                  </div>
+                  <select
+                    value={docCatFilter}
+                    onChange={(e) => setDocCatFilter(e.target.value)}
+                    className="text-xs h-8 border border-input rounded-md px-2 bg-background font-medium"
+                  >
+                    <option value="All">All Categories</option>
+                    {Array.from(new Set<string>(selectedEstimate.boqItems?.map((i: any) => String(i.category || "")) || [])).map((c) => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
+                </div>
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="overflow-x-auto max-h-[600px] scrollbar-thin">
+                  <table className="w-full text-xs text-left">
+                    <thead className="bg-muted/60 uppercase font-bold text-[10px] text-muted-foreground border-b border-border sticky top-0 z-10 backdrop-blur-xs">
+                      <tr>
+                        <th className="p-3">Item Code</th>
+                        <th className="p-3">Category</th>
+                        <th className="p-3">Description &amp; Specifications</th>
+                        <th className="p-3 text-center">Unit</th>
+                        <th className="p-3 text-right">Quantity</th>
+                        <th className="p-3 text-right">Unit Rate (৳)</th>
+                        <th className="p-3 text-right">Total Amount (৳)</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {selectedEstimate.boqItems
+                        ?.filter((item: any) => {
+                          const matchesCat = docCatFilter === "All" || item.category === docCatFilter;
+                          const matchesSearch =
+                            !docBoqSearch ||
+                            item.description?.toLowerCase().includes(docBoqSearch.toLowerCase()) ||
+                            item.itemCode?.toLowerCase().includes(docBoqSearch.toLowerCase()) ||
+                            item.category?.toLowerCase().includes(docBoqSearch.toLowerCase());
+                          return matchesCat && matchesSearch;
+                        })
+                        .map((item: any, idx: number) => (
+                          <tr key={idx} className="hover:bg-muted/15 transition-colors">
+                            <td className="p-3 font-mono font-bold text-accent">{item.itemCode}</td>
+                            <td className="p-3 font-medium text-muted-foreground">{item.category}</td>
+                            <td className="p-3 font-semibold text-foreground max-w-md">{item.description}</td>
+                            <td className="p-3 text-center uppercase font-mono text-muted-foreground">{item.unit}</td>
+                            <td className="p-3 text-right font-mono font-bold text-foreground">
+                              {Number(item.quantity).toLocaleString(undefined, { maximumFractionDigits: 2 })}
+                            </td>
+                            <td className="p-3 text-right font-mono text-muted-foreground">
+                              ৳{Number(item.unitRate).toLocaleString()}
+                            </td>
+                            <td className="p-3 text-right font-mono font-bold text-foreground">
+                              ৳{Math.round(item.amount).toLocaleString()}
+                            </td>
+                          </tr>
+                        ))}
+                    </tbody>
+                    <tfoot className="bg-muted/60 border-t-2 border-border font-bold">
+                      <tr>
+                        <td colSpan={6} className="p-3.5 text-right uppercase text-[11px] font-heading">
+                          Grand Total Estimated Construction Cost:
+                        </td>
+                        <td className="p-3.5 text-right font-mono text-base text-accent font-black">
+                          ৳{Math.round(selectedEstimate.financials?.grandTotalCost || 0).toLocaleString()}
+                        </td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Technical Specifications & Assumptions */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+              <Card className="border-border shadow-xs bg-card">
+                <CardHeader className="p-4 border-b border-border">
+                  <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-heading">
+                    Structural Specifications Snapshot
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-4 space-y-2">
+                  <div className="grid grid-cols-2 gap-2 text-[11px]">
+                    <div>
+                      <span className="text-muted-foreground">Building Type:</span>
+                      <p className="font-bold text-foreground">{selectedEstimate.inputsSnapshot?.buildingType}</p>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Number of Stories:</span>
+                      <p className="font-bold text-foreground">{selectedEstimate.inputsSnapshot?.floors} Stories</p>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Foundation Type:</span>
+                      <p className="font-bold text-foreground">{selectedEstimate.inputsSnapshot?.foundationType}</p>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Concrete Grade:</span>
+                      <p className="font-bold text-foreground">{selectedEstimate.inputsSnapshot?.structuralSpecs?.concreteGrade || "C20 / C25"}</p>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Rebar Grade:</span>
+                      <p className="font-bold text-foreground">{selectedEstimate.inputsSnapshot?.structuralSpecs?.rebarGrade || "500W Grade"}</p>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">Total Built-Up Area:</span>
+                      <p className="font-bold text-foreground">{selectedEstimate.inputsSnapshot?.totalBuiltUpArea?.toLocaleString()} sqft</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-border shadow-xs bg-card">
+                <CardHeader className="p-4 border-b border-border">
+                  <CardTitle className="text-xs font-bold uppercase tracking-wider text-muted-foreground font-heading">
+                    Engineering Assumptions &amp; Notes
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-4 space-y-2 text-[11px] text-muted-foreground">
+                  <p>• Standard load combinations in compliance with <strong>BNBC 2020</strong> &amp; <strong>BD PWD Schedule</strong>.</p>
+                  <p>• Rates calculated based on current active regional procurement rates for {selectedEstimate.location}.</p>
+                  <p>• Contractor overhead ({selectedEstimate.financials?.overheadPct || 5}%) and contingency ({selectedEstimate.financials?.contingencyPct || 3}%) factored in.</p>
+                  {selectedEstimate.notes && (
+                    <div className="mt-2 pt-2 border-t border-border">
+                      <span className="font-bold text-foreground">Internal Engineer Notes:</span>
+                      <p className="italic text-foreground mt-0.5">{selectedEstimate.notes}</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        ) : (
+          <Card className="border-border shadow-xs bg-card">
+            <CardHeader className="p-5 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <CardTitle className="text-base font-bold font-heading">Saved Estimates &amp; Revisions</CardTitle>
+                <CardDescription className="text-xs">View, issue, export PDF/Excel, and manage revisions.</CardDescription>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="relative w-48 sm:w-64">
+                  <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-muted-foreground" />
+                  <Input
+                    placeholder="Search estimates..."
+                    value={estSearch}
+                    onChange={(e) => setEstSearch(e.target.value)}
+                    className="pl-8 h-8 text-xs bg-background"
+                  />
+                </div>
+                <Button size="sm" onClick={() => setTab("new")} className="bg-[#0B2A4A] text-white text-xs font-bold gap-1.5 h-8">
+                  <Plus className="w-4 h-4" /> New Estimate
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="p-0">
+              {filteredEstimates.length === 0 ? (
+                <div className="text-center py-16 text-muted-foreground text-xs space-y-2">
+                  <FileText className="w-10 h-10 mx-auto opacity-30" />
+                  <p>No saved estimates match your criteria.</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-xs text-left">
+                    <thead className="bg-muted/40 uppercase font-bold text-[10px] text-muted-foreground border-b border-border">
+                      <tr>
+                        <th className="p-3.5">Estimate ID</th>
+                        <th className="p-3.5">Project Name</th>
+                        <th className="p-3.5">Client</th>
+                        <th className="p-3.5">Built-up Area</th>
+                        <th className="p-3.5">Grand Total (BDT)</th>
+                        <th className="p-3.5">Rate / Sqft</th>
+                        <th className="p-3.5">Revision</th>
+                        <th className="p-3.5">Status</th>
+                        <th className="p-3.5 text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-border">
+                      {filteredEstimates.map((est) => (
+                        <tr key={est._id} className="hover:bg-muted/20 transition-colors">
+                          <td className="p-3.5 font-mono font-bold text-accent">{est.estimateNumber}</td>
+                          <td className="p-3.5 font-bold text-foreground">{est.projectName}</td>
+                          <td className="p-3.5 text-muted-foreground">{est.clientName}</td>
+                          <td className="p-3.5 font-mono">{est.inputsSnapshot?.totalBuiltUpArea?.toLocaleString() || "-"} sft</td>
+                          <td className="p-3.5 font-mono font-bold text-foreground">৳{est.financials?.grandTotalCost?.toLocaleString() || "0"}</td>
+                          <td className="p-3.5 font-mono text-muted-foreground">৳{est.financials?.costPerSqFt || "-"}</td>
+                          <td className="p-3.5 font-bold">Rev-{est.revision}</td>
+                          <td className="p-3.5">
+                            <div className="flex flex-col gap-1">
+                              <Badge
+                                className={`text-[10px] font-bold w-fit ${
+                                  est.status === "issued"
+                                    ? "bg-emerald-500/10 text-emerald-700 border-emerald-500/20"
+                                    : "bg-amber-500/10 text-amber-700 border-amber-500/20"
+                                }`}
+                              >
+                                {est.status?.toUpperCase()}
+                              </Badge>
+                              {est.clientStatus === "accepted" ? (
+                                <span className="text-[10px] font-bold text-emerald-600 flex items-center gap-0.5">
+                                  <CheckCircle2 className="w-3 h-3" /> Client Accepted
+                                </span>
+                              ) : est.clientStatus === "revision_requested" ? (
+                                <span className="text-[10px] font-bold text-amber-600 flex items-center gap-0.5">
+                                  <Clock className="w-3 h-3" /> Revision Req
+                                </span>
+                              ) : est.clientStatus === "viewed" ? (
+                                <span className="text-[10px] text-blue-600 font-medium">
+                                  Viewed {est.clientViewCount}x
+                                </span>
+                              ) : (
+                                <span className="text-[10px] text-muted-foreground">Portal Sent</span>
+                              )}
+                            </div>
+                          </td>
+                          <td className="p-3.5 text-right space-x-1">
+                            <Button size="sm" variant="ghost" onClick={() => handleViewEstimate(est._id)} className="h-7 text-xs" title="View Full Document">
+                              <Eye className="w-3.5 h-3.5" />
+                            </Button>
+                            {est.shareToken && (
+                              <>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => {
+                                    const url = `${window.location.origin}/view-estimate/${est.shareToken}`;
+                                    navigator.clipboard.writeText(url);
+                                    toast.success("Client Portal link copied!");
+                                  }}
+                                  className="h-7 text-[11px] px-2 font-bold text-[#0B2A4A] dark:text-[#F2A900] gap-1 cursor-pointer"
+                                  title="Copy Client Proposal Link"
+                                >
+                                  <Copy className="w-3 h-3" /> Link
+                                </Button>
+                                <a
+                                  href={(() => {
+                                    const url = `${typeof window !== "undefined" ? window.location.origin : ""}/view-estimate/${est.shareToken}`;
+                                    const text = encodeURIComponent(
+                                      `Assalamu Alaikum ${est.clientName}, Here is the formal Civil Construction Estimate & BOQ for "${est.projectName}" prepared by HF Design & Engineering Solutions.\n\nTotal Estimated Cost: ৳${Math.round(est.financials?.grandTotalCost || 0).toLocaleString()}\n\nView Proposal Online:\n${url}`
+                                    );
+                                    return est.clientPhone
+                                      ? `https://wa.me/${est.clientPhone.replace(/[^0-9]/g, "")}?text=${text}`
+                                      : `https://wa.me/?text=${text}`;
+                                  })()}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <Button size="sm" variant="outline" className="h-7 text-[11px] px-2 font-bold text-emerald-600 gap-1 cursor-pointer" title="Share via WhatsApp">
+                                    <MessageSquare className="w-3 h-3" /> WA
+                                  </Button>
+                                </a>
+                              </>
+                            )}
+                            <a href={`/api/admin/cost-estimator-pro/export?format=pdf&estimateId=${est._id}`} download>
+                              <Button size="sm" variant="outline" className="h-7 text-[11px] px-2 font-bold text-rose-600 gap-1">
+                                PDF
+                              </Button>
+                            </a>
+                            <a href={`/api/admin/cost-estimator-pro/export?format=excel&estimateId=${est._id}`} download>
+                              <Button size="sm" variant="outline" className="h-7 text-[11px] px-2 font-bold text-emerald-600 gap-1">
+                                XLS
+                              </Button>
+                            </a>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => handleDeleteEstimate(est._id, est.estimateNumber)}
+                              className="h-7 text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50"
+                              title="Delete Estimate"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )
       )}
 
       {/* ========================================================================= */}
@@ -2774,194 +3159,6 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
               </Button>
             </DialogFooter>
           </form>
-        </DialogContent>
-      </Dialog>
-
-      {/* ========================================================================= */}
-      {/* VIEW ESTIMATE DETAIL MODAL */}
-      {/* ========================================================================= */}
-      <Dialog open={viewModalOpen} onOpenChange={setViewModalOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-          {selectedEstimate && (
-            <div className="space-y-6">
-              <DialogHeader className="border-b pb-4">
-                <div className="flex items-center justify-between">
-                  <Badge className="bg-[#0B2A4A] text-[#F2A900] font-mono text-xs">
-                    {selectedEstimate.estimateNumber} · Rev-{selectedEstimate.revision}
-                  </Badge>
-                  <div className="flex gap-2">
-                    <a href={`/api/admin/cost-estimator-pro/export?format=pdf&estimateId=${selectedEstimate._id}`} download>
-                      <Button size="sm" variant="outline" className="text-xs font-bold text-rose-600 gap-1">
-                        Download PDF
-                      </Button>
-                    </a>
-                    <a href={`/api/admin/cost-estimator-pro/export?format=excel&estimateId=${selectedEstimate._id}`} download>
-                      <Button size="sm" variant="outline" className="text-xs font-bold text-emerald-600 gap-1">
-                        Download Excel
-                      </Button>
-                    </a>
-                  </div>
-                </div>
-                <DialogTitle className="text-xl font-bold font-heading mt-2">
-                  {selectedEstimate.projectName}
-                </DialogTitle>
-                <DialogDescription className="text-xs">
-                  Client: {selectedEstimate.clientName} | Location: {selectedEstimate.location} | Status:{" "}
-                  <strong className="uppercase text-foreground">{selectedEstimate.status}</strong>
-                </DialogDescription>
-              </DialogHeader>
-
-              {/* Financial Summary */}
-              <div className="p-5 bg-[#0B2A4A] text-white rounded-2xl flex items-center justify-between">
-                <div>
-                  <span className="text-[11px] text-[#F2A900] uppercase font-bold">Grand Total Construction Cost</span>
-                  <h3 className="text-2xl font-black font-mono">৳ {selectedEstimate.financials?.grandTotalCost?.toLocaleString("en-BD")}</h3>
-                </div>
-                <div className="text-right">
-                  <span className="text-[11px] text-slate-300">Unit Construction Rate</span>
-                  <p className="text-lg font-bold text-[#F2A900]">৳ {selectedEstimate.financials?.costPerSqFt} / Sq.Ft</p>
-                </div>
-              </div>
-
-              {/* Client Proposal Portal Share Card */}
-              {selectedEstimate.shareToken && (
-                <div className="p-4 bg-muted/40 border border-border rounded-xl space-y-2.5">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="font-bold flex items-center gap-1.5 text-foreground">
-                      <ShieldCheck className="w-4 h-4 text-emerald-600" /> Client Interactive Portal Link
-                    </span>
-                    <div className="flex items-center gap-2">
-                      {selectedEstimate.clientStatus === "accepted" ? (
-                        <Badge className="bg-emerald-600 text-white text-[10px]">
-                          Accepted on {new Date(selectedEstimate.clientAcceptedAt).toLocaleDateString()}
-                        </Badge>
-                      ) : selectedEstimate.clientStatus === "revision_requested" ? (
-                        <Badge className="bg-amber-600 text-white text-[10px]">Revision Requested</Badge>
-                      ) : selectedEstimate.clientStatus === "viewed" ? (
-                        <Badge className="bg-blue-600 text-white text-[10px]">
-                          Viewed {selectedEstimate.clientViewCount || 1}x
-                        </Badge>
-                      ) : (
-                        <Badge variant="outline" className="text-[10px]">Not Yet Viewed</Badge>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-                    <Input
-                      readOnly
-                      value={`${typeof window !== "undefined" ? window.location.origin : ""}/view-estimate/${selectedEstimate.shareToken}`}
-                      className="text-xs h-8 font-mono bg-background flex-1"
-                    />
-                    <div className="flex items-center gap-2 shrink-0">
-                      <Button
-                        size="sm"
-                        onClick={() => {
-                          const url = `${window.location.origin}/view-estimate/${selectedEstimate.shareToken}`;
-                          navigator.clipboard.writeText(url);
-                          toast.success("Client Portal link copied!");
-                        }}
-                        className="bg-[#0B2A4A] text-white text-xs h-8 font-bold gap-1 cursor-pointer"
-                      >
-                        <Copy className="w-3.5 h-3.5" /> Copy Link
-                      </Button>
-                      <a
-                        href={(() => {
-                          const url = `${typeof window !== "undefined" ? window.location.origin : ""}/view-estimate/${selectedEstimate.shareToken}`;
-                          const text = encodeURIComponent(
-                            `Assalamu Alaikum ${selectedEstimate.clientName}, Here is the formal Civil Construction Estimate & BOQ for "${selectedEstimate.projectName}" prepared by HF Design & Engineering Solutions.\n\nTotal Estimated Cost: ৳${Math.round(selectedEstimate.financials?.grandTotalCost || 0).toLocaleString()}\n\nView Proposal Online:\n${url}`
-                          );
-                          return selectedEstimate.clientPhone
-                            ? `https://wa.me/${selectedEstimate.clientPhone.replace(/[^0-9]/g, "")}?text=${text}`
-                            : `https://wa.me/?text=${text}`;
-                        })()}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Button size="sm" variant="outline" className="text-xs h-8 font-bold gap-1 text-emerald-600 border-emerald-500/30 cursor-pointer">
-                          <MessageSquare className="w-3.5 h-3.5" /> WhatsApp
-                        </Button>
-                      </a>
-                      <a
-                        href={`/view-estimate/${selectedEstimate.shareToken}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Button size="sm" variant="outline" className="text-xs h-8 font-bold gap-1 cursor-pointer">
-                          <ExternalLink className="w-3.5 h-3.5" /> Open Portal
-                        </Button>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Action Buttons: Issue / Revise / Delete */}
-              <div className="flex justify-between items-center pt-2">
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => handleDeleteEstimate(selectedEstimate._id, selectedEstimate.estimateNumber)}
-                  className="text-rose-600 text-xs font-bold gap-1"
-                >
-                  <Trash2 className="w-4 h-4" /> Delete Estimate
-                </Button>
-
-                <div className="flex gap-2.5">
-                  {selectedEstimate.status !== "issued" && (
-                    <Button
-                      size="sm"
-                      onClick={() => handleIssueEstimate(selectedEstimate._id)}
-                      className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs gap-1"
-                    >
-                      <CheckCircle2 className="w-4 h-4" /> Issue Officially (Freeze Baseline)
-                    </Button>
-                  )}
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => handleReviseEstimate(selectedEstimate._id)}
-                    className="text-xs font-bold gap-1"
-                  >
-                    <Copy className="w-4 h-4" /> Create New Revision
-                  </Button>
-                </div>
-              </div>
-
-              {/* BOQ Table */}
-              <div className="border rounded-xl overflow-hidden">
-                <div className="bg-muted/40 p-3 font-bold text-xs border-b">
-                  Itemized Bill of Quantities ({selectedEstimate.boqItems?.length || 0} items)
-                </div>
-                <div className="overflow-x-auto max-h-64 scrollbar-thin">
-                  <table className="w-full text-xs text-left">
-                    <thead className="bg-muted/60 uppercase font-bold text-[10px] text-muted-foreground border-b">
-                      <tr>
-                        <th className="p-2.5">Code</th>
-                        <th className="p-2.5">Description</th>
-                        <th className="p-2.5">Unit</th>
-                        <th className="p-2.5">Qty</th>
-                        <th className="p-2.5">Rate</th>
-                        <th className="p-2.5 text-right">Amount (BDT)</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-border">
-                      {selectedEstimate.boqItems?.map((item: any, idx: number) => (
-                        <tr key={idx} className="hover:bg-muted/10">
-                          <td className="p-2.5 font-mono font-bold text-accent">{item.itemCode}</td>
-                          <td className="p-2.5 font-medium">{item.description}</td>
-                          <td className="p-2.5">{item.unit}</td>
-                          <td className="p-2.5 font-mono">{item.quantity?.toLocaleString()}</td>
-                          <td className="p-2.5 font-mono">৳{item.unitRate?.toLocaleString()}</td>
-                          <td className="p-2.5 font-mono font-bold text-right">৳{item.amount?.toLocaleString()}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          )}
         </DialogContent>
       </Dialog>
     </div>

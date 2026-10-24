@@ -88,13 +88,56 @@ const LABOUR_CATEGORIES = [
 export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const currentTab = searchParams.get("tab") || initialTab;
 
+  // Robust, instant local state for tab switching
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      const sp = new URLSearchParams(window.location.search);
+      const t = sp.get("tab");
+      if (t) return t;
+    }
+    return initialTab || "dashboard";
+  });
+
+  // Keep state in sync with URL or prop updates
+  useEffect(() => {
+    const tabParam = searchParams?.get("tab");
+    if (tabParam && tabParam !== activeTab) {
+      setActiveTab(tabParam);
+    } else if (!tabParam && initialTab && initialTab !== activeTab) {
+      setActiveTab(initialTab);
+    }
+  }, [searchParams, initialTab]);
+
+  // Support browser Back/Forward navigation
+  useEffect(() => {
+    const handlePopState = () => {
+      if (typeof window !== "undefined") {
+        const sp = new URLSearchParams(window.location.search);
+        const t = sp.get("tab");
+        if (t) setActiveTab(t);
+      }
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
+  // Instant tab switcher
   const setTab = (tab: string) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("tab", tab);
-    router.push(`/admin/cost-estimator-pro?${params.toString()}`);
+    setActiveTab(tab);
+    if (typeof window !== "undefined") {
+      try {
+        const url = new URL(window.location.href);
+        url.pathname = "/admin/cost-estimator-pro";
+        url.searchParams.set("tab", tab);
+        window.history.pushState({}, "", url.toString());
+      } catch (e) {
+        // fallback
+      }
+    }
   };
+
+  const currentTab = activeTab;
 
   // --- GLOBAL STATE ---
   const [loading, setLoading] = useState(true);
@@ -104,6 +147,7 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
   const [materials, setMaterials] = useState<any[]>([]);
   const [labour, setLabour] = useState<any[]>([]);
   const [locations, setLocations] = useState<any[]>([]);
+  const [boqTemplates, setBoqTemplates] = useState<any[]>([]);
   const [files, setFiles] = useState<any[]>([]);
   const [settings, setSettings] = useState<any>(null);
 
@@ -179,36 +223,37 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
   const fetchAll = async () => {
     setLoading(true);
     try {
-      const [dashRes, estRes, prjRes, matRes, labRes, locRes, fileRes, setRes] = await Promise.all([
-        fetch("/api/admin/cost-estimator-pro/dashboard"),
-        fetch("/api/admin/cost-estimator-pro/estimates"),
-        fetch("/api/admin/cost-estimator-pro/projects"),
-        fetch("/api/admin/cost-estimator-pro/materials"),
-        fetch("/api/admin/cost-estimator-pro/labour"),
-        fetch("/api/admin/cost-estimator-pro/locations"),
-        fetch("/api/admin/cost-estimator-pro/files"),
-        fetch("/api/admin/cost-estimator-pro/settings"),
+      const safeFetchJson = async (url: string) => {
+        try {
+          const res = await fetch(url);
+          if (!res.ok) return { success: false };
+          return await res.json();
+        } catch {
+          return { success: false };
+        }
+      };
+
+      const [dash, est, prj, mat, lab, loc, fil, set, boq] = await Promise.all([
+        safeFetchJson("/api/admin/cost-estimator-pro/dashboard"),
+        safeFetchJson("/api/admin/cost-estimator-pro/estimates"),
+        safeFetchJson("/api/admin/cost-estimator-pro/projects"),
+        safeFetchJson("/api/admin/cost-estimator-pro/materials"),
+        safeFetchJson("/api/admin/cost-estimator-pro/labour"),
+        safeFetchJson("/api/admin/cost-estimator-pro/locations"),
+        safeFetchJson("/api/admin/cost-estimator-pro/files"),
+        safeFetchJson("/api/admin/cost-estimator-pro/settings"),
+        safeFetchJson("/api/admin/cost-estimator-pro/boq-templates"),
       ]);
 
-      const [dash, est, prj, mat, lab, loc, fil, set] = await Promise.all([
-        dashRes.json(),
-        estRes.json(),
-        prjRes.json(),
-        matRes.json(),
-        labRes.json(),
-        locRes.json(),
-        fileRes.json(),
-        setRes.json(),
-      ]);
-
-      if (dash.success) setDashboardData(dash.data);
-      if (est.success) setEstimates(est.data);
-      if (prj.success) setProjects(prj.data);
-      if (mat.success) setMaterials(mat.data);
-      if (lab.success) setLabour(lab.data);
-      if (loc.success) setLocations(loc.data);
-      if (fil.success) setFiles(fil.data);
-      if (set.success) setSettings(set.data);
+      if (dash?.success) setDashboardData(dash.data);
+      if (est?.success) setEstimates(est.data || []);
+      if (prj?.success) setProjects(prj.data || []);
+      if (mat?.success) setMaterials(mat.data || []);
+      if (lab?.success) setLabour(lab.data || []);
+      if (loc?.success) setLocations(loc.data || []);
+      if (fil?.success) setFiles(fil.data || []);
+      if (set?.success) setSettings(set.data);
+      if (boq?.success) setBoqTemplates(boq.data || []);
     } catch (err: any) {
       console.error(err);
       toast.error("Failed to load Cost Estimator Pro data");
@@ -868,7 +913,8 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
           { id: "projects", label: "Projects", icon: FolderKanban, count: projects.length },
           { id: "materials", label: "Material Rates", icon: Hammer, count: materials.length },
           { id: "labour", label: "Labour Rates", icon: Users, count: labour.length },
-          { id: "locations", label: "Regional Rates", icon: MapPin },
+          { id: "locations", label: "Regional Rates", icon: MapPin, count: locations.length },
+          { id: "boq", label: "BOQ Templates", icon: Layers, count: boqTemplates.length },
           { id: "files", label: "Files & Reports", icon: HardDrive, count: files.length },
           { id: "backup", label: "Backup & Restore", icon: Download },
           { id: "settings", label: "Engine Settings", icon: Settings },
@@ -878,8 +924,9 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
           return (
             <button
               key={tab.id}
+              type="button"
               onClick={() => setTab(tab.id)}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all shrink-0 ${
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
                 isActive
                   ? "bg-[#0B2A4A] text-white shadow-xs"
                   : "bg-card hover:bg-muted text-muted-foreground hover:text-foreground border border-border/80"
@@ -2020,6 +2067,96 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
       )}
 
       {/* ========================================================================= */}
+      {/* 7.5. BOQ TEMPLATES & WORK ITEMS TAB */}
+      {/* ========================================================================= */}
+      {currentTab === "boq" && (
+        <Card className="border-border shadow-xs bg-card">
+          <CardHeader className="p-5 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <CardTitle className="text-base font-bold font-heading flex items-center gap-2">
+                <Layers className="w-5 h-5 text-accent" /> BOQ Master Templates &amp; Work Items
+              </CardTitle>
+              <CardDescription className="text-xs">
+                Standard Civil Engineering Bill of Quantities formulas, benchmark rates, and item specifications (BNBC 2020 &amp; BD PWD).
+              </CardDescription>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button size="sm" onClick={fetchAll} variant="outline" className="text-xs gap-1">
+                <RefreshCw className="w-3.5 h-3.5" /> Refresh
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="p-5 space-y-6">
+            {boqTemplates.length === 0 ? (
+              <div className="text-center py-16 text-muted-foreground text-xs space-y-2">
+                <Layers className="w-10 h-10 mx-auto opacity-30" />
+                <p>No BOQ templates found. Templates will be seeded automatically on database init.</p>
+              </div>
+            ) : (
+              boqTemplates.map((tpl) => (
+                <div key={tpl._id || tpl.code} className="border border-border rounded-xl overflow-hidden bg-background">
+                  <div className="bg-muted/40 p-4 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono font-bold text-xs text-accent px-2 py-0.5 rounded-md bg-accent/10 border border-accent/20">
+                          {tpl.code}
+                        </span>
+                        <h3 className="font-bold text-sm text-foreground">{tpl.name}</h3>
+                        {tpl.isDefault && (
+                          <Badge variant="outline" className="text-[10px] bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
+                            Default Standard
+                          </Badge>
+                        )}
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        Building Type: <span className="font-semibold text-foreground">{tpl.buildingType}</span> | Foundation: <span className="font-semibold text-foreground">{tpl.foundationType}</span> | Version: <span className="font-mono">{tpl.version || "1.0"}</span>
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-xs font-mono font-bold bg-muted px-2.5 py-1 rounded-lg border border-border">
+                        {tpl.items?.length || 0} Work Items
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="overflow-x-auto max-h-[500px] scrollbar-thin">
+                    <table className="w-full text-xs text-left">
+                      <thead className="bg-muted/60 uppercase font-bold text-[10px] text-muted-foreground border-b border-border sticky top-0 z-10 backdrop-blur-xs">
+                        <tr>
+                          <th className="p-3">Item Code</th>
+                          <th className="p-3">Category</th>
+                          <th className="p-3">Description &amp; Specifications</th>
+                          <th className="p-3">Unit</th>
+                          <th className="p-3">Quantity Formula</th>
+                          <th className="p-3 text-right">Default Rate (৳)</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-border">
+                        {tpl.items?.map((item: any, i: number) => (
+                          <tr key={i} className="hover:bg-muted/20">
+                            <td className="p-3 font-mono font-bold text-accent">{item.itemCode}</td>
+                            <td className="p-3 font-medium text-muted-foreground">{item.category}</td>
+                            <td className="p-3 font-bold text-foreground max-w-xs">{item.description}</td>
+                            <td className="p-3 font-mono uppercase text-muted-foreground">{item.unit}</td>
+                            <td className="p-3 font-mono text-[11px] text-blue-600 dark:text-blue-400 bg-muted/30 px-2 py-1 rounded">
+                              {item.quantityFormula || "Direct calculation"}
+                            </td>
+                            <td className="p-3 text-right font-mono font-bold text-foreground">
+                              ৳{Number(item.defaultUnitRate || 0).toLocaleString()}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              ))
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* ========================================================================= */}
       {/* 8. FILES & REPORTS TAB */}
       {/* ========================================================================= */}
       {currentTab === "files" && (
@@ -2118,92 +2255,99 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
       {/* ========================================================================= */}
       {/* 10. SETTINGS TAB */}
       {/* ========================================================================= */}
-      {currentTab === "settings" && settings && (
-        <Card className="border-border shadow-md bg-card max-w-3xl mx-auto">
-          <CardHeader className="border-b pb-4">
-            <CardTitle className="text-base font-bold flex items-center gap-2 font-heading">
-              <Settings className="w-5 h-5 text-accent" /> Calculation Engine &amp; Report Settings
-            </CardTitle>
-            <CardDescription className="text-xs">Default financial percentages, company branding, and formula versioning.</CardDescription>
-          </CardHeader>
-          <CardContent className="p-6 space-y-4">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div className="space-y-1.5">
-                <Label className="text-xs font-bold">Default Wastage (%)</Label>
-                <Input
-                  type="number"
-                  step="0.5"
-                  value={settings.defaultWastagePct}
-                  onChange={(e) => setSettings({ ...settings, defaultWastagePct: Number(e.target.value) })}
-                />
+      {currentTab === "settings" && (
+        !settings ? (
+          <Card className="border-border shadow-xs bg-card max-w-3xl mx-auto p-12 text-center">
+            <RefreshCw className="w-8 h-8 animate-spin mx-auto text-accent mb-3" />
+            <p className="text-sm font-medium text-muted-foreground">Loading calculation engine settings...</p>
+          </Card>
+        ) : (
+          <Card className="border-border shadow-md bg-card max-w-3xl mx-auto">
+            <CardHeader className="border-b pb-4">
+              <CardTitle className="text-base font-bold flex items-center gap-2 font-heading">
+                <Settings className="w-5 h-5 text-accent" /> Calculation Engine &amp; Report Settings
+              </CardTitle>
+              <CardDescription className="text-xs">Default financial percentages, company branding, and formula versioning.</CardDescription>
+            </CardHeader>
+            <CardContent className="p-6 space-y-4">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-bold">Default Wastage (%)</Label>
+                  <Input
+                    type="number"
+                    step="0.5"
+                    value={settings.defaultWastagePct}
+                    onChange={(e) => setSettings({ ...settings, defaultWastagePct: Number(e.target.value) })}
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-bold">Default Overhead (%)</Label>
+                  <Input
+                    type="number"
+                    step="0.5"
+                    value={settings.defaultOverheadPct}
+                    onChange={(e) => setSettings({ ...settings, defaultOverheadPct: Number(e.target.value) })}
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-bold">Default Contingency (%)</Label>
+                  <Input
+                    type="number"
+                    step="0.5"
+                    value={settings.defaultContingencyPct}
+                    onChange={(e) => setSettings({ ...settings, defaultContingencyPct: Number(e.target.value) })}
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-xs font-bold">Default Profit (%)</Label>
+                  <Input
+                    type="number"
+                    step="0.5"
+                    value={settings.defaultProfitPct}
+                    onChange={(e) => setSettings({ ...settings, defaultProfitPct: Number(e.target.value) })}
+                  />
+                </div>
               </div>
-              <div className="space-y-1.5">
-                <Label className="text-xs font-bold">Default Overhead (%)</Label>
-                <Input
-                  type="number"
-                  step="0.5"
-                  value={settings.defaultOverheadPct}
-                  onChange={(e) => setSettings({ ...settings, defaultOverheadPct: Number(e.target.value) })}
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label className="text-xs font-bold">Default Contingency (%)</Label>
-                <Input
-                  type="number"
-                  step="0.5"
-                  value={settings.defaultContingencyPct}
-                  onChange={(e) => setSettings({ ...settings, defaultContingencyPct: Number(e.target.value) })}
-                />
-              </div>
-              <div className="space-y-1.5">
-                <Label className="text-xs font-bold">Default Profit (%)</Label>
-                <Input
-                  type="number"
-                  step="0.5"
-                  value={settings.defaultProfitPct}
-                  onChange={(e) => setSettings({ ...settings, defaultProfitPct: Number(e.target.value) })}
-                />
-              </div>
-            </div>
 
-            <div className="space-y-1.5 pt-2">
-              <Label className="text-xs font-bold">Formula Engine Version</Label>
-              <Input
-                value={settings.formulaVersion}
-                onChange={(e) => setSettings({ ...settings, formulaVersion: e.target.value })}
-              />
-            </div>
+              <div className="space-y-1.5 pt-2">
+                <Label className="text-xs font-bold">Formula Engine Version</Label>
+                <Input
+                  value={settings.formulaVersion}
+                  onChange={(e) => setSettings({ ...settings, formulaVersion: e.target.value })}
+                />
+              </div>
 
-            <div className="space-y-1.5">
-              <Label className="text-xs font-bold">Report Disclaimer Text</Label>
-              <textarea
-                value={settings.disclaimer}
-                onChange={(e) => setSettings({ ...settings, disclaimer: e.target.value })}
-                className="w-full min-h-[90px] rounded-md border border-input bg-background p-3 text-xs leading-relaxed"
-              />
-            </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs font-bold">Report Disclaimer Text</Label>
+                <textarea
+                  value={settings.disclaimer}
+                  onChange={(e) => setSettings({ ...settings, disclaimer: e.target.value })}
+                  className="w-full min-h-[90px] rounded-md border border-input bg-background p-3 text-xs leading-relaxed"
+                />
+              </div>
 
-            <div className="flex justify-end pt-2">
-              <Button
-                onClick={async () => {
-                  try {
-                    const res = await fetch("/api/admin/cost-estimator-pro/settings", {
-                      method: "PUT",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify(settings),
-                    });
-                    if (res.ok) toast.success("Settings updated successfully!");
-                  } catch (err: any) {
-                    toast.error(err.message);
-                  }
-                }}
-                className="bg-[#0B2A4A] text-white font-bold"
-              >
-                Save Settings
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+              <div className="flex justify-end pt-2">
+                <Button
+                  onClick={async () => {
+                    try {
+                      const res = await fetch("/api/admin/cost-estimator-pro/settings", {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(settings),
+                      });
+                      if (res.ok) toast.success("Settings updated successfully!");
+                    } catch (err: any) {
+                      toast.error(err.message);
+                    }
+                  }}
+                  className="bg-[#0B2A4A] text-white font-bold"
+                >
+                  Save Settings
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )
       )}
 
       {/* ========================================================================= */}

@@ -37,19 +37,53 @@ import {
   TrendingUp,
   Percent,
   DollarSign,
-  ChevronDown
+  ChevronDown,
+  Edit,
+  Pencil,
+  X
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { toast } from "sonner";
 
 interface Props {
   initialTab?: string;
 }
+
+const MATERIAL_CATEGORIES = [
+  "Cement",
+  "Reinforcement Steel",
+  "Sand",
+  "Bricks & Blocks",
+  "Aggregates & Stone Chips",
+  "Tiles & Stones",
+  "Paints & Finishes",
+  "Plumbing & Sanitary",
+  "Electrical",
+  "Doors & Windows",
+  "Formwork & Timber",
+  "Waterproofing & Chemicals",
+  "Miscellaneous"
+];
+
+const LABOUR_CATEGORIES = [
+  "Head Mason (Rajmistri)",
+  "Assistant Mason",
+  "Rod Binder (Steel Fixer)",
+  "Shuttering Carpenter",
+  "Tile & Marble Specialist",
+  "Painter",
+  "Electrician",
+  "Plumber & Pipe Fitter",
+  "Excavator & Earthwork Labour",
+  "General Construction Helper",
+  "Site Supervisor",
+  "Other"
+];
 
 export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: Props) {
   const router = useRouter();
@@ -73,9 +107,73 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
   const [files, setFiles] = useState<any[]>([]);
   const [settings, setSettings] = useState<any>(null);
 
-  // Selected Estimate Modal
+  // Search & Filter State
+  const [matSearch, setMatSearch] = useState("");
+  const [matCatFilter, setMatCatFilter] = useState("All");
+  const [labSearch, setLabSearch] = useState("");
+  const [labCatFilter, setLabCatFilter] = useState("All");
+  const [estSearch, setEstSearch] = useState("");
+  const [prjSearch, setPrjSearch] = useState("");
+
+  // --- MODAL STATES ---
+  // Estimate View / Edit Modal
   const [selectedEstimate, setSelectedEstimate] = useState<any>(null);
   const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [editEstimateModalOpen, setEditEstimateModalOpen] = useState(false);
+  const [editingEstimateForm, setEditingEstimateForm] = useState<any>(null);
+
+  // Material Modal
+  const [materialModalOpen, setMaterialModalOpen] = useState(false);
+  const [editingMaterial, setEditingMaterial] = useState<any>(null);
+  const [materialForm, setMaterialForm] = useState({
+    code: "",
+    name: "",
+    category: "Cement",
+    unit: "bag",
+    unitPrice: 500,
+    location: "All",
+    supplierNote: "",
+  });
+
+  // Labour Modal
+  const [labourModalOpen, setLabourModalOpen] = useState(false);
+  const [editingLabour, setEditingLabour] = useState<any>(null);
+  const [labourForm, setLabourForm] = useState({
+    code: "",
+    tradeName: "",
+    category: "Head Mason (Rajmistri)",
+    unit: "day",
+    rate: 1000,
+    location: "All",
+    sourceNote: "",
+  });
+
+  // Location Modal
+  const [locationModalOpen, setLocationModalOpen] = useState(false);
+  const [editingLocation, setEditingLocation] = useState<any>(null);
+  const [locationForm, setLocationForm] = useState({
+    code: "",
+    name: "",
+    parentRegion: "Dhaka Division",
+    costMultiplier: 1.0,
+    notes: "",
+  });
+
+  // Project Modal
+  const [projectModalOpen, setProjectModalOpen] = useState(false);
+  const [editingProject, setEditingProject] = useState<any>(null);
+  const [projectForm, setProjectForm] = useState({
+    name: "",
+    clientName: "",
+    clientPhone: "",
+    clientEmail: "",
+    location: "Dhaka",
+    buildingType: "Residential",
+    estimatedFloors: 4,
+    totalBuiltUpArea: 6000,
+    status: "active",
+    notes: "",
+  });
 
   // --- FETCH DATA ---
   const fetchAll = async () => {
@@ -200,7 +298,7 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
       const data = await res.json();
       if (data.success) {
         setCalcPreview(data.calculation);
-        setWizardStep(6); // jump to review
+        setWizardStep(6);
       } else {
         toast.error(data.error || "Calculation error");
       }
@@ -250,7 +348,6 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
         toast.success(`Estimate ${data.data.estimateNumber} saved successfully!`);
         fetchAll();
         setTab("estimates");
-        // Reset wizard
         setWizardStep(1);
         setCalcPreview(null);
       } else {
@@ -274,6 +371,26 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
       }
     } catch (err: any) {
       toast.error("Failed to load estimate details");
+    }
+  };
+
+  // Delete estimate
+  const handleDeleteEstimate = async (id: string, refNo: string) => {
+    if (!confirm(`Are you sure you want to delete estimate ${refNo}?`)) return;
+    try {
+      const res = await fetch(`/api/admin/cost-estimator-pro/estimates/${id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success(`Estimate ${refNo} deleted`);
+        fetchAll();
+        setViewModalOpen(false);
+      } else {
+        toast.error(data.error || "Failed to delete");
+      }
+    } catch (err: any) {
+      toast.error(err.message);
     }
   };
 
@@ -317,6 +434,387 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
       toast.error(err.message);
     }
   };
+
+  // -------------------------------------------------------------
+  // MATERIAL CRUD HANDLERS
+  // -------------------------------------------------------------
+  const handleOpenAddMaterial = () => {
+    setEditingMaterial(null);
+    setMaterialForm({
+      code: `MAT-${Math.floor(100 + Math.random() * 900)}`,
+      name: "",
+      category: "Cement",
+      unit: "bag",
+      unitPrice: 500,
+      location: "All",
+      supplierNote: "",
+    });
+    setMaterialModalOpen(true);
+  };
+
+  const handleOpenEditMaterial = (m: any) => {
+    setEditingMaterial(m);
+    setMaterialForm({
+      code: m.code,
+      name: m.name,
+      category: m.category,
+      unit: m.unit,
+      unitPrice: m.unitPrice,
+      location: m.location || "All",
+      supplierNote: m.supplierNote || "",
+    });
+    setMaterialModalOpen(true);
+  };
+
+  const handleSaveMaterial = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!materialForm.name.trim()) {
+      toast.error("Material name is required");
+      return;
+    }
+    try {
+      const method = editingMaterial ? "PUT" : "POST";
+      const payload = editingMaterial
+        ? { _id: editingMaterial._id, ...materialForm }
+        : materialForm;
+
+      const res = await fetch("/api/admin/cost-estimator-pro/materials", {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        toast.success(editingMaterial ? "Material rate updated!" : "Material added!");
+        setMaterialModalOpen(false);
+        fetchAll();
+      } else {
+        toast.error(data.error || "Failed to save material");
+      }
+    } catch (err: any) {
+      toast.error(err.message);
+    }
+  };
+
+  const handleDeleteMaterial = async (id: string, name: string) => {
+    if (!confirm(`Are you sure you want to delete material: ${name}?`)) return;
+    try {
+      const res = await fetch(`/api/admin/cost-estimator-pro/materials?id=${id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success("Material deleted successfully");
+        fetchAll();
+      } else {
+        toast.error(data.error || "Failed to delete");
+      }
+    } catch (err: any) {
+      toast.error(err.message);
+    }
+  };
+
+  // -------------------------------------------------------------
+  // LABOUR CRUD HANDLERS
+  // -------------------------------------------------------------
+  const handleOpenAddLabour = () => {
+    setEditingLabour(null);
+    setLabourForm({
+      code: `LAB-${Math.floor(100 + Math.random() * 900)}`,
+      tradeName: "",
+      category: "Head Mason (Rajmistri)",
+      unit: "day",
+      rate: 1000,
+      location: "All",
+      sourceNote: "",
+    });
+    setLabourModalOpen(true);
+  };
+
+  const handleOpenEditLabour = (l: any) => {
+    setEditingLabour(l);
+    setLabourForm({
+      code: l.code,
+      tradeName: l.tradeName,
+      category: l.category,
+      unit: l.unit,
+      rate: l.rate,
+      location: l.location || "All",
+      sourceNote: l.sourceNote || "",
+    });
+    setLabourModalOpen(true);
+  };
+
+  const handleSaveLabour = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!labourForm.tradeName.trim()) {
+      toast.error("Trade name is required");
+      return;
+    }
+    try {
+      const method = editingLabour ? "PUT" : "POST";
+      const payload = editingLabour
+        ? { _id: editingLabour._id, ...labourForm }
+        : labourForm;
+
+      const res = await fetch("/api/admin/cost-estimator-pro/labour", {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        toast.success(editingLabour ? "Labour rate updated!" : "Labour trade added!");
+        setLabourModalOpen(false);
+        fetchAll();
+      } else {
+        toast.error(data.error || "Failed to save labour");
+      }
+    } catch (err: any) {
+      toast.error(err.message);
+    }
+  };
+
+  const handleDeleteLabour = async (id: string, name: string) => {
+    if (!confirm(`Are you sure you want to delete labour trade: ${name}?`)) return;
+    try {
+      const res = await fetch(`/api/admin/cost-estimator-pro/labour?id=${id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success("Labour trade deleted");
+        fetchAll();
+      } else {
+        toast.error(data.error || "Failed to delete");
+      }
+    } catch (err: any) {
+      toast.error(err.message);
+    }
+  };
+
+  // -------------------------------------------------------------
+  // LOCATION CRUD HANDLERS
+  // -------------------------------------------------------------
+  const handleOpenAddLocation = () => {
+    setEditingLocation(null);
+    setLocationForm({
+      code: `LOC-${Math.floor(100 + Math.random() * 900)}`,
+      name: "",
+      parentRegion: "Dhaka Division",
+      costMultiplier: 1.0,
+      notes: "",
+    });
+    setLocationModalOpen(true);
+  };
+
+  const handleOpenEditLocation = (loc: any) => {
+    setEditingLocation(loc);
+    setLocationForm({
+      code: loc.code,
+      name: loc.name,
+      parentRegion: loc.parentRegion || "Dhaka Division",
+      costMultiplier: loc.costMultiplier || 1.0,
+      notes: loc.notes || "",
+    });
+    setLocationModalOpen(true);
+  };
+
+  const handleSaveLocation = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!locationForm.name.trim()) {
+      toast.error("Location name is required");
+      return;
+    }
+    try {
+      const method = editingLocation ? "PUT" : "POST";
+      const payload = editingLocation
+        ? { _id: editingLocation._id, ...locationForm }
+        : locationForm;
+
+      const res = await fetch("/api/admin/cost-estimator-pro/locations", {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        toast.success(editingLocation ? "Location updated!" : "Location added!");
+        setLocationModalOpen(false);
+        fetchAll();
+      } else {
+        toast.error(data.error || "Failed to save location");
+      }
+    } catch (err: any) {
+      toast.error(err.message);
+    }
+  };
+
+  const handleDeleteLocation = async (id: string, name: string) => {
+    if (!confirm(`Are you sure you want to delete location: ${name}?`)) return;
+    try {
+      const res = await fetch(`/api/admin/cost-estimator-pro/locations?id=${id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success("Location deleted");
+        fetchAll();
+      } else {
+        toast.error(data.error || "Failed to delete");
+      }
+    } catch (err: any) {
+      toast.error(err.message);
+    }
+  };
+
+  // -------------------------------------------------------------
+  // PROJECT CRUD HANDLERS
+  // -------------------------------------------------------------
+  const handleOpenAddProject = () => {
+    setEditingProject(null);
+    setProjectForm({
+      name: "",
+      clientName: "",
+      clientPhone: "",
+      clientEmail: "",
+      location: "Dhaka",
+      buildingType: "Residential",
+      estimatedFloors: 4,
+      totalBuiltUpArea: 6000,
+      status: "active",
+      notes: "",
+    });
+    setProjectModalOpen(true);
+  };
+
+  const handleOpenEditProject = (p: any) => {
+    setEditingProject(p);
+    setProjectForm({
+      name: p.name,
+      clientName: p.clientName,
+      clientPhone: p.clientPhone || "",
+      clientEmail: p.clientEmail || "",
+      location: p.location || "Dhaka",
+      buildingType: p.buildingType || "Residential",
+      estimatedFloors: p.estimatedFloors || 4,
+      totalBuiltUpArea: p.totalBuiltUpArea || 0,
+      status: p.status || "active",
+      notes: p.notes || "",
+    });
+    setProjectModalOpen(true);
+  };
+
+  const handleSaveProject = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!projectForm.name.trim()) {
+      toast.error("Project name is required");
+      return;
+    }
+    try {
+      const method = editingProject ? "PUT" : "POST";
+      const payload = editingProject
+        ? { _id: editingProject._id, ...projectForm }
+        : projectForm;
+
+      const res = await fetch("/api/admin/cost-estimator-pro/projects", {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        toast.success(editingProject ? "Project updated!" : "Project created!");
+        setProjectModalOpen(false);
+        fetchAll();
+      } else {
+        toast.error(data.error || "Failed to save project");
+      }
+    } catch (err: any) {
+      toast.error(err.message);
+    }
+  };
+
+  const handleDeleteProject = async (id: string, name: string) => {
+    if (!confirm(`Are you sure you want to delete project: ${name}?`)) return;
+    try {
+      const res = await fetch(`/api/admin/cost-estimator-pro/projects?id=${id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success("Project deleted");
+        fetchAll();
+      } else {
+        toast.error(data.error || "Failed to delete");
+      }
+    } catch (err: any) {
+      toast.error(err.message);
+    }
+  };
+
+  // -------------------------------------------------------------
+  // FILE DELETE HANDLER
+  // -------------------------------------------------------------
+  const handleDeleteFile = async (fileId: string, filename: string) => {
+    if (!confirm(`Are you sure you want to delete file: ${filename}?`)) return;
+    try {
+      const res = await fetch(`/api/admin/cost-estimator-pro/files?id=${fileId}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success("File deleted successfully");
+        fetchAll();
+      } else {
+        toast.error(data.error || "Failed to delete file");
+      }
+    } catch (err: any) {
+      toast.error(err.message);
+    }
+  };
+
+  // Filtered Lists
+  const filteredMaterials = useMemo(() => {
+    return materials.filter((m) => {
+      const matchSearch = m.name.toLowerCase().includes(matSearch.toLowerCase()) || m.code.toLowerCase().includes(matSearch.toLowerCase());
+      const matchCat = matCatFilter === "All" || m.category === matCatFilter;
+      return matchSearch && matchCat;
+    });
+  }, [materials, matSearch, matCatFilter]);
+
+  const filteredLabour = useMemo(() => {
+    return labour.filter((l) => {
+      const matchSearch = l.tradeName.toLowerCase().includes(labSearch.toLowerCase()) || l.code.toLowerCase().includes(labSearch.toLowerCase());
+      const matchCat = labCatFilter === "All" || l.category === labCatFilter;
+      return matchSearch && matchCat;
+    });
+  }, [labour, labSearch, labCatFilter]);
+
+  const filteredProjects = useMemo(() => {
+    return projects.filter((p) => {
+      return (
+        p.name.toLowerCase().includes(prjSearch.toLowerCase()) ||
+        p.clientName.toLowerCase().includes(prjSearch.toLowerCase()) ||
+        p.location.toLowerCase().includes(prjSearch.toLowerCase())
+      );
+    });
+  }, [projects, prjSearch]);
+
+  const filteredEstimates = useMemo(() => {
+    return estimates.filter((e) => {
+      return (
+        e.estimateNumber.toLowerCase().includes(estSearch.toLowerCase()) ||
+        e.projectName.toLowerCase().includes(estSearch.toLowerCase()) ||
+        e.clientName.toLowerCase().includes(estSearch.toLowerCase()) ||
+        e.location.toLowerCase().includes(estSearch.toLowerCase())
+      );
+    });
+  }, [estimates, estSearch]);
 
   return (
     <div className="space-y-6 pb-12">
@@ -406,7 +904,7 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
         <div className="space-y-6">
           {/* Metric Cards Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
-            <Card className="border-border shadow-xs bg-card">
+            <Card className="border-border shadow-xs bg-card cursor-pointer hover:border-accent/40" onClick={() => setTab("projects")}>
               <CardContent className="p-4 flex items-center justify-between">
                 <div>
                   <p className="text-xs font-medium text-muted-foreground">Total Projects</p>
@@ -418,7 +916,7 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
               </CardContent>
             </Card>
 
-            <Card className="border-border shadow-xs bg-card">
+            <Card className="border-border shadow-xs bg-card cursor-pointer hover:border-accent/40" onClick={() => setTab("estimates")}>
               <CardContent className="p-4 flex items-center justify-between">
                 <div>
                   <p className="text-xs font-medium text-muted-foreground">Total Estimates</p>
@@ -430,7 +928,7 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
               </CardContent>
             </Card>
 
-            <Card className="border-border shadow-xs bg-card">
+            <Card className="border-border shadow-xs bg-card cursor-pointer hover:border-accent/40" onClick={() => setTab("materials")}>
               <CardContent className="p-4 flex items-center justify-between">
                 <div>
                   <p className="text-xs font-medium text-muted-foreground">Active Materials</p>
@@ -442,7 +940,7 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
               </CardContent>
             </Card>
 
-            <Card className="border-border shadow-xs bg-card">
+            <Card className="border-border shadow-xs bg-card cursor-pointer hover:border-accent/40" onClick={() => setTab("labour")}>
               <CardContent className="p-4 flex items-center justify-between">
                 <div>
                   <p className="text-xs font-medium text-muted-foreground">Active Labour Trades</p>
@@ -554,6 +1052,14 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
                                 XLS
                               </Button>
                             </a>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => handleDeleteEstimate(est._id, est.estimateNumber)}
+                              className="h-7 text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </Button>
                           </td>
                         </tr>
                       ))}
@@ -1102,15 +1608,26 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
               <CardTitle className="text-base font-bold font-heading">Saved Estimates &amp; Revisions</CardTitle>
               <CardDescription className="text-xs">View, issue, export PDF/Excel, and manage revisions.</CardDescription>
             </div>
-            <Button size="sm" onClick={() => setTab("new")} className="bg-[#0B2A4A] text-white text-xs font-bold gap-1.5">
-              <Plus className="w-4 h-4" /> New Estimate
-            </Button>
+            <div className="flex items-center gap-2">
+              <div className="relative w-48 sm:w-64">
+                <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-muted-foreground" />
+                <Input
+                  placeholder="Search estimates..."
+                  value={estSearch}
+                  onChange={(e) => setEstSearch(e.target.value)}
+                  className="pl-8 h-8 text-xs bg-background"
+                />
+              </div>
+              <Button size="sm" onClick={() => setTab("new")} className="bg-[#0B2A4A] text-white text-xs font-bold gap-1.5 h-8">
+                <Plus className="w-4 h-4" /> New Estimate
+              </Button>
+            </div>
           </CardHeader>
           <CardContent className="p-0">
-            {estimates.length === 0 ? (
+            {filteredEstimates.length === 0 ? (
               <div className="text-center py-16 text-muted-foreground text-xs space-y-2">
                 <FileText className="w-10 h-10 mx-auto opacity-30" />
-                <p>No saved estimates yet.</p>
+                <p>No saved estimates match your criteria.</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
@@ -1129,7 +1646,7 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
-                    {estimates.map((est) => (
+                    {filteredEstimates.map((est) => (
                       <tr key={est._id} className="hover:bg-muted/20 transition-colors">
                         <td className="p-3.5 font-mono font-bold text-accent">{est.estimateNumber}</td>
                         <td className="p-3.5 font-bold text-foreground">{est.projectName}</td>
@@ -1149,7 +1666,7 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
                             {est.status?.toUpperCase()}
                           </Badge>
                         </td>
-                        <td className="p-3.5 text-right space-x-1.5">
+                        <td className="p-3.5 text-right space-x-1">
                           <Button size="sm" variant="ghost" onClick={() => handleViewEstimate(est._id)} className="h-7 text-xs">
                             <Eye className="w-3.5 h-3.5" />
                           </Button>
@@ -1163,6 +1680,15 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
                               XLS
                             </Button>
                           </a>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => handleDeleteEstimate(est._id, est.estimateNumber)}
+                            className="h-7 text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50"
+                            title="Delete Estimate"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </Button>
                         </td>
                       </tr>
                     ))}
@@ -1175,7 +1701,100 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
       )}
 
       {/* ========================================================================= */}
-      {/* 4. MATERIAL RATES TAB */}
+      {/* 4. PROJECTS TAB */}
+      {/* ========================================================================= */}
+      {currentTab === "projects" && (
+        <Card className="border-border shadow-xs bg-card">
+          <CardHeader className="p-5 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <CardTitle className="text-base font-bold font-heading">Client Projects</CardTitle>
+              <CardDescription className="text-xs">Manage engineering projects and client assignments.</CardDescription>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="relative w-48 sm:w-64">
+                <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-muted-foreground" />
+                <Input
+                  placeholder="Search projects..."
+                  value={prjSearch}
+                  onChange={(e) => setPrjSearch(e.target.value)}
+                  className="pl-8 h-8 text-xs bg-background"
+                />
+              </div>
+              <Button size="sm" onClick={handleOpenAddProject} className="bg-[#0B2A4A] text-white text-xs font-bold gap-1.5 h-8">
+                <Plus className="w-4 h-4" /> Add Project
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="p-0">
+            {filteredProjects.length === 0 ? (
+              <div className="text-center py-16 text-muted-foreground text-xs space-y-2">
+                <FolderKanban className="w-10 h-10 mx-auto opacity-30" />
+                <p>No projects match your search.</p>
+                <Button size="sm" onClick={handleOpenAddProject} className="bg-[#0B2A4A] text-white text-xs">
+                  Create First Project
+                </Button>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-xs text-left">
+                  <thead className="bg-muted/40 uppercase font-bold text-[10px] text-muted-foreground border-b border-border">
+                    <tr>
+                      <th className="p-3.5">Project ID</th>
+                      <th className="p-3.5">Project Name</th>
+                      <th className="p-3.5">Client Info</th>
+                      <th className="p-3.5">Location</th>
+                      <th className="p-3.5">Type &amp; Stories</th>
+                      <th className="p-3.5">Estimates</th>
+                      <th className="p-3.5">Status</th>
+                      <th className="p-3.5 text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-border">
+                    {filteredProjects.map((p) => (
+                      <tr key={p._id} className="hover:bg-muted/20 transition-colors">
+                        <td className="p-3.5 font-mono font-bold text-accent">{p.projectId}</td>
+                        <td className="p-3.5 font-bold text-foreground">{p.name}</td>
+                        <td className="p-3.5">
+                          <p className="font-semibold text-foreground">{p.clientName}</p>
+                          <p className="text-[11px] text-muted-foreground">{p.clientPhone || "-"}</p>
+                        </td>
+                        <td className="p-3.5 text-muted-foreground">{p.location}</td>
+                        <td className="p-3.5">
+                          <span>{p.buildingType}</span>
+                          <span className="text-muted-foreground ml-1">({p.estimatedFloors} fl)</span>
+                        </td>
+                        <td className="p-3.5 font-mono font-bold">{p.estimatesCount || 0}</td>
+                        <td className="p-3.5">
+                          <Badge variant="outline" className="text-[10px] capitalize">
+                            {p.status}
+                          </Badge>
+                        </td>
+                        <td className="p-3.5 text-right space-x-1">
+                          <Button size="sm" variant="ghost" onClick={() => handleOpenEditProject(p)} className="h-7 text-xs" title="Edit Project">
+                            <Pencil className="w-3.5 h-3.5 text-accent" />
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => handleDeleteProject(p._id, p.name)}
+                            className="h-7 text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50"
+                            title="Delete Project"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 5. MATERIAL RATES TAB */}
       {/* ========================================================================= */}
       {currentTab === "materials" && (
         <Card className="border-border shadow-xs bg-card">
@@ -1184,9 +1803,30 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
               <CardTitle className="text-base font-bold font-heading">Material Benchmark Rates</CardTitle>
               <CardDescription className="text-xs">Live editable procurement rates in Bangladesh (BDT).</CardDescription>
             </div>
-            <Badge variant="outline" className="text-xs">
-              {materials.length} Materials Recorded
-            </Badge>
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="relative w-40 sm:w-56">
+                <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-muted-foreground" />
+                <Input
+                  placeholder="Search materials..."
+                  value={matSearch}
+                  onChange={(e) => setMatSearch(e.target.value)}
+                  className="pl-8 h-8 text-xs bg-background"
+                />
+              </div>
+              <select
+                value={matCatFilter}
+                onChange={(e) => setMatCatFilter(e.target.value)}
+                className="h-8 rounded-md border border-input bg-background px-2 text-xs"
+              >
+                <option value="All">All Categories</option>
+                {MATERIAL_CATEGORIES.map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+              <Button size="sm" onClick={handleOpenAddMaterial} className="bg-[#0B2A4A] text-white text-xs font-bold gap-1.5 h-8">
+                <Plus className="w-4 h-4" /> Add Material
+              </Button>
+            </div>
           </CardHeader>
           <CardContent className="p-0">
             <div className="overflow-x-auto">
@@ -1199,11 +1839,12 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
                     <th className="p-3.5">Unit</th>
                     <th className="p-3.5">Unit Rate (BDT)</th>
                     <th className="p-3.5">Location</th>
-                    <th className="p-3.5">Status</th>
+                    <th className="p-3.5">Supplier / Note</th>
+                    <th className="p-3.5 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {materials.map((m) => (
+                  {filteredMaterials.map((m) => (
                     <tr key={m._id} className="hover:bg-muted/20">
                       <td className="p-3.5 font-mono font-bold text-accent">{m.code}</td>
                       <td className="p-3.5 font-bold text-foreground">{m.name}</td>
@@ -1211,10 +1852,20 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
                       <td className="p-3.5 font-mono">{m.unit}</td>
                       <td className="p-3.5 font-mono font-bold text-foreground">৳ {m.unitPrice.toLocaleString()}</td>
                       <td className="p-3.5 text-muted-foreground">{m.location}</td>
-                      <td className="p-3.5">
-                        <Badge variant="outline" className="text-[10px] bg-emerald-500/10 text-emerald-600 border-emerald-500/20">
-                          Active
-                        </Badge>
+                      <td className="p-3.5 text-muted-foreground max-w-xs truncate">{m.supplierNote || "-"}</td>
+                      <td className="p-3.5 text-right space-x-1">
+                        <Button size="sm" variant="ghost" onClick={() => handleOpenEditMaterial(m)} className="h-7 text-xs" title="Edit Rate">
+                          <Pencil className="w-3.5 h-3.5 text-accent" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleDeleteMaterial(m._id, m.name)}
+                          className="h-7 text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50"
+                          title="Delete Material"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </Button>
                       </td>
                     </tr>
                   ))}
@@ -1226,7 +1877,7 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
       )}
 
       {/* ========================================================================= */}
-      {/* 5. LABOUR RATES TAB */}
+      {/* 6. LABOUR RATES TAB */}
       {/* ========================================================================= */}
       {currentTab === "labour" && (
         <Card className="border-border shadow-xs bg-card">
@@ -1235,9 +1886,30 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
               <CardTitle className="text-base font-bold font-heading">Labour Rates by Trade</CardTitle>
               <CardDescription className="text-xs">Daily and unit labour charges across Bangladesh construction trades.</CardDescription>
             </div>
-            <Badge variant="outline" className="text-xs">
-              {labour.length} Trades Recorded
-            </Badge>
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="relative w-40 sm:w-56">
+                <Search className="w-3.5 h-3.5 absolute left-3 top-2.5 text-muted-foreground" />
+                <Input
+                  placeholder="Search trades..."
+                  value={labSearch}
+                  onChange={(e) => setLabSearch(e.target.value)}
+                  className="pl-8 h-8 text-xs bg-background"
+                />
+              </div>
+              <select
+                value={labCatFilter}
+                onChange={(e) => setLabCatFilter(e.target.value)}
+                className="h-8 rounded-md border border-input bg-background px-2 text-xs"
+              >
+                <option value="All">All Trades</option>
+                {LABOUR_CATEGORIES.map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+              <Button size="sm" onClick={handleOpenAddLabour} className="bg-[#0B2A4A] text-white text-xs font-bold gap-1.5 h-8">
+                <Plus className="w-4 h-4" /> Add Trade
+              </Button>
+            </div>
           </CardHeader>
           <CardContent className="p-0">
             <div className="overflow-x-auto">
@@ -1250,10 +1922,11 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
                     <th className="p-3.5">Unit</th>
                     <th className="p-3.5">Rate (BDT)</th>
                     <th className="p-3.5">Location</th>
+                    <th className="p-3.5 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  {labour.map((l) => (
+                  {filteredLabour.map((l) => (
                     <tr key={l._id} className="hover:bg-muted/20">
                       <td className="p-3.5 font-mono font-bold text-accent">{l.code}</td>
                       <td className="p-3.5 font-bold text-foreground">{l.tradeName}</td>
@@ -1261,6 +1934,20 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
                       <td className="p-3.5 font-mono">{l.unit}</td>
                       <td className="p-3.5 font-mono font-bold text-foreground">৳ {l.rate.toLocaleString()}</td>
                       <td className="p-3.5 text-muted-foreground">{l.location}</td>
+                      <td className="p-3.5 text-right space-x-1">
+                        <Button size="sm" variant="ghost" onClick={() => handleOpenEditLabour(l)} className="h-7 text-xs" title="Edit Rate">
+                          <Pencil className="w-3.5 h-3.5 text-accent" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleDeleteLabour(l._id, l.tradeName)}
+                          className="h-7 text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50"
+                          title="Delete Labour"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </Button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -1271,13 +1958,18 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
       )}
 
       {/* ========================================================================= */}
-      {/* 6. REGIONAL RATES TAB */}
+      {/* 7. REGIONAL RATES TAB */}
       {/* ========================================================================= */}
       {currentTab === "locations" && (
         <Card className="border-border shadow-xs bg-card">
-          <CardHeader className="p-5 border-b border-border">
-            <CardTitle className="text-base font-bold font-heading">Regional Rate Zones &amp; Multipliers</CardTitle>
-            <CardDescription className="text-xs">Adjust construction cost baseline by location across Bangladesh.</CardDescription>
+          <CardHeader className="p-5 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <CardTitle className="text-base font-bold font-heading">Regional Rate Zones &amp; Multipliers</CardTitle>
+              <CardDescription className="text-xs">Adjust construction cost baseline by location across Bangladesh.</CardDescription>
+            </div>
+            <Button size="sm" onClick={handleOpenAddLocation} className="bg-[#0B2A4A] text-white text-xs font-bold gap-1.5 h-8">
+              <Plus className="w-4 h-4" /> Add Location
+            </Button>
           </CardHeader>
           <CardContent className="p-0">
             <div className="overflow-x-auto">
@@ -1289,6 +1981,7 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
                     <th className="p-3.5">Division / Region</th>
                     <th className="p-3.5">Cost Multiplier</th>
                     <th className="p-3.5">Status</th>
+                    <th className="p-3.5 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
@@ -1303,6 +1996,20 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
                           Active
                         </Badge>
                       </td>
+                      <td className="p-3.5 text-right space-x-1">
+                        <Button size="sm" variant="ghost" onClick={() => handleOpenEditLocation(loc)} className="h-7 text-xs" title="Edit Location">
+                          <Pencil className="w-3.5 h-3.5 text-accent" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => handleDeleteLocation(loc._id, loc.name)}
+                          className="h-7 text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50"
+                          title="Delete Location"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </Button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -1313,7 +2020,7 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
       )}
 
       {/* ========================================================================= */}
-      {/* 7. FILES & REPORTS TAB */}
+      {/* 8. FILES & REPORTS TAB */}
       {/* ========================================================================= */}
       {currentTab === "files" && (
         <Card className="border-border shadow-xs bg-card">
@@ -1338,7 +2045,7 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
                       <th className="p-3.5">Estimate Ref</th>
                       <th className="p-3.5">Size</th>
                       <th className="p-3.5">Date</th>
-                      <th className="p-3.5 text-right">Download</th>
+                      <th className="p-3.5 text-right">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
@@ -1354,12 +2061,21 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
                         <td className="p-3.5 font-mono">{f.estimateNumber || "-"}</td>
                         <td className="p-3.5 font-mono text-muted-foreground">{Math.round(f.sizeBytes / 1024)} KB</td>
                         <td className="p-3.5 text-muted-foreground">{new Date(f.createdAt).toLocaleDateString()}</td>
-                        <td className="p-3.5 text-right">
+                        <td className="p-3.5 text-right space-x-1">
                           <a href={`/api/admin/cost-estimator-pro/files?id=${f.fileId}`} download>
                             <Button size="sm" variant="outline" className="h-7 text-xs gap-1 font-bold">
                               <Download className="w-3.5 h-3.5" /> Download
                             </Button>
                           </a>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => handleDeleteFile(f.fileId, f.filename)}
+                            className="h-7 text-xs text-rose-600 hover:text-rose-700 hover:bg-rose-50"
+                            title="Delete File"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </Button>
                         </td>
                       </tr>
                     ))}
@@ -1372,7 +2088,7 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
       )}
 
       {/* ========================================================================= */}
-      {/* 8. BACKUP & RESTORE TAB */}
+      {/* 9. BACKUP & RESTORE TAB */}
       {/* ========================================================================= */}
       {currentTab === "backup" && (
         <div className="space-y-6 max-w-2xl mx-auto">
@@ -1400,7 +2116,7 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
       )}
 
       {/* ========================================================================= */}
-      {/* 9. SETTINGS TAB */}
+      {/* 10. SETTINGS TAB */}
       {/* ========================================================================= */}
       {currentTab === "settings" && settings && (
         <Card className="border-border shadow-md bg-card max-w-3xl mx-auto">
@@ -1491,6 +2207,380 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
       )}
 
       {/* ========================================================================= */}
+      {/* MATERIAL ADD/EDIT DIALOG */}
+      {/* ========================================================================= */}
+      <Dialog open={materialModalOpen} onOpenChange={setMaterialModalOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-base font-bold font-heading">
+              {editingMaterial ? "Edit Material Rate" : "Add New Material"}
+            </DialogTitle>
+            <DialogDescription className="text-xs">
+              Configure procurement unit price in BDT and classification.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSaveMaterial} className="space-y-3.5 py-2">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <Label className="text-xs font-bold">Code *</Label>
+                <Input
+                  value={materialForm.code}
+                  disabled={!!editingMaterial}
+                  onChange={(e) => setMaterialForm({ ...materialForm, code: e.target.value })}
+                  placeholder="MAT-001"
+                  required
+                />
+              </div>
+              <div className="space-y-1">
+                <Label className="text-xs font-bold">Category *</Label>
+                <select
+                  value={materialForm.category}
+                  onChange={(e) => setMaterialForm({ ...materialForm, category: e.target.value })}
+                  className="w-full h-9 rounded-md border border-input bg-background px-3 text-xs"
+                >
+                  {MATERIAL_CATEGORIES.map((c) => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <Label className="text-xs font-bold">Material Name *</Label>
+              <Input
+                value={materialForm.name}
+                onChange={(e) => setMaterialForm({ ...materialForm, name: e.target.value })}
+                placeholder="e.g. 500W TMT Deformed Rebar"
+                required
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <Label className="text-xs font-bold">Unit *</Label>
+                <Input
+                  value={materialForm.unit}
+                  onChange={(e) => setMaterialForm({ ...materialForm, unit: e.target.value })}
+                  placeholder="e.g. bag, ton, cft, pc, sft"
+                  required
+                />
+              </div>
+              <div className="space-y-1">
+                <Label className="text-xs font-bold">Unit Price (BDT) *</Label>
+                <Input
+                  type="number"
+                  step="0.1"
+                  value={materialForm.unitPrice}
+                  onChange={(e) => setMaterialForm({ ...materialForm, unitPrice: Number(e.target.value) })}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <Label className="text-xs font-bold">Location Scope</Label>
+              <Input
+                value={materialForm.location}
+                onChange={(e) => setMaterialForm({ ...materialForm, location: e.target.value })}
+                placeholder="All / Dhaka / Savar"
+              />
+            </div>
+
+            <div className="space-y-1">
+              <Label className="text-xs font-bold">Supplier or Specification Note</Label>
+              <Input
+                value={materialForm.supplierNote}
+                onChange={(e) => setMaterialForm({ ...materialForm, supplierNote: e.target.value })}
+                placeholder="e.g. BSRM / AKS factory delivery price"
+              />
+            </div>
+
+            <DialogFooter className="pt-3">
+              <Button type="button" variant="outline" onClick={() => setMaterialModalOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" className="bg-[#0B2A4A] text-white font-bold">
+                {editingMaterial ? "Update Material" : "Save Material"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* ========================================================================= */}
+      {/* LABOUR ADD/EDIT DIALOG */}
+      {/* ========================================================================= */}
+      <Dialog open={labourModalOpen} onOpenChange={setLabourModalOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-base font-bold font-heading">
+              {editingLabour ? "Edit Labour Trade" : "Add New Labour Trade"}
+            </DialogTitle>
+            <DialogDescription className="text-xs">
+              Set trade wage rates and category standards.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSaveLabour} className="space-y-3.5 py-2">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <Label className="text-xs font-bold">Code *</Label>
+                <Input
+                  value={labourForm.code}
+                  disabled={!!editingLabour}
+                  onChange={(e) => setLabourForm({ ...labourForm, code: e.target.value })}
+                  placeholder="LAB-001"
+                  required
+                />
+              </div>
+              <div className="space-y-1">
+                <Label className="text-xs font-bold">Category *</Label>
+                <select
+                  value={labourForm.category}
+                  onChange={(e) => setLabourForm({ ...labourForm, category: e.target.value })}
+                  className="w-full h-9 rounded-md border border-input bg-background px-3 text-xs"
+                >
+                  {LABOUR_CATEGORIES.map((c) => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <Label className="text-xs font-bold">Trade Designation *</Label>
+              <Input
+                value={labourForm.tradeName}
+                onChange={(e) => setLabourForm({ ...labourForm, tradeName: e.target.value })}
+                placeholder="e.g. Senior Steel Fixer / Rod Binder"
+                required
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <Label className="text-xs font-bold">Unit *</Label>
+                <Input
+                  value={labourForm.unit}
+                  onChange={(e) => setLabourForm({ ...labourForm, unit: e.target.value })}
+                  placeholder="day / sft / cft"
+                  required
+                />
+              </div>
+              <div className="space-y-1">
+                <Label className="text-xs font-bold">Rate (BDT) *</Label>
+                <Input
+                  type="number"
+                  value={labourForm.rate}
+                  onChange={(e) => setLabourForm({ ...labourForm, rate: Number(e.target.value) })}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <Label className="text-xs font-bold">Location Scope</Label>
+              <Input
+                value={labourForm.location}
+                onChange={(e) => setLabourForm({ ...labourForm, location: e.target.value })}
+                placeholder="All / Dhaka / Savar"
+              />
+            </div>
+
+            <DialogFooter className="pt-3">
+              <Button type="button" variant="outline" onClick={() => setLabourModalOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" className="bg-[#0B2A4A] text-white font-bold">
+                {editingLabour ? "Update Trade" : "Save Trade"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* ========================================================================= */}
+      {/* LOCATION ADD/EDIT DIALOG */}
+      {/* ========================================================================= */}
+      <Dialog open={locationModalOpen} onOpenChange={setLocationModalOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-base font-bold font-heading">
+              {editingLocation ? "Edit Regional Zone" : "Add Regional Zone"}
+            </DialogTitle>
+            <DialogDescription className="text-xs">
+              Configure cost multiplier factors for different districts.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSaveLocation} className="space-y-3.5 py-2">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <Label className="text-xs font-bold">Zone Code *</Label>
+                <Input
+                  value={locationForm.code}
+                  disabled={!!editingLocation}
+                  onChange={(e) => setLocationForm({ ...locationForm, code: e.target.value })}
+                  placeholder="DHK"
+                  required
+                />
+              </div>
+              <div className="space-y-1">
+                <Label className="text-xs font-bold">Cost Multiplier *</Label>
+                <Input
+                  type="number"
+                  step="0.01"
+                  value={locationForm.costMultiplier}
+                  onChange={(e) => setLocationForm({ ...locationForm, costMultiplier: Number(e.target.value) })}
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <Label className="text-xs font-bold">Location Name *</Label>
+              <Input
+                value={locationForm.name}
+                onChange={(e) => setLocationForm({ ...locationForm, name: e.target.value })}
+                placeholder="e.g. Savar Metro & Radio Colony"
+                required
+              />
+            </div>
+
+            <div className="space-y-1">
+              <Label className="text-xs font-bold">Division / Parent Region</Label>
+              <Input
+                value={locationForm.parentRegion}
+                onChange={(e) => setLocationForm({ ...locationForm, parentRegion: e.target.value })}
+                placeholder="Dhaka Division"
+              />
+            </div>
+
+            <DialogFooter className="pt-3">
+              <Button type="button" variant="outline" onClick={() => setLocationModalOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" className="bg-[#0B2A4A] text-white font-bold">
+                {editingLocation ? "Update Location" : "Save Location"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* ========================================================================= */}
+      {/* PROJECT ADD/EDIT DIALOG */}
+      {/* ========================================================================= */}
+      <Dialog open={projectModalOpen} onOpenChange={setProjectModalOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-base font-bold font-heading">
+              {editingProject ? "Edit Project" : "Create New Project"}
+            </DialogTitle>
+            <DialogDescription className="text-xs">
+              Project details, client contact, and building specifications.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleSaveProject} className="space-y-3.5 py-2">
+            <div className="space-y-1">
+              <Label className="text-xs font-bold">Project Title *</Label>
+              <Input
+                value={projectForm.name}
+                onChange={(e) => setProjectForm({ ...projectForm, name: e.target.value })}
+                placeholder="e.g. Green Valley Duplex Villa"
+                required
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <Label className="text-xs font-bold">Client Name *</Label>
+                <Input
+                  value={projectForm.clientName}
+                  onChange={(e) => setProjectForm({ ...projectForm, clientName: e.target.value })}
+                  placeholder="e.g. Alhaj Md. Rashed"
+                  required
+                />
+              </div>
+              <div className="space-y-1">
+                <Label className="text-xs font-bold">Client Phone</Label>
+                <Input
+                  value={projectForm.clientPhone}
+                  onChange={(e) => setProjectForm({ ...projectForm, clientPhone: e.target.value })}
+                  placeholder="017XXXXXXXX"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <Label className="text-xs font-bold">Location</Label>
+                <Input
+                  value={projectForm.location}
+                  onChange={(e) => setProjectForm({ ...projectForm, location: e.target.value })}
+                  placeholder="Savar, Dhaka"
+                />
+              </div>
+              <div className="space-y-1">
+                <Label className="text-xs font-bold">Building Type</Label>
+                <select
+                  value={projectForm.buildingType}
+                  onChange={(e) => setProjectForm({ ...projectForm, buildingType: e.target.value })}
+                  className="w-full h-9 rounded-md border border-input bg-background px-3 text-xs"
+                >
+                  <option value="Residential">Residential Building</option>
+                  <option value="Commercial">Commercial / Market</option>
+                  <option value="Industrial">Industrial Shed / Factory</option>
+                  <option value="Mixed-use">Mixed-Use Commercial</option>
+                  <option value="Duplex Home">Luxury Duplex Villa</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <Label className="text-xs font-bold">Estimated Floors</Label>
+                <Input
+                  type="number"
+                  value={projectForm.estimatedFloors}
+                  onChange={(e) => setProjectForm({ ...projectForm, estimatedFloors: Number(e.target.value) })}
+                />
+              </div>
+              <div className="space-y-1">
+                <Label className="text-xs font-bold">Total Built-up Area (sft)</Label>
+                <Input
+                  type="number"
+                  value={projectForm.totalBuiltUpArea}
+                  onChange={(e) => setProjectForm({ ...projectForm, totalBuiltUpArea: Number(e.target.value) })}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1">
+              <Label className="text-xs font-bold">Project Status</Label>
+              <select
+                value={projectForm.status}
+                onChange={(e) => setProjectForm({ ...projectForm, status: e.target.value })}
+                className="w-full h-9 rounded-md border border-input bg-background px-3 text-xs"
+              >
+                <option value="active">Active</option>
+                <option value="completed">Completed</option>
+                <option value="on-hold">On Hold</option>
+                <option value="archived">Archived</option>
+              </select>
+            </div>
+
+            <DialogFooter className="pt-3">
+              <Button type="button" variant="outline" onClick={() => setProjectModalOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" className="bg-[#0B2A4A] text-white font-bold">
+                {editingProject ? "Update Project" : "Create Project"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* ========================================================================= */}
       {/* VIEW ESTIMATE DETAIL MODAL */}
       {/* ========================================================================= */}
       <Dialog open={viewModalOpen} onOpenChange={setViewModalOpen}>
@@ -1536,25 +2626,36 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
                 </div>
               </div>
 
-              {/* Action Buttons: Issue / Revise */}
-              <div className="flex justify-end gap-2.5">
-                {selectedEstimate.status !== "issued" && (
-                  <Button
-                    size="sm"
-                    onClick={() => handleIssueEstimate(selectedEstimate._id)}
-                    className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs gap-1"
-                  >
-                    <CheckCircle2 className="w-4 h-4" /> Issue Officially (Freeze Baseline)
-                  </Button>
-                )}
+              {/* Action Buttons: Issue / Revise / Delete */}
+              <div className="flex justify-between items-center pt-2">
                 <Button
                   size="sm"
-                  variant="outline"
-                  onClick={() => handleReviseEstimate(selectedEstimate._id)}
-                  className="text-xs font-bold gap-1"
+                  variant="ghost"
+                  onClick={() => handleDeleteEstimate(selectedEstimate._id, selectedEstimate.estimateNumber)}
+                  className="text-rose-600 text-xs font-bold gap-1"
                 >
-                  <Copy className="w-4 h-4" /> Create New Revision
+                  <Trash2 className="w-4 h-4" /> Delete Estimate
                 </Button>
+
+                <div className="flex gap-2.5">
+                  {selectedEstimate.status !== "issued" && (
+                    <Button
+                      size="sm"
+                      onClick={() => handleIssueEstimate(selectedEstimate._id)}
+                      className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs gap-1"
+                    >
+                      <CheckCircle2 className="w-4 h-4" /> Issue Officially (Freeze Baseline)
+                    </Button>
+                  )}
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => handleReviseEstimate(selectedEstimate._id)}
+                    className="text-xs font-bold gap-1"
+                  >
+                    <Copy className="w-4 h-4" /> Create New Revision
+                  </Button>
+                </div>
               </div>
 
               {/* BOQ Table */}

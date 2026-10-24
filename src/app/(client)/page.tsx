@@ -135,7 +135,7 @@ const whyUs = [
   { icon: CheckCircle2, title: "100% Legal Compliance", desc: "All designs adhere to Bangladesh National Building Code (BNBC)." },
   { icon: Clock, title: "On-time Delivery", desc: "We commit to deadlines. 98% of our projects are delivered on schedule." },
   { icon: Users, title: "500+ Happy Clients", desc: "Homeowners and businesses who built their dreams with HF." },
-  { icon: Star, title: "RAJUK Registered", desc: "Officially registered with RAJUK and local municipal authorities." },
+  { icon: Star, title: "Plan Approval Support", desc: "Expert assistance with Paurashava, Union Parishad & municipal clearances." },
   { icon: ShieldCheck, title: "Transparent Pricing", desc: "No hidden charges. Fixed quotation before work begins." },
 ];
 
@@ -186,8 +186,8 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/20 border border-accent/30 text-accent text-sm font-medium mb-8"
           >
-            <ShieldCheck className="w-4 h-4" />
-            RAJUK Registered · Savar, Dhaka
+            <MapPin className="w-4 h-4" />
+            Savar Radio Colony, Dhaka
           </motion.div>
 
           <motion.h1
@@ -440,8 +440,8 @@ export default function HomePage() {
                     <Award className="w-6 h-6 text-primary-foreground" />
                   </div>
                   <div>
-                    <p className="font-bold text-foreground text-sm">RAJUK Registered Firm</p>
-                    <p className="text-xs text-muted-foreground">Officially recognized by local authorities</p>
+                    <p className="font-bold text-foreground text-sm">Professional Engineering Firm</p>
+                    <p className="text-xs text-muted-foreground">Government & municipal compliant design standards</p>
                   </div>
                 </div>
               </div>

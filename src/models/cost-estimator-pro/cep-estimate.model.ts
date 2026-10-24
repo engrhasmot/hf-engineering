@@ -111,6 +111,12 @@ export interface ICEPEstimate extends Document {
   }[];
 
   createdBy: string;
+  shareToken?: string;
+  clientViewCount?: number;
+  clientLastViewedAt?: Date;
+  clientStatus?: "pending" | "viewed" | "accepted" | "revision_requested";
+  clientNotes?: string;
+  clientAcceptedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -259,6 +265,16 @@ const CEPEstimateSchema = new Schema<ICEPEstimate>(
     ],
 
     createdBy: { type: String, default: "admin" },
+    shareToken: { type: String, unique: true, sparse: true },
+    clientViewCount: { type: Number, default: 0 },
+    clientLastViewedAt: { type: Date },
+    clientStatus: {
+      type: String,
+      enum: ["pending", "viewed", "accepted", "revision_requested"],
+      default: "pending",
+    },
+    clientNotes: { type: String, default: "" },
+    clientAcceptedAt: { type: Date },
   },
   { timestamps: true, collection: "cep_estimates" }
 );
@@ -266,6 +282,7 @@ const CEPEstimateSchema = new Schema<ICEPEstimate>(
 CEPEstimateSchema.index({ projectId: 1 });
 CEPEstimateSchema.index({ clientPhone: 1 });
 CEPEstimateSchema.index({ status: 1 });
+CEPEstimateSchema.index({ shareToken: 1 });
 
 export const CEPEstimate: Model<ICEPEstimate> =
   mongoose.models.CEPEstimate || mongoose.model<ICEPEstimate>("CEPEstimate", CEPEstimateSchema);

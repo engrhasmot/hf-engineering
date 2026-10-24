@@ -40,7 +40,9 @@ import {
   ChevronDown,
   Edit,
   Pencil,
-  X
+  X,
+  Share2,
+  MessageSquare
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -1703,20 +1705,71 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
                         <td className="p-3.5 font-mono text-muted-foreground">৳{est.financials?.costPerSqFt || "-"}</td>
                         <td className="p-3.5 font-bold">Rev-{est.revision}</td>
                         <td className="p-3.5">
-                          <Badge
-                            className={`text-[10px] font-bold ${
-                              est.status === "issued"
-                                ? "bg-emerald-500/10 text-emerald-700 border-emerald-500/20"
-                                : "bg-amber-500/10 text-amber-700 border-amber-500/20"
-                            }`}
-                          >
-                            {est.status?.toUpperCase()}
-                          </Badge>
+                          <div className="flex flex-col gap-1">
+                            <Badge
+                              className={`text-[10px] font-bold w-fit ${
+                                est.status === "issued"
+                                  ? "bg-emerald-500/10 text-emerald-700 border-emerald-500/20"
+                                  : "bg-amber-500/10 text-amber-700 border-amber-500/20"
+                              }`}
+                            >
+                              {est.status?.toUpperCase()}
+                            </Badge>
+                            {est.clientStatus === "accepted" ? (
+                              <span className="text-[10px] font-bold text-emerald-600 flex items-center gap-0.5">
+                                <CheckCircle2 className="w-3 h-3" /> Client Accepted
+                              </span>
+                            ) : est.clientStatus === "revision_requested" ? (
+                              <span className="text-[10px] font-bold text-amber-600 flex items-center gap-0.5">
+                                <Clock className="w-3 h-3" /> Revision Req
+                              </span>
+                            ) : est.clientStatus === "viewed" ? (
+                              <span className="text-[10px] text-blue-600 font-medium">
+                                Viewed {est.clientViewCount}x
+                              </span>
+                            ) : (
+                              <span className="text-[10px] text-muted-foreground">Portal Sent</span>
+                            )}
+                          </div>
                         </td>
                         <td className="p-3.5 text-right space-x-1">
-                          <Button size="sm" variant="ghost" onClick={() => handleViewEstimate(est._id)} className="h-7 text-xs">
+                          <Button size="sm" variant="ghost" onClick={() => handleViewEstimate(est._id)} className="h-7 text-xs" title="View Details">
                             <Eye className="w-3.5 h-3.5" />
                           </Button>
+                          {est.shareToken && (
+                            <>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => {
+                                  const url = `${window.location.origin}/view-estimate/${est.shareToken}`;
+                                  navigator.clipboard.writeText(url);
+                                  toast.success("Client Portal link copied!");
+                                }}
+                                className="h-7 text-[11px] px-2 font-bold text-[#0B2A4A] dark:text-[#F2A900] gap-1 cursor-pointer"
+                                title="Copy Client Proposal Link"
+                              >
+                                <Copy className="w-3 h-3" /> Link
+                              </Button>
+                              <a
+                                href={(() => {
+                                  const url = `${typeof window !== "undefined" ? window.location.origin : ""}/view-estimate/${est.shareToken}`;
+                                  const text = encodeURIComponent(
+                                    `Assalamu Alaikum ${est.clientName}, Here is the formal Civil Construction Estimate & BOQ for "${est.projectName}" prepared by HF Design & Engineering Solutions.\n\nTotal Estimated Cost: ৳${Math.round(est.financials?.grandTotalCost || 0).toLocaleString()}\n\nView Proposal Online:\n${url}`
+                                  );
+                                  return est.clientPhone
+                                    ? `https://wa.me/${est.clientPhone.replace(/[^0-9]/g, "")}?text=${text}`
+                                    : `https://wa.me/?text=${text}`;
+                                })()}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                <Button size="sm" variant="outline" className="h-7 text-[11px] px-2 font-bold text-emerald-600 gap-1 cursor-pointer" title="Share via WhatsApp">
+                                  <MessageSquare className="w-3 h-3" /> WA
+                                </Button>
+                              </a>
+                            </>
+                          )}
                           <a href={`/api/admin/cost-estimator-pro/export?format=pdf&estimateId=${est._id}`} download>
                             <Button size="sm" variant="outline" className="h-7 text-[11px] px-2 font-bold text-rose-600 gap-1">
                               PDF
@@ -2769,6 +2822,79 @@ export default function CostEstimatorProWorkspace({ initialTab = "dashboard" }: 
                   <p className="text-lg font-bold text-[#F2A900]">৳ {selectedEstimate.financials?.costPerSqFt} / Sq.Ft</p>
                 </div>
               </div>
+
+              {/* Client Proposal Portal Share Card */}
+              {selectedEstimate.shareToken && (
+                <div className="p-4 bg-muted/40 border border-border rounded-xl space-y-2.5">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-bold flex items-center gap-1.5 text-foreground">
+                      <ShieldCheck className="w-4 h-4 text-emerald-600" /> Client Interactive Portal Link
+                    </span>
+                    <div className="flex items-center gap-2">
+                      {selectedEstimate.clientStatus === "accepted" ? (
+                        <Badge className="bg-emerald-600 text-white text-[10px]">
+                          Accepted on {new Date(selectedEstimate.clientAcceptedAt).toLocaleDateString()}
+                        </Badge>
+                      ) : selectedEstimate.clientStatus === "revision_requested" ? (
+                        <Badge className="bg-amber-600 text-white text-[10px]">Revision Requested</Badge>
+                      ) : selectedEstimate.clientStatus === "viewed" ? (
+                        <Badge className="bg-blue-600 text-white text-[10px]">
+                          Viewed {selectedEstimate.clientViewCount || 1}x
+                        </Badge>
+                      ) : (
+                        <Badge variant="outline" className="text-[10px]">Not Yet Viewed</Badge>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                    <Input
+                      readOnly
+                      value={`${typeof window !== "undefined" ? window.location.origin : ""}/view-estimate/${selectedEstimate.shareToken}`}
+                      className="text-xs h-8 font-mono bg-background flex-1"
+                    />
+                    <div className="flex items-center gap-2 shrink-0">
+                      <Button
+                        size="sm"
+                        onClick={() => {
+                          const url = `${window.location.origin}/view-estimate/${selectedEstimate.shareToken}`;
+                          navigator.clipboard.writeText(url);
+                          toast.success("Client Portal link copied!");
+                        }}
+                        className="bg-[#0B2A4A] text-white text-xs h-8 font-bold gap-1 cursor-pointer"
+                      >
+                        <Copy className="w-3.5 h-3.5" /> Copy Link
+                      </Button>
+                      <a
+                        href={(() => {
+                          const url = `${typeof window !== "undefined" ? window.location.origin : ""}/view-estimate/${selectedEstimate.shareToken}`;
+                          const text = encodeURIComponent(
+                            `Assalamu Alaikum ${selectedEstimate.clientName}, Here is the formal Civil Construction Estimate & BOQ for "${selectedEstimate.projectName}" prepared by HF Design & Engineering Solutions.\n\nTotal Estimated Cost: ৳${Math.round(selectedEstimate.financials?.grandTotalCost || 0).toLocaleString()}\n\nView Proposal Online:\n${url}`
+                          );
+                          return selectedEstimate.clientPhone
+                            ? `https://wa.me/${selectedEstimate.clientPhone.replace(/[^0-9]/g, "")}?text=${text}`
+                            : `https://wa.me/?text=${text}`;
+                        })()}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Button size="sm" variant="outline" className="text-xs h-8 font-bold gap-1 text-emerald-600 border-emerald-500/30 cursor-pointer">
+                          <MessageSquare className="w-3.5 h-3.5" /> WhatsApp
+                        </Button>
+                      </a>
+                      <a
+                        href={`/view-estimate/${selectedEstimate.shareToken}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Button size="sm" variant="outline" className="text-xs h-8 font-bold gap-1 cursor-pointer">
+                          <ExternalLink className="w-3.5 h-3.5" /> Open Portal
+                        </Button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Action Buttons: Issue / Revise / Delete */}
               <div className="flex justify-between items-center pt-2">

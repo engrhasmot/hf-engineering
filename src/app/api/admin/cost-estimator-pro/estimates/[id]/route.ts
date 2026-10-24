@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import crypto from "crypto";
 import dbConnect from "@/lib/db";
 import { checkAdmin } from "@/lib/auth-check";
 import CEPEstimate from "@/models/cost-estimator-pro/cep-estimate.model";
@@ -22,6 +23,11 @@ export async function GET(
 
     if (!estimate) {
       return NextResponse.json({ error: "Estimate not found" }, { status: 404 });
+    }
+
+    if (!estimate.shareToken) {
+      estimate.shareToken = "cep_" + crypto.randomBytes(8).toString("hex");
+      await estimate.save();
     }
 
     return NextResponse.json({ success: true, data: estimate });

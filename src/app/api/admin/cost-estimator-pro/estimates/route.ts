@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import crypto from "crypto";
 import dbConnect from "@/lib/db";
 import { checkAdmin } from "@/lib/auth-check";
 import CEPEstimate from "@/models/cost-estimator-pro/cep-estimate.model";
@@ -33,7 +34,18 @@ export async function GET(req: NextRequest) {
 
     const estimates = await CEPEstimate.find(filter)
       .sort({ createdAt: -1 })
-      .select("estimateNumber projectId projectName clientName clientPhone location revision status isImmutable financials createdAt updatedAt");
+      .select("estimateNumber projectId projectName clientName clientPhone location revision status isImmutable financials shareToken clientStatus clientViewCount clientLastViewedAt clientAcceptedAt createdAt updatedAt");
+
+    // Ensure all estimates have a shareToken for the client portal
+    for (const est of estimates) {
+      if (!est.shareToken) {
+        est.shareToken = "cep_" + crypto.randomBytes(8).toString("hex");
+        await CEPEstimate.updateOne(
+          { _id: est._id },
+          { $set: { shareToken: est.shareToken, clientStatus: est.clientStatus || "pending", clientViewCount: est.clientViewCount || 0 } }
+        );
+      }
+    }
 
     return NextResponse.json({ success: true, data: estimates });
   } catch (err: any) {
@@ -161,6 +173,9 @@ export async function POST(req: NextRequest) {
       notes: body.notes || "",
       formulaVersion: calcOutput.formulaVersion,
       createdBy: admin.email,
+      shareToken: "cep_" + crypto.randomBytes(8).toString("hex"),
+      clientStatus: "pending",
+      clientViewCount: 0,
     });
 
     // If attached to a project, increment count

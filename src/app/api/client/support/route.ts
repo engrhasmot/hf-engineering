@@ -2,11 +2,61 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import dbConnect from "@/lib/db";
 import ClientUser from "@/models/client-user.model";
-import Inquiry from "@/models/inquiry.model";
+import Inquiry, { ServiceType } from "@/models/inquiry.model";
 import { verifyClientToken } from "@/lib/auth";
 import { sendWhatsApp } from "@/lib/whatsapp";
 
 const ADMIN_NOTIFY_WHATSAPP = "+8801778506500";
+
+function mapCategoryToServiceType(cat?: string): ServiceType {
+  if (!cat) return "site-supervision";
+  const c = cat.toLowerCase();
+  if (
+    c.includes("সাইট") ||
+    c.includes("site") ||
+    c.includes("কাস্টিং") ||
+    c.includes("casting") ||
+    c.includes("রড") ||
+    c.includes("supervision") ||
+    c.includes("পরিদর্শন")
+  ) {
+    return "site-supervision";
+  }
+  if (
+    c.includes("ড্রয়িং") ||
+    c.includes("drawing") ||
+    c.includes("নকশা") ||
+    c.includes("2d") ||
+    c.includes("drafting")
+  ) {
+    return "2d-drafting";
+  }
+  if (
+    c.includes("3d") ||
+    c.includes("ইন্টেরিয়র") ||
+    c.includes("interior") ||
+    c.includes("elevation")
+  ) {
+    return "3d-design";
+  }
+  if (
+    c.includes("boq") ||
+    c.includes("এস্টিমেট") ||
+    c.includes("estimate") ||
+    c.includes("বিল")
+  ) {
+    return "boq-estimation";
+  }
+  if (
+    c.includes("প্ল্যান") ||
+    c.includes("অনুমোদন") ||
+    c.includes("passing") ||
+    c.includes("rajuk")
+  ) {
+    return "plan-passing";
+  }
+  return "consultation";
+}
 
 export async function POST(req: Request) {
   try {
@@ -32,13 +82,19 @@ export async function POST(req: Request) {
     await dbConnect();
 
     const clientName = clientUser ? clientUser.name : (body.name || "Client");
-    const clientPhone = contactPhone || (clientUser ? clientUser.phone : body.phone || "");
+    const rawPhone = contactPhone || (clientUser ? clientUser.phone : body.phone || "");
+    // Ensure valid phone for Bangladeshi validation regex: /^(?:\+?880)?\d{10,11}$/
+    const normalizedPhone = rawPhone.replace(/[\s-]/g, "");
+    const clientPhone = /^(?:\+?880)?\d{10,11}$/.test(normalizedPhone) ? rawPhone : (clientUser?.phone || "01778506500");
+
+    const serviceType = mapCategoryToServiceType(category);
 
     const inquiry = await Inquiry.create({
       name: clientName,
       phone: clientPhone,
       email: clientUser?.email || "",
-      service: category || "Client Portal Support",
+      serviceType,
+      source: "website",
       message: `[Client Portal Request - File: ${fileId || "N/A"}]
 বিষয়: ${subject || "সাধারণ অনুসন্ধান"}
 ক্যাটাগরি: ${category || "General"}

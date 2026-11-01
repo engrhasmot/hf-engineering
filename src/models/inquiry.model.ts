@@ -75,6 +75,7 @@ const InquirySchema = new Schema<IInquiry>(
         ],
         message: '{VALUE} is not a valid service type',
       },
+      default: 'consultation',
     },
     message: {
       type: String,

@@ -6,6 +6,16 @@ export interface IPageView extends Document {
   userAgent?: string;
   ip?: string;
   timestamp: Date;
+  // Extended fields (optional — old documents without these are still valid)
+  referrerHost?: string;
+  source?: string;
+  utmSource?: string;
+  country?: string;
+  region?: string;
+  city?: string;
+  device?: string;
+  browser?: string;
+  os?: string;
 }
 
 const PageViewSchema = new Schema<IPageView>(
@@ -20,6 +30,16 @@ const PageViewSchema = new Schema<IPageView>(
     userAgent: { type: String },
     ip: { type: String, index: true },
     timestamp: { type: Date, default: Date.now },
+    // Extended optional fields — no defaults so old docs remain valid
+    referrerHost: { type: String },
+    source:       { type: String },
+    utmSource:    { type: String },
+    country:      { type: String },
+    region:       { type: String },
+    city:         { type: String },
+    device:       { type: String },
+    browser:      { type: String },
+    os:           { type: String },
   },
   { timestamps: false }
 );

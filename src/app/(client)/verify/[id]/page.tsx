@@ -37,9 +37,16 @@ export default function DocumentVerificationPage({
     fetch(`/api/verify/${encodeURIComponent(id)}`)
       .then((res) => res.json())
       .then((json) => {
-        if (json.verified) setData(json);
+        if (json?.verified) {
+          setData(json);
+        } else {
+          setData(null);
+        }
       })
-      .catch((err) => console.error(err))
+      .catch((err) => {
+        console.error("Verification lookup error:", err);
+        setData(null);
+      })
       .finally(() => setLoading(false));
   }, [id]);
 

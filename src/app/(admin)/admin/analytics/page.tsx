@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import {
   Eye, Users, Activity, RefreshCw, Loader2, AlertCircle,
   Globe, Smartphone, Monitor, Tablet, X, TrendingUp, Clock,
-  ToggleLeft, ToggleRight,
+  ToggleLeft, ToggleRight, ExternalLink,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -323,7 +323,7 @@ export default function AdminAnalyticsPage() {
         <Card>
           <CardHeader>
             <CardTitle>পেইজ ভিউ <span className="text-sm font-normal text-muted-foreground ml-2">Page Views</span></CardTitle>
-            <p className="text-xs text-muted-foreground">একটি পেইজে ক্লিক করলে সেই পেইজের ডেটা ফিল্টার হবে</p>
+            <p className="text-xs text-muted-foreground">ফিল্টার আইকনে ক্লিক করলে ফিল্টার হবে · লিংক আইকনে ক্লিক করলে পেইজ খুলবে</p>
           </CardHeader>
           <CardContent>
             {data.topPages.length === 0 ? (
@@ -333,21 +333,46 @@ export default function AdminAnalyticsPage() {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b text-muted-foreground">
-                      <th className="text-left pb-2 font-medium">পেইজ</th>
+                      <th className="text-left pb-2 font-medium">পেইজ / Page URL</th>
                       <th className="text-right pb-2 font-medium w-16">ভিউ</th>
                       <th className="text-right pb-2 font-medium w-20">ভিজিটর</th>
+                      <th className="w-16 pb-2"></th>
                     </tr>
                   </thead>
                   <tbody>
                     {data.topPages.map((p) => (
                       <tr
                         key={p.path}
-                        onClick={() => handlePageClick(p.path)}
-                        className={`border-b cursor-pointer hover:bg-muted/50 transition-colors ${pathFilter === p.path ? "bg-primary/10" : ""}`}
+                        className={`border-b hover:bg-muted/50 transition-colors ${pathFilter === p.path ? "bg-primary/10" : ""}`}
                       >
-                        <td className="py-2 font-mono text-xs truncate max-w-[180px]" title={p.path}>{p.path}</td>
+                        <td className="py-2">
+                          <div className="flex flex-col gap-0.5">
+                            <span
+                              className="font-mono text-xs text-primary cursor-pointer hover:underline truncate max-w-[200px] block"
+                              title={p.path}
+                              onClick={() => handlePageClick(p.path)}
+                            >
+                              {p.path}
+                            </span>
+                            <span className="text-[10px] text-muted-foreground font-normal truncate max-w-[200px]">
+                              https://hf-engineering.vercel.app{p.path}
+                            </span>
+                          </div>
+                        </td>
                         <td className="py-2 text-right tabular-nums">{p.views}</td>
                         <td className="py-2 text-right tabular-nums text-muted-foreground">{p.uniqueVisitors}</td>
+                        <td className="py-2 text-right">
+                          <a
+                            href={`https://hf-engineering.vercel.app${p.path}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary transition-colors px-2 py-1 rounded hover:bg-muted"
+                            title="নতুন ট্যাবে খুলুন"
+                          >
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -542,8 +567,22 @@ export default function AdminAnalyticsPage() {
                       <td className="py-2 text-xs text-muted-foreground whitespace-nowrap">
                         {formatDhakaTime(v.timestamp)}
                       </td>
-                      <td className="py-2 font-mono text-xs max-w-[160px] truncate" title={v.path}>
-                        {v.path}
+                      <td className="py-2 max-w-[200px]">
+                        <div className="flex flex-col gap-0.5">
+                          <a
+                            href={`https://hf-engineering.vercel.app${v.path}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-mono text-xs text-primary hover:underline flex items-center gap-1 truncate"
+                            title={`https://hf-engineering.vercel.app${v.path}`}
+                          >
+                            <span className="truncate">{v.path}</span>
+                            <ExternalLink className="w-3 h-3 flex-shrink-0" />
+                          </a>
+                          <span className="text-[10px] text-muted-foreground truncate">
+                            hf-engineering.vercel.app{v.path}
+                          </span>
+                        </div>
                       </td>
                       <td className="py-2">
                         <span

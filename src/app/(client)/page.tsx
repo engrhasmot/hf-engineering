@@ -511,7 +511,7 @@ export default function HomePage() {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <input
                 type="text"
-                placeholder="Enter File ID (e.g. TH-2026-001)"
+                placeholder="Enter File ID (e.g. HF-20261101-0001)"
                 className="w-full h-14 pl-12 pr-4 rounded-lg bg-background text-foreground focus:ring-2 focus:ring-accent outline-none"
                 value={trackQuery}
                 onChange={(e) => setTrackQuery(e.target.value)}

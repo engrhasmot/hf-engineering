@@ -290,7 +290,7 @@ export default function OnlinePaymentPage() {
                         <Input
                           value={formData.planFileRef}
                           onChange={(e) => setFormData((p) => ({ ...p, planFileRef: e.target.value }))}
-                          placeholder="যেমন: TH-2026-0001"
+                          placeholder="যেমন: HF-20261101-0001"
                         />
                       </div>
                     </div>

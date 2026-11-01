@@ -116,7 +116,7 @@ export default function PlanStatusTracker() {
               </div>
               <Input
                 type="text"
-                placeholder="e.g. TH-2026-0001 or 017..."
+                placeholder="e.g. HF-20261101-0001 or 017..."
                 className="pl-10 h-12 text-lg"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}

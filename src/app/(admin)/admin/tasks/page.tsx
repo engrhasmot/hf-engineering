@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect, useCallback } from 'react';
 import {
@@ -369,7 +369,7 @@ export default function AdminTasksPage() {
                 <Input
                   value={formData.projectRef}
                   onChange={(e) => setFormData((p) => ({ ...p, projectRef: e.target.value }))}
-                  placeholder="e.g. TH-2026-0012"
+                  placeholder="e.g. HF-20261101-0001"
                 />
               </div>
             </div>

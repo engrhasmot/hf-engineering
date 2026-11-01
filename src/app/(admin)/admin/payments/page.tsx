@@ -636,8 +636,8 @@ export default function PaymentsPage() {
                 <Input type="date" value={newForm.dueDate} onChange={e => setNewForm(p => ({ ...p, dueDate: e.target.value }))} />
               </div>
               <div className="space-y-1.5">
-                <Label>Plan File Ref (e.g. TH-2026-0001)</Label>
-                <Input value={newForm.planFileRef} onChange={e => setNewForm(p => ({ ...p, planFileRef: e.target.value }))} placeholder="TH-2026-0001" />
+                <Label>Plan File Ref (e.g. HF-20261101-0001)</Label>
+                <Input value={newForm.planFileRef} onChange={e => setNewForm(p => ({ ...p, planFileRef: e.target.value }))} placeholder="HF-20261101-0001" />
               </div>
             </div>
             <div className="space-y-1.5">

@@ -117,7 +117,7 @@ export async function GET() {
     if (files.length === 0 && payments.length > 0) {
       payments.forEach((p) => {
         projectsWithDetails.push({
-          fileId: p.planFileRef || "TH-PENDING",
+          fileId: p.planFileRef || "HF-PENDING",
           projectTitle: p.projectTitle,
           clientName: p.clientName,
           location: "ঢাকা, বাংলাদেশ",

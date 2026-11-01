@@ -797,7 +797,7 @@ export default function AdminClientsPage() {
                 id="cFiles"
                 value={formData.linkedFilesInput}
                 onChange={(e) => setFormData({ ...formData, linkedFilesInput: e.target.value })}
-                placeholder="যেমন: TH-2026-0001, TH-2026-0002"
+                placeholder="যেমন: HF-20261101-0001, HF-20261101-0002"
                 className="h-9 text-xs font-mono uppercase mt-1"
               />
               <p className="text-[10px] text-muted-foreground mt-1">

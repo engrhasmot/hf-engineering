@@ -16,8 +16,8 @@ export async function GET(req: NextRequest) {
 
     await dbConnect();
 
-    // Standardize query: could be a File ID (TH-...) or phone number
-    const isFileId = /^TH-/i.test(query);
+    // Standardize query: could be a File ID (HF-... or TH-...) or phone number
+    const isFileId = /^(HF|TH)-/i.test(query);
     const cleanPhone = query.replace(/[+\s-]/g, "").replace(/^880/, "0");
 
     let fileQuery: Record<string, any> = {};

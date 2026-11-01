@@ -51,7 +51,11 @@ const COMMON_SERVICES = [
 export default function AdminQuotationsPage() {
   const router = useRouter();
   const [docType, setDocType] = useState<"quotation" | "bill">("quotation");
-  const [docNumber, setDocNumber] = useState(`TH-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`);
+  const [docNumber, setDocNumber] = useState(() => {
+    const d = new Date();
+    const ds = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`;
+    return `HF-${ds}-${Math.floor(1000 + Math.random() * 9000)}`;
+  });
   const [date, setDate] = useState(() => new Date().toISOString().split("T")[0]);
 
   // Client Details

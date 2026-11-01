@@ -1008,7 +1008,7 @@ export default function ClientPortalPage() {
                     <div className="space-y-1.5">
                       <label className="text-xs font-bold text-foreground">প্রজেক্ট / ফাইল রেফারেন্স</label>
                       <Input
-                        placeholder="যেমন: TH-2026-0001"
+                        placeholder="যেমন: HF-20261101-0001"
                         value={supportFileId}
                         onChange={(e) => setSupportFileId(e.target.value)}
                         className="h-11 rounded-xl text-xs sm:text-sm"
@@ -1137,7 +1137,7 @@ export default function ClientPortalPage() {
                     <div className="space-y-1.5">
                       <label className="text-xs font-bold text-foreground">ফাইল নম্বর (File ID)</label>
                       <Input
-                        placeholder="যেমন: TH-2026-0002"
+                        placeholder="যেমন: HF-20261101-0002"
                         value={linkNewFileId}
                         onChange={(e) => setLinkNewFileId(e.target.value)}
                         className="h-11 rounded-xl text-xs sm:text-sm uppercase font-mono"
@@ -1527,7 +1527,7 @@ export default function ClientPortalPage() {
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-foreground">প্রজেক্ট ফাইল আইডি (ঐচ্ছিক)</label>
                     <Input
-                      placeholder="যেমন: TH-2026-0001"
+                      placeholder="যেমন: HF-20261101-0001"
                       value={regFileId}
                       onChange={(e) => setRegFileId(e.target.value)}
                       className="h-11 rounded-xl text-sm uppercase font-mono"
@@ -1576,7 +1576,7 @@ export default function ClientPortalPage() {
                 <Search className="w-5 h-5 absolute left-3.5 top-3 text-muted-foreground" />
                 <Input
                   className="pl-11 h-12 bg-background text-sm sm:text-base rounded-xl shadow-sm border-2 focus-visible:ring-accent"
-                  placeholder="যেমন: 01711... বা TH-2026-0001"
+                  placeholder="যেমন: 01711... বা HF-20261101-0001"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />

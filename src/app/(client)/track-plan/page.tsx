@@ -404,7 +404,7 @@ function TrackPlanContent() {
           <Search className="w-6 h-6 text-muted-foreground ml-4" />
           <input 
             type="text" 
-            placeholder="File ID (e.g. TH-2026-001) অথবা ফোন নম্বর" 
+            placeholder="File ID (e.g. HF-20261101-0001) অথবা ফোন নম্বর" 
             className="flex-grow h-14 bg-transparent border-none focus:ring-0 px-4 text-lg outline-none text-foreground"
             value={query}
             onChange={(e) => setQuery(e.target.value)}

@@ -51,7 +51,7 @@ export default function VerifyIndexPage() {
                   <FileCheck className="w-5 h-5 absolute left-3.5 top-3.5 text-muted-foreground" />
                   <Input
                     className="pl-11 h-12 text-base font-mono uppercase tracking-wide bg-background"
-                    placeholder="যেমন: TH-2026-0001 বা REC-20260908"
+                    placeholder="যেমন: HF-20261101-0001 বা REC-20260908"
                     value={docId}
                     onChange={(e) => setDocId(e.target.value)}
                     required

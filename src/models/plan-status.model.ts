@@ -184,22 +184,28 @@ const PlanStatusSchema = new Schema<IPlanStatus>(
   }
 );
 
-// Auto-generate fileId if not provided
+// Auto-generate fileId if not provided (Format: HF-YYYYMMDD-XXXX)
 PlanStatusSchema.pre('validate', async function (next) {
   if (!this.fileId) {
-    const year = new Date().getFullYear();
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const dateStr = `${year}${month}${day}`;
+
     const last = (await mongoose.models.PlanStatus.findOne({
-      fileId: new RegExp(`^TH-${year}-`),
+      fileId: new RegExp(`^HF-${dateStr}-`),
     })
       .sort({ fileId: -1 })
       .select('fileId')
       .lean()) as { fileId: string } | null;
+
     let nextNum = 1;
-    if (last) {
+    if (last && last.fileId) {
       const match = last.fileId.match(/-(\d+)$/);
       if (match) nextNum = parseInt(match[1], 10) + 1;
     }
-    this.fileId = `TH-${year}-${String(nextNum).padStart(4, '0')}`;
+    this.fileId = `HF-${dateStr}-${String(nextNum).padStart(4, '0')}`;
   }
   next();
 });

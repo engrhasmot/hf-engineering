@@ -73,7 +73,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { subject, category, message, fileId, preferredDate, contactPhone } = body;
+    const { subject, category, message, fileId, preferredDate, contactPhone, serviceType: rawServiceType } = body;
 
     if (!message?.trim()) {
       return NextResponse.json({ error: "আপনার বার্তা বা অনুরোধটি লিখুন" }, { status: 400 });
@@ -87,7 +87,7 @@ export async function POST(req: Request) {
     const normalizedPhone = rawPhone.replace(/[\s-]/g, "");
     const clientPhone = /^(?:\+?880)?\d{10,11}$/.test(normalizedPhone) ? rawPhone : (clientUser?.phone || "01778506500");
 
-    const serviceType = mapCategoryToServiceType(category);
+    const serviceType = rawServiceType || mapCategoryToServiceType(category) || "site-supervision";
 
     const inquiry = await Inquiry.create({
       name: clientName,

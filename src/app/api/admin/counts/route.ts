@@ -1,4 +1,4 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/db";
 import Inquiry from "@/models/inquiry.model";
 import Appointment from "@/models/appointment.model";
@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
     const [newInquiries, pendingAppointments, pendingWorkOrders, pendingTestimonials] =
       await Promise.all([
         Inquiry.countDocuments({ status: "new" }),
-        Appointment.countDocuments({ status: "pending" }),
+        Appointment.countDocuments({ status: "pending", appointmentType: "site-visit" }),
         WorkOrder.countDocuments({ status: "pending" }),
         Testimonial.countDocuments({ isActive: false }),
       ]);

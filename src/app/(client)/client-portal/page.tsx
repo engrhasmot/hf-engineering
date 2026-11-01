@@ -347,6 +347,7 @@ export default function ClientPortalPage() {
         body: JSON.stringify({
           subject: supportSubject || supportCategory,
           category: supportCategory,
+          serviceType: "site-supervision",
           message: supportMessage,
           fileId: supportFileId,
           preferredDate: supportPreferredDate,

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createHash } from 'crypto';
 import dbConnect from '@/lib/db';
 import PageView from '@/models/pageview.model';
+import ClientUser from '@/models/client-user.model';
+import { verifyToken, verifyClientToken } from '@/lib/auth';
 
 // ── Bot / crawler detection ────────────────────────────────────────────────
 const BOT_PATTERNS = [
@@ -136,17 +138,36 @@ export async function POST(req: NextRequest) {
   try {
     const ua = req.headers.get('user-agent') || '';
 
-    // Skip bots
+    // 1. Skip bots / link previewers
     if (isBot(ua)) {
-      return NextResponse.json({ success: true });
+      return NextResponse.json({ success: true, skipped: 'bot' });
     }
 
-    const body = await req.json();
-    const { referrer, referrerHost: clientReferrerHost, utmSource } = body as {
+    // 2. Admin visit filter: do not track admin's own activity
+    const adminToken = req.cookies.get('admin_token')?.value;
+    if (adminToken) {
+      try {
+        const adminSession = await verifyToken(adminToken);
+        if (adminSession) {
+          return NextResponse.json({ success: true, skipped: 'admin' });
+        }
+      } catch {
+        // proceed if invalid
+      }
+    }
+
+    const body = await req.json().catch(() => ({}));
+    const {
+      referrer,
+      referrerHost: clientReferrerHost,
+      utmSource,
+      visitorId,
+    } = body as {
       path?: string;
       referrer?: string;
       referrerHost?: string;
       utmSource?: string;
+      visitorId?: string;
     };
 
     // Validate and clean path
@@ -168,31 +189,56 @@ export async function POST(req: NextRequest) {
       rawPath.startsWith('/api') ||
       rawPath.startsWith('/_next')
     ) {
-      return NextResponse.json({ success: true });
+      return NextResponse.json({ success: true, skipped: 'ignored_path' });
     }
 
-    // IP hash (privacy — never store raw IP)
+    // IP address resolution: real IP stored for admin visitor logs (purged by 60d TTL)
     const ipRaw =
       req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
       req.headers.get('x-real-ip') ||
       '127.0.0.1';
     const ipHash = createHash('sha256').update(ipRaw).digest('hex');
 
-    // Geo from Vercel headers (empty locally — that's fine)
+    // Geo from Vercel headers
     const country = req.headers.get('x-vercel-ip-country') || '';
     const region = req.headers.get('x-vercel-ip-country-region') || '';
     const cityEncoded = req.headers.get('x-vercel-ip-city') || '';
     let city = '';
     try { city = cityEncoded ? decodeURIComponent(cityEncoded) : ''; } catch { city = cityEncoded; }
 
-    // Resolve referrer host
+    // Resolve referrer host & traffic source
     const referrerHost = clientReferrerHost || extractHost(referrer || '');
-
-    // Classify source
     const source = classifySource(referrerHost, utmSource || '');
 
     // Parse UA
     const { device, browser, os } = parseUserAgent(ua);
+
+    // 3. Registered client check via client_token cookie
+    let userId: string | undefined;
+    let userName: string | undefined;
+    let userPhone: string | undefined;
+    let userClientId: string | undefined;
+
+    const clientToken = req.cookies.get('client_token')?.value;
+    if (clientToken) {
+      try {
+        const payload = await verifyClientToken(clientToken);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const candidateId = payload ? ((payload as any).clientId || (payload as any).id || (payload as any)._id) : null;
+        if (candidateId) {
+          await dbConnect();
+          const client = await ClientUser.findById(candidateId).select('name phone clientId isActive').lean();
+          if (client && client.isActive) {
+            userId = client._id.toString();
+            userName = client.name || '';
+            userPhone = client.phone || '';
+            userClientId = client.clientId || '';
+          }
+        }
+      } catch {
+        // treat as guest if token fails
+      }
+    }
 
     await dbConnect();
     await PageView.create({
@@ -200,6 +246,12 @@ export async function POST(req: NextRequest) {
       referrer: referrer || '',
       userAgent: ua,
       ip: ipHash,
+      ipRaw,
+      visitorId: visitorId || '',
+      userId: userId || undefined,
+      userName: userName || undefined,
+      userPhone: userPhone || undefined,
+      userClientId: userClientId || undefined,
       timestamp: new Date(),
       referrerHost,
       source,

@@ -16,6 +16,24 @@ function extractHost(referrer: string): string {
   }
 }
 
+function getOrCreateVisitorId(): string {
+  if (typeof window === "undefined" || typeof localStorage === "undefined") return "";
+  try {
+    let vid = localStorage.getItem("hf_vid");
+    if (!vid) {
+      if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+        vid = crypto.randomUUID();
+      } else {
+        vid = "vid_" + Math.random().toString(36).slice(2) + Date.now().toString(36);
+      }
+      localStorage.setItem("hf_vid", vid);
+    }
+    return vid;
+  } catch {
+    return "";
+  }
+}
+
 // ── Component ──────────────────────────────────────────────────────────────
 export default function AnalyticsTracker() {
   const pathname = usePathname();
@@ -55,14 +73,15 @@ export default function AnalyticsTracker() {
         sessionStorage.setItem("hf_prev_path", pathname);
       }
 
-      // ── UTM source ────────────────────────────────────────────────────
+      // ── UTM source & Persistent Visitor ID ────────────────────────────
       const utmSource = new URLSearchParams(window.location.search).get("utm_source") || "";
+      const visitorId = getOrCreateVisitorId();
 
       // ── Send to API ───────────────────────────────────────────────────
       fetch("/api/analytics/track", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ path: pathname, referrer, referrerHost, utmSource }),
+        body: JSON.stringify({ path: pathname, referrer, referrerHost, utmSource, visitorId }),
       }).catch(() => {});
     }, 300);
 

@@ -51,191 +51,6 @@ interface ProjectItem {
   featured?: boolean;
 }
 
-/* ─── Curated Showcase Projects for Rich Display ─── */
-const CURATED_PROJECTS: ProjectItem[] = [
-  {
-    _id: "c1",
-    title: "Modern Duplex Residence",
-    category: "3d-exterior",
-    location: "Savar Radio Colony, Dhaka",
-    area: "3,850",
-    stories: "Duplex (G+1)",
-    client: "Dr. K. Rahman",
-    description: "A contemporary duplex villa featuring expansive double-height glass glazing, cantilevered balconies, natural stone cladding, and lush rooftop gardening. Designed strictly compliant with local setback rules.",
-    images: [
-      { url: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1000&auto=format&fit=crop", alt: "Modern Duplex Residence 3D Exterior" },
-      { url: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1000&auto=format&fit=crop", alt: "Side elevation" },
-    ],
-    tags: ["Revit 3D", "Photorealistic Lumion", "Setback Compliant", "Modern Villa"],
-    featured: true,
-  },
-  {
-    _id: "c2",
-    title: "6-Story Mixed-Use Commercial & Residential Tower",
-    category: "3d-exterior",
-    location: "Dhanmondi, Dhaka",
-    area: "14,200",
-    stories: "G+5 (6-Storied)",
-    client: "Haque Properties Ltd.",
-    description: "Ground and 1st floor retail showroom with 4 floors of luxury 3-BHK residential apartments. Features underground parking, dual elevators, emergency fire exit stairs, and RAJUK FAR approval compliance.",
-    images: [
-      { url: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=1000&auto=format&fit=crop", alt: "Commercial Complex Exterior" },
-    ],
-    tags: ["RAJUK Approved", "FAR Compliant", "Commercial Facade", "Fire Safety"],
-    featured: true,
-  },
-  {
-    _id: "c3",
-    title: "Complete 2D Architectural & Structural Plan Passing Sheet",
-    category: "2d-plan",
-    location: "Noyabari, Savar",
-    area: "4,600",
-    stories: "G+4 (5-Storied)",
-    client: "Al-Haj Rafiqul Islam",
-    description: "Detailed AutoCAD architectural floor layout, column-beam schedule, footing depth calculations, electrical/plumbing drafts, and municipal approval certification sheets with engineer signing.",
-    images: [
-      { url: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=1000&auto=format&fit=crop", alt: "2D Architectural Working Drawing" },
-    ],
-    tags: ["AutoCAD 2024", "Paurashava Approved", "Column Layout", "Plumbing Draft"],
-    featured: true,
-  },
-  {
-    _id: "c4",
-    title: "Luxury Penthouse Living & Dining Interior",
-    category: "3d-interior",
-    location: "Sector 11, Uttara, Dhaka",
-    area: "2,400",
-    stories: "Penthouse Floor",
-    client: "Engr. Tanvir Ahmed",
-    description: "High-end contemporary interior featuring concealed warm LED ceiling profiles, Italian marble flooring, custom acoustic fluted wall paneling, and an integrated modular open island kitchen.",
-    images: [
-      { url: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1000&auto=format&fit=crop", alt: "Luxury Living Room Interior" },
-    ],
-    tags: ["Luxury Interior", "3D Walkthrough", "Modular Kitchen", "Acoustic Panels"],
-    featured: true,
-  },
-  {
-    _id: "c5",
-    title: "Mat Foundation & Column Casting Supervision",
-    category: "construction",
-    location: "Zirabo, Ashulia, Dhaka",
-    area: "5,200",
-    stories: "G+6 Under Construction",
-    client: "Master Textile Ltd.",
-    description: "On-site quality audit ensuring proper 72.5 grade rod binding spacing, cover blocks, concrete slump test verification, and ultrasonic cement ratio compliance during heavy foundation pouring.",
-    images: [
-      { url: "https://images.unsplash.com/photo-1504307651254-35680f356f12?q=80&w=1000&auto=format&fit=crop", alt: "Foundation Casting Supervision" },
-    ],
-    tags: ["Site Supervision", "Concrete Slump Test", "Mat Foundation", "Rod Inspection"],
-    featured: true,
-  },
-  {
-    _id: "c6",
-    title: "Eco-Friendly Suburban Family Residence",
-    category: "3d-exterior",
-    location: "Hemayetpur, Savar",
-    area: "3,200",
-    stories: "G+2 (3-Storied)",
-    client: "Mustafizur Rahman",
-    description: "Designed for natural cross-ventilation and maximum daylight. Incorporates terracotta brick jali louvers, rainwater harvesting, solar panel roof racks, and a serene courtyard garden.",
-    images: [
-      { url: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1000&auto=format&fit=crop", alt: "Suburban Residence Elevation" },
-    ],
-    tags: ["Green Architecture", "Eco-friendly", "Terracotta Jali", "Cross-Ventilation"],
-    featured: false,
-  },
-  {
-    _id: "c7",
-    title: "Structural Seismic Reinforcement Plan",
-    category: "2d-plan",
-    location: "Gazipur Chowrasta",
-    area: "8,500",
-    stories: "G+7 Industrial Complex",
-    client: "Apex Manufacturing",
-    description: "Full ETABS structural finite element analysis for earthquake zone-3 resilience. Detail working drawings for shear walls, retrofitting beams, and deep pile cap foundations according to BNBC 2020.",
-    images: [
-      { url: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=1000&auto=format&fit=crop", alt: "Structural Engineering Blueprint" },
-    ],
-    tags: ["BNBC 2020", "ETABS Analysis", "Earthquake Safe", "Pile Foundation"],
-    featured: false,
-  },
-  {
-    _id: "c8",
-    title: "Master Suite & Minimalist Bedroom Design",
-    category: "3d-interior",
-    location: "Mirpur DOHS, Dhaka",
-    area: "850",
-    stories: "Master Bedroom Suite",
-    client: "Brig. Gen. (Retd.) Tariq",
-    description: "Scandinavian minimalist interior styling with natural oak timber veneer, walk-in vanity closet, soundproof insulated windows, and smart home automated scene lighting.",
-    images: [
-      { url: "https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=1000&auto=format&fit=crop", alt: "Master Suite Interior Design" },
-    ],
-    tags: ["Minimalist", "Smart Lighting", "Walk-in Closet", "Oak Wood"],
-    featured: false,
-  },
-  {
-    _id: "c9",
-    title: "Roof Slab Concrete Pouring & QC Inspection",
-    category: "construction",
-    location: "Bypile, Ashulia",
-    area: "3,600",
-    stories: "4th Floor Roof Slab",
-    client: "Md. Shahinur Alam",
-    description: "Comprehensive site engineering visit during 5-inch thick RCC roof slab casting. Verified negative reinforcement steel chair spacing, electrical conduit placement, and vibrator compaction.",
-    images: [
-      { url: "https://images.unsplash.com/photo-1541888086925-920a0eb56a11?q=80&w=1000&auto=format&fit=crop", alt: "Roof Slab Casting Site" },
-    ],
-    tags: ["Roof Casting", "RCC Slab", "Electrical Conduits", "Quality Control"],
-    featured: false,
-  },
-  {
-    _id: "c10",
-    title: "Modern Minimalist Commercial Office Interior",
-    category: "3d-interior",
-    location: "Gulshan-1, Dhaka",
-    area: "3,500",
-    stories: "Full Commercial Floor",
-    client: "TechVista Solutions",
-    description: "Open-plan corporate workspace with acoustic ceiling baffles, private executive cabins, 16-seat conference room, glass partitions, and ergonomic breakout lounge.",
-    images: [
-      { url: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1000&auto=format&fit=crop", alt: "Commercial Office Interior" },
-    ],
-    tags: ["Corporate Interior", "Conference Room", "Acoustic Ceilings", "Ergonomic"],
-    featured: false,
-  },
-  {
-    _id: "c11",
-    title: "Municipal Approval & Soil Test File Compilation",
-    category: "2d-plan",
-    location: "Dhamrai Paurashava",
-    area: "4,200",
-    stories: "G+3 Residential",
-    client: "Md. Harun-ur-Rashid",
-    description: "Standard municipal plan passing package including 3 bore-hole soil investigation SPT N-value report, structural integrity certificate, setback clearance map, and ownership chain documentation.",
-    images: [
-      { url: "https://images.unsplash.com/photo-1568992687947-868a62a9f521?q=80&w=1000&auto=format&fit=crop", alt: "Municipal Approval Documents" },
-    ],
-    tags: ["Soil Test Report", "Municipal Approval", "SPT N-value", "Setback Clearance"],
-    featured: false,
-  },
-  {
-    _id: "c12",
-    title: "Corner Plot Triple-Facade Apartment Complex",
-    category: "3d-exterior",
-    location: "Radio Colony, Savar",
-    area: "9,600",
-    stories: "G+6 (7-Storied)",
-    client: "Engr. Hasmot Ali Portfolio",
-    description: "Designed for a prominent road corner plot in Savar with three ventilated street-facing facades. Maximizes rental floor plate efficiency while maintaining aesthetic vertical louvers and rooftop community zone.",
-    images: [
-      { url: "https://images.unsplash.com/photo-1577495508048-b635879837f1?q=80&w=1000&auto=format&fit=crop", alt: "Corner Plot Apartment 3D Exterior" },
-    ],
-    tags: ["Corner Plot", "Triple Facade", "Community Roof", "Rental Yield"],
-    featured: true,
-  },
-];
-
 const CATEGORIES = [
   { slug: "All", name: "All Projects", icon: Compass },
   { slug: "3d-exterior", name: "3D Exterior", icon: Building2 },
@@ -250,35 +65,46 @@ export default function PortfolioPage() {
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
+  const [liveStats, setLiveStats] = useState({
+    projectsPlanned: "0",
+    legalApprovals: "0",
+    projectsCompleted: "0",
+  });
 
   useEffect(() => {
+    let active = true;
     const fetchProjects = async () => {
       try {
-        const res = await fetch("/api/projects");
-        const json = await res.json();
-        if (json.success && Array.isArray(json.data)) {
-          setDbProjects(json.data);
+        const [projRes, statsRes] = await Promise.all([
+          fetch("/api/projects"),
+          fetch("/api/stats"),
+        ]);
+        const projJson = await projRes.json();
+        if (active && projJson.success && Array.isArray(projJson.data)) {
+          setDbProjects(projJson.data);
+        }
+        const statsJson = await statsRes.json();
+        if (active && statsJson.success && statsJson.stats) {
+          setLiveStats({
+            projectsPlanned: String(statsJson.stats.projectsPlanned ?? 0),
+            legalApprovals: String(statsJson.stats.legalApprovals ?? 0),
+            projectsCompleted: String(statsJson.stats.projectsCompleted ?? 0),
+          });
         }
       } catch (err) {
         console.error("Failed to load DB portfolio:", err);
       } finally {
-        setLoading(false);
+        if (active) setLoading(false);
       }
     };
     fetchProjects();
+    return () => {
+      active = false;
+    };
   }, []);
 
-  // Merge DB projects with curated showcase so gallery is always rich and complete
-  const allProjects = useMemo(() => {
-    const dbIds = new Set(dbProjects.map((p) => p._id));
-    const combined = [...dbProjects];
-    for (const cp of CURATED_PROJECTS) {
-      if (!dbIds.has(cp._id)) {
-        combined.push(cp);
-      }
-    }
-    return combined;
-  }, [dbProjects]);
+  // 100% Real Database Projects
+  const allProjects = dbProjects;
 
   // Compute counts per category
   const categoryCounts = useMemo(() => {
@@ -329,7 +155,9 @@ export default function PortfolioPage() {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/20 border border-accent/30 text-accent text-xs md:text-sm font-semibold mb-6"
           >
             <Sparkles className="w-4 h-4" />
-            800+ Structures Planned, Designed & Supervised
+            {parseInt(liveStats.projectsPlanned, 10) > 0
+              ? `${liveStats.projectsPlanned}+ Structures Planned, Designed & Supervised`
+              : "Structures Planned, Designed & Supervised"}
           </motion.div>
 
           <motion.h1
@@ -359,10 +187,22 @@ export default function PortfolioPage() {
             className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto"
           >
             {[
-              { val: "800+", label: "Total Plans", sub: "Designed & Drafted" },
-              { val: "500+", label: "Approvals", sub: "RAJUK & Paurashava" },
-              { val: "200+", label: "3D Renders", sub: "Exterior & Walkthroughs" },
-              { val: "100%", label: "BNBC Safe", sub: "Earthquake Resilient" },
+              {
+                val: parseInt(liveStats.projectsPlanned, 10) > 0 ? `${liveStats.projectsPlanned}+` : `${allProjects.length}+`,
+                label: "Total Plans",
+                sub: "Designed & Drafted",
+              },
+              {
+                val: parseInt(liveStats.legalApprovals, 10) > 0 ? `${liveStats.legalApprovals}+` : "Approvals",
+                label: "Legal Approvals",
+                sub: "RAJUK & Paurashava",
+              },
+              {
+                val: `${allProjects.length}+`,
+                label: "Live Projects",
+                sub: "In Portfolio Database",
+              },
+              { val: "Certified", label: "Structural Safety", sub: "Load & Wind Resilient" },
             ].map((stat, i) => (
               <div
                 key={i}

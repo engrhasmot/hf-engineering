@@ -10,7 +10,6 @@ import {
   Phone,
   Globe,
   User,
-  Calculator,
   ChevronDown,
   Building2,
   Search,
@@ -143,14 +142,13 @@ export default function Navbar() {
             <Link
               href="/cost-estimator"
               prefetch={true}
-              className={`px-3 py-2 text-sm font-semibold transition-colors hover:text-accent rounded-lg hover:bg-secondary/70 flex items-center gap-1.5 ${
+              className={`px-3 py-2 text-sm font-semibold transition-colors hover:text-accent rounded-lg hover:bg-secondary/70 ${
                 pathname === "/cost-estimator"
                   ? "text-accent bg-secondary/50 font-bold"
                   : "text-foreground"
               }`}
             >
-              <Calculator className="w-3.5 h-3.5 text-accent" />
-              <span>{t("nav.costEstimator")}</span>
+              {t("nav.costEstimator")}
             </Link>
 
             {/* About dropdown (About + Team) */}
@@ -386,10 +384,7 @@ export default function Navbar() {
                       : "text-foreground hover:bg-secondary"
                   }`}
                 >
-                  <span className="flex items-center gap-2">
-                    <Calculator className="w-4 h-4 text-accent" />
-                    {t("nav.costEstimator")}
-                  </span>
+                  <span>{t("nav.costEstimator")}</span>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-accent/20 text-accent">
                     {isBn ? "জনপ্রিয়" : "Popular"}
                   </span>

@@ -156,7 +156,7 @@ export default function BookAppointmentPage() {
                       ইঞ্জিনিয়ার মোঃ হাসমত আলী
                     </h3>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      B.Sc. in Civil Engineering · ১০+ বছরের অভিজ্ঞতা
+                      Diploma in Civil Engineering · ১০+ বছরের অভিজ্ঞতা
                     </p>
                   </div>
                 </div>

@@ -300,7 +300,7 @@ export function AboutLeadership() {
               <div className="space-y-3 text-xs text-primary-foreground/80">
                 <div className="flex items-center gap-2.5">
                   <Award className="w-4 h-4 text-accent shrink-0" />
-                  <span>B.Sc. in Civil Engineering</span>
+                  <span>Diploma in Civil Engineering</span>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <ShieldCheck className="w-4 h-4 text-accent shrink-0" />
@@ -454,79 +454,6 @@ export function AboutWhyChoose() {
   );
 }
 
-export function AboutTimeline() {
-  const milestones = [
-    {
-      year: "2016",
-      title: "HF Engineering Established",
-      desc: "Began journey in Savar, Dhaka providing AutoCAD architectural plans and municipal approval consultancy.",
-    },
-    {
-      year: "2019",
-      title: "200+ Building Plans Passed",
-      desc: "Crossed milestone of 200 legally approved residential and semi-commercial buildings across Savar and Dhaka.",
-    },
-    {
-      year: "2022",
-      title: "3D Photorealistic Rendering",
-      desc: "Introduced Lumion & Revit 3D exterior and interior walkthroughs for client visualization before foundation work.",
-    },
-    {
-      year: "2024",
-      title: "Online Digital Systems",
-      desc: "Launched digital Plan Tracking portal and instant BOQ cost estimation tool for seamless client accessibility.",
-    },
-    {
-      year: "2026",
-      title: "800+ Structures Supervised",
-      desc: "Now recognized as one of the most reliable engineering consultancy firms in Savar with a 98% client satisfaction rate.",
-    },
-  ];
-
-  return (
-    <section className="py-24 bg-muted/30 border-t border-border">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="inline-flex items-center gap-2 text-accent font-bold text-xs uppercase tracking-widest mb-3">
-            <span className="h-px w-8 bg-accent" />
-            Our Journey
-          </span>
-          <h2 className="text-3xl md:text-5xl font-bold font-heading mb-4">
-            A Decade of Growth & Trust
-          </h2>
-          <p className="text-muted-foreground">
-            A timeline of dedication, precision engineering, and sustained client satisfaction.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 relative">
-          {milestones.map((m, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="bg-card p-6 rounded-2xl border border-border relative text-center flex flex-col justify-between"
-            >
-              <div>
-                <span className="inline-block px-3 py-1 rounded-full bg-accent/15 text-accent font-black text-sm font-heading mb-3">
-                  {m.year}
-                </span>
-                <h4 className="font-bold text-foreground text-base mb-2">
-                  {m.title}
-                </h4>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  {m.desc}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
 export function AboutCTA({ children }: { children?: React.ReactNode }) {
   return (

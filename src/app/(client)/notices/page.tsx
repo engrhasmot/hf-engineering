@@ -53,7 +53,7 @@ const DEFAULT_NOTICES: NoticeItem[] = [
     priority: "important",
     isPinned: true,
     publishedAt: "2026-10-20T10:00:00.000Z",
-    author: "ইঞ্জিনিয়ার মোঃ হাসমত আলী (B.Sc. Engr, IEB M-38530)",
+    author: "ইঞ্জিনিয়ার মোঃ হাসমত আলী (Diploma in Civil Engineer)",
     createdAt: "2026-10-20T10:00:00.000Z",
   },
   {

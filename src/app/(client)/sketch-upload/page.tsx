@@ -162,7 +162,7 @@ export default function SketchUploadPage() {
           </h1>
           <p className="text-muted-foreground text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
             কাগজে হাতে আঁকা জমির মাপের ছবি তুলুন অথবা জমির দাগ/পরিমাপ লিখে জমা দিন। আমাদের প্রধান পরামর্শক{" "}
-            <strong className="text-foreground">ইঞ্জিনিয়ার মোঃ হাসমত আলী (B.Sc. Civil Engr, IEB M-38530)</strong> সরাসরি খসড়া ফ্লোর প্ল্যান পর্যালোচনা করবেন।
+            <strong className="text-foreground">ইঞ্জিনিয়ার মোঃ হাসমত আলী (Diploma in Civil Engineer)</strong> সরাসরি খসড়া ফ্লোর প্ল্যান পর্যালোচনা করবেন।
           </p>
         </div>
 

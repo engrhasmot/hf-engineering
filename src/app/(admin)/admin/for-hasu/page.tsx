@@ -370,7 +370,7 @@ export default function ForHasuMasterPage() {
 
   // WhatsApp Share master function
   const shareCalculationOnWhatsApp = () => {
-    let text = `*এইচএফ ইঞ্জিনিয়ারিং কনসালটেন্সি*\n*ইঞ্জিনিয়ার মোঃ হাসমত আলী (AUST)*\n\n`;
+    let text = `*এইচএফ ইঞ্জিনিয়ারিং কনসালটেন্সি*\n*ইঞ্জিনিয়ার মোঃ হাসমত আলী (Diploma in Civil Engineer)*\n\n`;
 
     if (activeTab === 'land-far') {
       text += `📐 *জমি পরিমাপ ও রাজউক FAR রিপোর্ট:*\n• জমির পরিমাণ: ${landValue} ${landUnit} (${Math.round(landInSqft)} sft / ${landInKatha.toFixed(2)} কাঠা)\n• রাস্তার মাপ: ${roadWidth} ফুট\n• অনুমোদনযোগ্য FAR: ${farCalculation.far}\n• সর্বোচ্চ গ্রাউন্ড কভারেজ: ${farCalculation.mgcPercent}%\n• মোট অনুমোদনযোগ্য ফ্লোর স্পেস: ${Math.round(farCalculation.totalPermissibleFloorAreaSqft)} sft\n• সম্ভাব্য তলা: ~${farCalculation.estimatedFloors} তলা\n`;

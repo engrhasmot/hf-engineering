@@ -250,7 +250,7 @@ export function generateEstimatePDF(estimate: ICEPEstimate): Buffer {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
   doc.text("Engr. Md. Hasmot Ali", signX, currentY + 5);
-  doc.text("B.Sc. Civil Engr, IEB M-38530", signX, currentY + 9);
+  doc.text("Diploma in Civil Engineer", signX, currentY + 9);
   doc.text("Chief Consultant, HF Engineering", signX, currentY + 13);
 
   const arrayBuffer = doc.output("arraybuffer");

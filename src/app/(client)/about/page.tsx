@@ -5,7 +5,6 @@ import {
   AboutStory,
   AboutLeadership,
   AboutWhyChoose,
-  AboutTimeline,
   AboutCTA,
 } from "./AboutContent";
 import type { Metadata } from "next";
@@ -30,7 +29,6 @@ export default function AboutPage() {
       <AboutStory />
       <AboutLeadership />
       <AboutWhyChoose />
-      <AboutTimeline />
       <AboutCTA>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Link href="/book-appointment">

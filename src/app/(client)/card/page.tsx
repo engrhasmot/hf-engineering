@@ -82,7 +82,7 @@ export default function DigitalCardPage() {
       "EMAIL;TYPE=WORK,INTERNET:info@hfengineeringbd.com",
       "URL;TYPE=WORK:https://hfengineeringbd.com",
       "ADR;TYPE=WORK,POSTAL,PARCEL:;;Aysha Monjil, House 14/05, Ward 01, Noyabari;Savar Radio Colony;Dhaka;1340;Bangladesh",
-      "NOTE:Civil Engineer (B.Sc. in Civil Engineering) | Structural Designer, BNBC Standard Detailing, Architectural 2D/3D Design, Soil Investigation, BOQ Estimation & Municipal Plan Approval in Savar, Dhaka.",
+      "NOTE:Civil Engineer (Diploma in Civil Engineering) | Structural Designer, BNBC Standard Detailing, Architectural 2D/3D Design, Soil Investigation, BOQ Estimation & Municipal Plan Approval in Savar, Dhaka.",
       "END:VCARD",
     ].join("\r\n");
 
@@ -299,7 +299,7 @@ export default function DigitalCardPage() {
                   Founder & Principal Structural Consultant
                 </p>
                 <p className="text-[10px] sm:text-xs text-slate-300 font-medium mt-1 flex items-center gap-1.5">
-                  <span>B.Sc. in Civil Engineering</span>
+                  <span>Diploma in Civil Engineering</span>
                   <span className="text-slate-500">·</span>
                   <span>BNBC 2020 Compliant Structural Designer</span>
                 </p>

@@ -329,8 +329,9 @@ export default function FaqPage() {
     fetch("/api/stats")
       .then((res) => res.json())
       .then((data) => {
-        if (data && typeof data.projectsPlanned === "number") {
-          setLiveStats({ projectsPlanned: data.projectsPlanned });
+        const s = data?.stats || data;
+        if (s && typeof s.projectsPlanned === "number") {
+          setLiveStats({ projectsPlanned: s.projectsPlanned });
         }
       })
       .catch(() => {});

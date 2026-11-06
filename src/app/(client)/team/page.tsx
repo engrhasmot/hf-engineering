@@ -184,8 +184,9 @@ export default function TeamPage() {
     fetch("/api/stats")
       .then((r) => r.json())
       .then((d) => {
-        if (d && typeof d.legalApprovals === "number") {
-          setLiveStats({ legalApprovals: d.legalApprovals });
+        const s = d?.stats || d;
+        if (s && typeof s.legalApprovals === "number") {
+          setLiveStats({ legalApprovals: s.legalApprovals });
         }
       })
       .catch(() => {});

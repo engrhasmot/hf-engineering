@@ -1,5 +1,7 @@
 "use client";
 
+import { useState, useEffect } from "react";
+
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -27,6 +29,33 @@ import { Button } from "@/components/ui/button";
 import { SITE_CONFIG } from "@/lib/constants";
 
 export function AboutHero() {
+  const [liveStats, setLiveStats] = useState({
+    projectsPlanned: "0",
+    legalApprovals: "0",
+  });
+
+  useEffect(() => {
+    let active = true;
+    async function loadStats() {
+      try {
+        const res = await fetch("/api/stats");
+        const json = await res.json();
+        if (active && json?.success && json?.stats) {
+          setLiveStats({
+            projectsPlanned: String(json.stats.projectsPlanned ?? 0),
+            legalApprovals: String(json.stats.legalApprovals ?? 0),
+          });
+        }
+      } catch (err) {
+        console.error("Failed to load live stats:", err);
+      }
+    }
+    loadStats();
+    return () => {
+      active = false;
+    };
+  }, []);
+
   return (
     <section className="relative bg-primary pt-32 pb-24 text-center px-4 overflow-hidden">
       {/* Background blueprint grid */}
@@ -77,8 +106,16 @@ export function AboutHero() {
         >
           {[
             { value: "10+", label: "Years Experience", sub: "Serving Greater Dhaka" },
-            { value: "800+", label: "Projects Planned", sub: "Residential & Commercial" },
-            { value: "500+", label: "Legal Approvals", sub: "RAJUK & Paurashava" },
+            {
+              value: parseInt(liveStats.projectsPlanned, 10) > 0 ? `${liveStats.projectsPlanned}+` : "0+",
+              label: "Projects Planned",
+              sub: "Residential & Commercial",
+            },
+            {
+              value: parseInt(liveStats.legalApprovals, 10) > 0 ? `${liveStats.legalApprovals}+` : "0+",
+              label: "Legal Approvals",
+              sub: "RAJUK & Paurashava",
+            },
             { value: "Certified", label: "Structural Safety", sub: "Load & Wind Resilient" },
           ].map((stat, i) => (
             <div

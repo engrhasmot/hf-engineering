@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import {
@@ -129,14 +129,55 @@ const services = [
   },
 ];
 
-const stats = [
-  { icon: Users, value: "500+", label: "Happy Clients" },
-  { icon: Building2, value: "800+", label: "Projects Completed" },
-  { icon: Star, value: "10+", label: "Years Experience" },
-  { icon: Clock, value: "98%", label: "On-time Delivery" },
-];
+// Stats are loaded dynamically from /api/stats inside ServicesHero
 
 export function ServicesHero() {
+  const [liveStats, setLiveStats] = useState({
+    happyClients: "0",
+    projectsCompleted: "0",
+    yearsExperience: "10",
+    onTimeDelivery: "98",
+  });
+
+  useEffect(() => {
+    let active = true;
+    async function loadStats() {
+      try {
+        const res = await fetch("/api/stats");
+        const json = await res.json();
+        if (active && json?.success && json?.stats) {
+          setLiveStats({
+            happyClients: String(json.stats.happyClients ?? 0),
+            projectsCompleted: String(json.stats.projectsCompleted ?? 0),
+            yearsExperience: "10",
+            onTimeDelivery: String(json.stats.onTimeDelivery ?? 98),
+          });
+        }
+      } catch (err) {
+        console.error("Failed to load live stats:", err);
+      }
+    }
+    loadStats();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const stats = [
+    {
+      icon: Users,
+      value: parseInt(liveStats.happyClients, 10) > 0 ? `${liveStats.happyClients}+` : "0+",
+      label: "Happy Clients",
+    },
+    {
+      icon: Building2,
+      value: parseInt(liveStats.projectsCompleted, 10) > 0 ? `${liveStats.projectsCompleted}+` : "0+",
+      label: "Projects Completed",
+    },
+    { icon: Star, value: "10+", label: "Years Experience" },
+    { icon: Clock, value: `${liveStats.onTimeDelivery}%`, label: "On-time Delivery" },
+  ];
+
   return (
     <section className="bg-primary pt-32 pb-24 text-center px-4 relative overflow-hidden">
       {/* Background Pattern */}

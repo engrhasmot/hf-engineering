@@ -300,7 +300,7 @@ export function AboutLeadership() {
               <div className="space-y-3 text-xs text-primary-foreground/80">
                 <div className="flex items-center gap-2.5">
                   <Award className="w-4 h-4 text-accent shrink-0" />
-                  <span>Diploma in Civil Engineering</span>
+                  <span>Diploma in Civil Engineer</span>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <ShieldCheck className="w-4 h-4 text-accent shrink-0" />

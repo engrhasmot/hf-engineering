@@ -86,7 +86,7 @@ const DEFAULT_MEMBERS: TeamMember[] = [
     _id: "asraful-islam",
     name: "Engr. Md. Asraful Islam",
     designation: "Senior Civil Engineer & GIS Specialist",
-    bio: "Diploma in Civil Engineering and certified GIS & ArcGIS Specialist with extensive field experience in geospatial analysis, topographical mapping, digital land surveying, and municipal civil engineering projects. Skilled in transforming complex spatial data into accurate, constructible boundary drawings and structural grading layouts.",
+    bio: "B.Sc. in Civil Engineering and certified GIS & ArcGIS Specialist with extensive field experience in geospatial analysis, topographical mapping, digital land surveying, and municipal civil engineering projects. Skilled in transforming complex spatial data into accurate, constructible boundary drawings and structural grading layouts.",
     image: {
       url: "https://res.cloudinary.com/fcpqnule/image/upload/v1789671844/triple-h/uploads/gkfrh2ifjhpl4mudyzmb.png",
       publicId: "triple-h/uploads/gkfrh2ifjhpl4mudyzmb",
@@ -148,6 +148,7 @@ export default function TeamPage() {
   const [members, setMembers] = useState<TeamMember[]>(DEFAULT_MEMBERS);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState<TeamMember | null>(null);
+  const [liveStats, setLiveStats] = useState<{ legalApprovals: number } | null>(null);
 
   useEffect(() => {
     fetch("/api/team")
@@ -176,6 +177,18 @@ export default function TeamPage() {
         // Fallback to DEFAULT_MEMBERS smoothly
       })
       .finally(() => setLoading(false));
+  }, []);
+
+  // Fetch live stats for hero badge
+  useEffect(() => {
+    fetch("/api/stats")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d && typeof d.legalApprovals === "number") {
+          setLiveStats({ legalApprovals: d.legalApprovals });
+        }
+      })
+      .catch(() => {});
   }, []);
 
   return (
@@ -243,7 +256,7 @@ export default function TeamPage() {
             </span>
             <span className="flex items-center gap-1.5 bg-white/10 px-3.5 py-1.5 rounded-full border border-white/15">
               <Building2 className="w-4 h-4 text-accent" />
-              ৫০০+ সফল অনুমোদিত প্রজেক্ট
+              {liveStats ? `${liveStats.legalApprovals}+` : "৫০০+"} সফল অনুমোদিত প্রজেক্ট
             </span>
           </motion.div>
         </div>

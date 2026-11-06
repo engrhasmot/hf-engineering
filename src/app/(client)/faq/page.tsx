@@ -289,6 +289,7 @@ export default function FaqPage() {
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [search, setSearch] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [liveStats, setLiveStats] = useState<{ projectsPlanned: number } | null>(null);
 
   // Fetch dynamic FAQs from DB and merge seamlessly
   useEffect(() => {
@@ -321,6 +322,18 @@ export default function FaqPage() {
       .catch(() => {
         // Fallback gracefully to default FAQs
       });
+  }, []);
+
+  // Fetch live stats
+  useEffect(() => {
+    fetch("/api/stats")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && typeof data.projectsPlanned === "number") {
+          setLiveStats({ projectsPlanned: data.projectsPlanned });
+        }
+      })
+      .catch(() => {});
   }, []);
 
   // Filter items by category and search keyword
@@ -486,12 +499,12 @@ export default function FaqPage() {
               <p className="text-xs sm:text-sm text-muted-foreground font-medium mt-0.5">সাভার ও ঢাকায় অভিজ্ঞতা</p>
             </div>
             <div className="pt-2 md:pt-0">
-              <p className="text-2xl sm:text-3xl font-extrabold font-heading text-accent">৫০০+ প্ল্যান</p>
+              <p className="text-2xl sm:text-3xl font-extrabold font-heading text-accent">{liveStats ? `${liveStats.projectsPlanned}+` : "৫০০+"} প্ল্যান</p>
               <p className="text-xs sm:text-sm text-muted-foreground font-medium mt-0.5">সফল ডিজাইন ও পাস</p>
             </div>
             <div className="pt-2 md:pt-0">
-              <p className="text-2xl sm:text-3xl font-extrabold font-heading text-primary">১০০% BNBC</p>
-              <p className="text-xs sm:text-sm text-muted-foreground font-medium mt-0.5">কোড অনুযায়ী স্ট্রাকচার</p>
+              <p className="text-2xl sm:text-3xl font-extrabold font-heading text-primary">Certified</p>
+              <p className="text-xs sm:text-sm text-muted-foreground font-medium mt-0.5">স্ট্রাকচারাল সেফটি নিশ্চিত</p>
             </div>
             <div className="pt-2 md:pt-0">
               <p className="text-2xl sm:text-3xl font-extrabold font-heading text-emerald-600">ফ্রি কনসালটেশন</p>

@@ -79,7 +79,7 @@ export function AboutHero() {
             { value: "10+", label: "Years Experience", sub: "Serving Greater Dhaka" },
             { value: "800+", label: "Projects Planned", sub: "Residential & Commercial" },
             { value: "500+", label: "Legal Approvals", sub: "RAJUK & Paurashava" },
-            { value: "100%", label: "BNBC Compliance", sub: "Earthquake & Wind Safe" },
+            { value: "Certified", label: "Structural Safety", sub: "Load & Wind Resilient" },
           ].map((stat, i) => (
             <div
               key={i}
@@ -346,8 +346,8 @@ export function AboutWhyChoose() {
     },
     {
       icon: ShieldCheck,
-      title: "BNBC Code & Earthquake Resilience",
-      desc: "Every column, beam, and footing is designed strictly following Bangladesh National Building Code (BNBC) seismic and wind standards.",
+      title: "Structural Safety & Building Standards",
+      desc: "Every column, beam, and footing is engineered with precision following safety standards, structural load analysis, and seismic guidelines.",
     },
     {
       icon: FileCheck2,

@@ -130,11 +130,15 @@ const processSteps = [
   { step: "04", title: "Site Supervision", desc: "Engineers visit your site to ensure quality construction throughout." },
 ];
 
-const whyUs = [
+const baseWhyUs = [
   { icon: Award, title: "10+ Years Experience", desc: "A decade of trusted engineering solutions across Savar and Dhaka." },
-  { icon: CheckCircle2, title: "100% Legal Compliance", desc: "All designs adhere to Bangladesh National Building Code (BNBC)." },
+  {
+    icon: CheckCircle2,
+    title: "Structural Safety & Building Standards",
+    desc: "Engineered for structural durability and safety, properly aligned with relevant building codes and municipal approval standards.",
+  },
   { icon: Clock, title: "On-time Delivery", desc: "We commit to deadlines. 98% of our projects are delivered on schedule." },
-  { icon: Users, title: "500+ Happy Clients", desc: "Homeowners and businesses who built their dreams with HF." },
+  { icon: Users, title: "Happy Clients", desc: "Homeowners and businesses who built their dreams with HF." },
   { icon: Star, title: "Plan Approval Support", desc: "Expert assistance with Paurashava, Union Parishad & municipal clearances." },
   { icon: ShieldCheck, title: "Transparent Pricing", desc: "No hidden charges. Fixed quotation before work begins." },
 ];
@@ -142,6 +146,45 @@ const whyUs = [
 export default function HomePage() {
   const router = useRouter();
   const [trackQuery, setTrackQuery] = useState("");
+  const [stats, setStats] = useState({
+    happyClients: "0",
+    projectsCompleted: "0",
+    yearsExperience: "10",
+    clientSatisfaction: "100",
+    hasLoaded: false,
+  });
+
+  useEffect(() => {
+    let active = true;
+    async function loadStats() {
+      try {
+        const res = await fetch("/api/stats");
+        const json = await res.json();
+        if (active && json?.success && json?.stats) {
+          setStats({
+            happyClients: String(json.stats.happyClients ?? 0),
+            projectsCompleted: String(json.stats.projectsCompleted ?? 0),
+            yearsExperience: "10",
+            clientSatisfaction: "100",
+            hasLoaded: true,
+          });
+        }
+      } catch (err) {
+        console.error("Failed to load live stats:", err);
+      }
+    }
+    loadStats();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const whyUs = baseWhyUs.map((item) => {
+    if (item.title === "Happy Clients" && stats.hasLoaded && parseInt(stats.happyClients, 10) > 0) {
+      return { ...item, title: `${stats.happyClients}+ Happy Clients` };
+    }
+    return item;
+  });
 
   const handleTrack = (e: React.FormEvent) => {
     e.preventDefault();
@@ -277,10 +320,30 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="glass-panel rounded-2xl p-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center shadow-xl">
             {[
-              { num: "500", label: "Happy Clients", suffix: "+" },
-              { num: "800", label: "Projects Completed", suffix: "+" },
-              { num: "10", label: "Years Experience", suffix: "+" },
-              { num: "100", label: "Client Satisfaction", suffix: "%" },
+              {
+                num: stats.happyClients,
+                label: "Happy Clients",
+                suffix: "+",
+                href: "/client-portal",
+              },
+              {
+                num: stats.projectsCompleted,
+                label: "Projects Completed",
+                suffix: "+",
+                href: "/portfolio",
+              },
+              {
+                num: "10",
+                label: "Years Experience",
+                suffix: "+",
+                href: "/about",
+              },
+              {
+                num: "100",
+                label: "Client Satisfaction",
+                suffix: "%",
+                href: "/#testimonials",
+              },
             ].map((stat, i) => (
               <motion.div
                 key={i}
@@ -288,14 +351,16 @@ export default function HomePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="space-y-2"
+                className="space-y-2 group"
               >
-                <h3 className="text-4xl font-extrabold text-accent">
-                  <AnimatedCounter value={stat.num} suffix={stat.suffix} />
-                </h3>
-                <p className="text-sm text-muted-foreground uppercase tracking-wider font-semibold">
-                  {stat.label}
-                </p>
+                <Link href={stat.href} className="block transition-transform group-hover:scale-105">
+                  <h3 className="text-4xl font-extrabold text-accent">
+                    <AnimatedCounter value={stat.num} suffix={stat.suffix} />
+                  </h3>
+                  <p className="text-sm text-muted-foreground uppercase tracking-wider font-semibold group-hover:text-foreground transition-colors">
+                    {stat.label}
+                  </p>
+                </Link>
               </motion.div>
             ))}
           </div>

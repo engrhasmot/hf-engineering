@@ -15,16 +15,78 @@ import {
   CreditCard,
   ShieldCheck,
   Building2,
-  Bell,
-  HelpCircle,
   BookOpen,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/context/LanguageContext";
 import { SITE_CONFIG } from "@/lib/constants";
 import WhatsAppIcon from "@/components/shared/WhatsAppIcon";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const { locale } = useLanguage();
+  const isBn = locale === "bn";
+
+  const services = isBn
+    ? [
+        { label: "2D আর্কিটেকচারাল নকশা", href: "/services#2d-plan" },
+        { label: "3D এক্সটেরিয়র ও ইন্টেরিয়র", href: "/services#3d-design" },
+        { label: "স্ট্রাকচারাল ও BNBC ডিজাইন", href: "/services#2d-plan" },
+        { label: "পৌরসভা ও ইউনিয়ন প্ল্যান পাস", href: "/services#plan-passing" },
+        { label: "সাইট সুপারভিশন ও ঢালাই পরীক্ষা", href: "/services#supervision" },
+        { label: "নির্মাণ খরচ প্রাক্কলন (BOQ)", href: "/services#boq" },
+        { label: "ডিজিটাল সয়েল টেস্ট ও সার্ভে", href: "/services" },
+      ]
+    : [
+        { label: "2D Architectural Drafting", href: "/services#2d-plan" },
+        { label: "3D Exterior & Interior Design", href: "/services#3d-design" },
+        { label: "Structural & BNBC Analysis", href: "/services#2d-plan" },
+        { label: "Municipal & RAJUK Approvals", href: "/services#plan-passing" },
+        { label: "Site Supervision & Casting QC", href: "/services#supervision" },
+        { label: "BOQ & Construction Costing", href: "/services#boq" },
+        { label: "Digital Soil Test & Land Survey", href: "/services" },
+      ];
+
+  const clientTools = isBn
+    ? [
+        { label: "নকশা পাঠান (ফ্রি কোটেশন)", href: "/sketch-upload", icon: UploadCloud },
+        { label: "কনস্ট্রাকশন খরচ ক্যালকুলেটর", href: "/cost-estimator", icon: Calculator },
+        { label: "প্ল্যান অনুমোদন ট্র্যাকিং", href: "/track-plan", icon: Search },
+        { label: "ক্লায়েন্ট পোর্টাল লগইন", href: "/client-portal", icon: FileCheck2 },
+        { label: "অ্যাপয়েন্টমেন্ট ও সাইট ভিজিট", href: "/book-appointment", icon: Calendar },
+        { label: "অনলাইন ফি পেমেন্ট", href: "/pay", icon: CreditCard },
+        { label: "অনুমোদিত প্ল্যান ও ডকুমেন্ট যাচাই", href: "/verify", icon: ShieldCheck },
+      ]
+    : [
+        { label: "Send Floor Sketch (Free Quote)", href: "/sketch-upload", icon: UploadCloud },
+        { label: "Construction Cost Estimator", href: "/cost-estimator", icon: Calculator },
+        { label: "Track Plan Approval Status", href: "/track-plan", icon: Search },
+        { label: "Client Portal Login", href: "/client-portal", icon: FileCheck2 },
+        { label: "Book Appointment & Site Visit", href: "/book-appointment", icon: Calendar },
+        { label: "Pay Online (Bill/Fee)", href: "/pay", icon: CreditCard },
+        { label: "Verify Approved Plan & Docs", href: "/verify", icon: ShieldCheck },
+      ];
+
+  const resources = isBn
+    ? [
+        { label: "প্রতিষ্ঠান পরিচিতি (About Us)", href: "/about" },
+        { label: "আমাদের ইঞ্জিনিয়ার প্যানেল (Our Team)", href: "/team" },
+        { label: "সম্পূর্ণ প্রজেক্ট গ্যালারি (Portfolio)", href: "/portfolio" },
+        { label: "পৌরসভা প্ল্যান অনুমোদন গাইড", href: "/approval-guide" },
+        { label: "অফিসিয়াল নোটিশ বোর্ড", href: "/notices" },
+        { label: "সাধারণ জিজ্ঞাসা ও প্রশ্নোত্তর (FAQ)", href: "/faq" },
+        { label: "ইঞ্জিনিয়ারিং ব্লগ ও টিপস", href: "/blog" },
+        { label: "যোগাযোগ ও সরাসরি অফিস ভিজিট", href: "/contact" },
+      ]
+    : [
+        { label: "About Our Firm", href: "/about" },
+        { label: "Engineering Team & Leadership", href: "/team" },
+        { label: "Completed Projects Gallery", href: "/portfolio" },
+        { label: "Plan Approval Guide & Checklist", href: "/approval-guide" },
+        { label: "Official Notice Board", href: "/notices" },
+        { label: "Frequently Asked Questions (FAQ)", href: "/faq" },
+        { label: "Engineering Blog & Insights", href: "/blog" },
+        { label: "Office Location & Contact", href: "/contact" },
+      ];
 
   return (
     <footer className="bg-primary text-primary-foreground pt-16 pb-8 border-t border-primary/20">
@@ -43,24 +105,28 @@ export default function Footer() {
               />
             </Link>
             <p className="text-sm font-semibold text-accent">
-              পরিকল্পিত নকশা, নিরাপদ নির্মাণ।
+              {isBn ? "পরিকল্পিত নকশা, নিরাপদ নির্মাণ।" : "Planned Design, Safe Construction."}
             </p>
             <p className="text-xs text-primary-foreground/80 leading-relaxed">
-              সাভার ও বৃহত্তর ঢাকায় আধুনিক আর্কিটেকচারাল নকশা, স্ট্রাকচারাল এনালাইসিস, পৌরসভা প্ল্যান পাস এবং সাইট সুপারভিশনের নির্ভরযোগ্য বিশ্বস্ত প্রতিষ্ঠান।
+              {isBn
+                ? "সাভার ও বৃহত্তর ঢাকায় আধুনিক আর্কিটেকচারাল নকশা, স্ট্রাকচারাল এনালাইসিস, পৌরসভা প্ল্যান পাস এবং সাইট সুপারভিশনের নির্ভরযোগ্য বিশ্বস্ত প্রতিষ্ঠান।"
+                : "Trusted civil engineering firm in Savar & Greater Dhaka providing architectural drafting, BNBC structural analysis, municipal approvals, and on-site quality supervision."}
             </p>
 
             {/* Quick Contact Buttons */}
             <div className="flex flex-wrap gap-2 pt-2">
               <a
                 href={`https://wa.me/${SITE_CONFIG.whatsapp}?text=${encodeURIComponent(
-                  "আসসালামু আলাইকুম, আমি বিল্ডিং ডিজাইন ও প্ল্যান সংক্রান্ত তথ্য জানতে চাই।"
+                  isBn
+                    ? "আসসালামু আলাইকুম, আমি বিল্ডিং ডিজাইন ও প্ল্যান সংক্রান্ত তথ্য জানতে চাই।"
+                    : "Hello HF Engineering, I would like to inquire about building design and plan consultancy."
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-colors shadow-xs"
               >
                 <WhatsAppIcon className="w-3.5 h-3.5" />
-                <span>WhatsApp চ্যাট</span>
+                <span>{isBn ? "WhatsApp চ্যাট" : "WhatsApp Chat"}</span>
               </a>
               <a
                 href="tel:01778506500"
@@ -101,18 +167,10 @@ export default function Footer() {
           <div>
             <h3 className="text-base font-bold mb-5 font-heading text-accent flex items-center gap-2">
               <Building2 className="w-4 h-4 text-accent" />
-              আমাদের সেবাসমূহ
+              {isBn ? "আমাদের সেবাসমূহ" : "Core Services"}
             </h3>
             <ul className="space-y-2.5">
-              {[
-                { label: "2D আর্কিটেকচারাল নকশা", href: "/services#2d-plan" },
-                { label: "3D এক্সটেরিয়র ও ইন্টেরিয়র", href: "/services#3d-design" },
-                { label: "স্ট্রাকচারাল ও BNBC ডিজাইন", href: "/services#2d-plan" },
-                { label: "পৌরসভা ও ইউনিয়ন প্ল্যান পাস", href: "/services#plan-passing" },
-                { label: "সাইট সুপারভিশন ও ঢালাই পরীক্ষা", href: "/services#supervision" },
-                { label: "নির্মাণ খরচ প্রাক্কলন (BOQ)", href: "/services#boq" },
-                { label: "ডিজিটাল সয়েল টেস্ট ও সার্ভে", href: "/services" },
-              ].map((service) => (
+              {services.map((service) => (
                 <li key={service.label}>
                   <Link
                     href={service.href}
@@ -131,46 +189,10 @@ export default function Footer() {
           <div>
             <h3 className="text-base font-bold mb-5 font-heading text-accent flex items-center gap-2">
               <Search className="w-4 h-4 text-accent" />
-              ক্লায়েন্ট সার্ভিস ও ট্র্যাকিং
+              {isBn ? "ক্লায়েন্ট সার্ভিস ও ট্র্যাকিং" : "Client Portal & Tools"}
             </h3>
             <ul className="space-y-2.5">
-              {[
-                {
-                  label: "নকশা পাঠান (ফ্রি কোটেশন)",
-                  href: "/sketch-upload",
-                  icon: UploadCloud,
-                },
-                {
-                  label: "কনস্ট্রাকশন খরচ ক্যালকুলেটর",
-                  href: "/cost-estimator",
-                  icon: Calculator,
-                },
-                {
-                  label: "প্ল্যান অনুমোদন ট্র্যাকিং",
-                  href: "/track-plan",
-                  icon: Search,
-                },
-                {
-                  label: "ক্লায়েন্ট পোর্টাল লগইন",
-                  href: "/client-portal",
-                  icon: FileCheck2,
-                },
-                {
-                  label: "অ্যাপয়েন্টমেন্ট ও সাইট ভিজিট",
-                  href: "/book-appointment",
-                  icon: Calendar,
-                },
-                {
-                  label: "অনলাইন ফি পেমেন্ট",
-                  href: "/pay",
-                  icon: CreditCard,
-                },
-                {
-                  label: "অনুমোদিত প্ল্যান ও ডকুমেন্ট যাচাই",
-                  href: "/verify",
-                  icon: ShieldCheck,
-                },
-              ].map((item) => {
+              {clientTools.map((item) => {
                 const Icon = item.icon;
                 return (
                   <li key={item.label}>
@@ -192,22 +214,10 @@ export default function Footer() {
           <div>
             <h3 className="text-base font-bold mb-5 font-heading text-accent flex items-center gap-2">
               <BookOpen className="w-4 h-4 text-accent" />
-              রিসোর্স ও তথ্য
+              {isBn ? "রিসোর্স ও তথ্য" : "Resources & Guides"}
             </h3>
             <ul className="space-y-2.5">
-              {[
-                { label: "প্রতিষ্ঠান পরিচিতি (About Us)", href: "/about" },
-                { label: "আমাদের ইঞ্জিনিয়ার প্যানেল (Our Team)", href: "/team" },
-                { label: "সম্পূর্ণ প্রজেক্ট গ্যালারি (Portfolio)", href: "/portfolio" },
-                {
-                  label: "পৌরসভা প্ল্যান অনুমোদন গাইড",
-                  href: "/approval-guide",
-                },
-                { label: "অফিসিয়াল নোটিশ বোর্ড", href: "/notices" },
-                { label: "সাধারণ জিজ্ঞাসা ও প্রশ্নোত্তর (FAQ)", href: "/faq" },
-                { label: "ইঞ্জিনিয়ারিং ব্লগ ও টিপস", href: "/blog" },
-                { label: "যোগাযোগ ও সরাসরি অফিস ভিজিট", href: "/contact" },
-              ].map((item) => (
+              {resources.map((item) => (
                 <li key={item.label}>
                   <Link
                     href={item.href}
@@ -228,9 +238,11 @@ export default function Footer() {
           <div className="flex items-start gap-2.5">
             <MapPin className="w-4 h-4 text-accent shrink-0 mt-0.5" />
             <div>
-              <p className="font-bold text-foreground text-primary-foreground">প্রধান অফিস</p>
+              <p className="font-bold text-primary-foreground">
+                {isBn ? "প্রধান অফিস" : "Head Office"}
+              </p>
               <p className="mt-0.5 leading-relaxed">
-                {SITE_CONFIG.address}
+                {isBn ? SITE_CONFIG.address : SITE_CONFIG.addressEn}
               </p>
             </div>
           </div>
@@ -238,7 +250,9 @@ export default function Footer() {
           <div className="flex items-start gap-2.5">
             <Phone className="w-4 h-4 text-accent shrink-0 mt-0.5" />
             <div>
-              <p className="font-bold text-primary-foreground">সরাসরি কল</p>
+              <p className="font-bold text-primary-foreground">
+                {isBn ? "সরাসরি কল" : "Direct Phone"}
+              </p>
               <p className="mt-0.5 space-x-2">
                 <a href="tel:01778506500" className="hover:text-accent transition-colors">
                   01778-506500
@@ -254,7 +268,9 @@ export default function Footer() {
           <div className="flex items-start gap-2.5">
             <Mail className="w-4 h-4 text-accent shrink-0 mt-0.5" />
             <div>
-              <p className="font-bold text-primary-foreground">ইমেইল পরামর্শ</p>
+              <p className="font-bold text-primary-foreground">
+                {isBn ? "ইমেইল যোগাযোগ" : "Email Inquiry"}
+              </p>
               <p className="mt-0.5">
                 <a
                   href="mailto:info@hfengineeringbd.com"
@@ -274,7 +290,7 @@ export default function Footer() {
           </p>
           <div className="flex items-center gap-4 text-xs text-primary-foreground/60">
             <Link href="/approval-guide" className="hover:text-accent transition-colors">
-              অনুমোদন গাইড
+              {isBn ? "অনুমোদন গাইড" : "Approval Guide"}
             </Link>
             <span>·</span>
             <Link href="/faq" className="hover:text-accent transition-colors">
@@ -282,7 +298,7 @@ export default function Footer() {
             </Link>
             <span>·</span>
             <Link href="/contact" className="hover:text-accent transition-colors">
-              যোগাযোগ
+              {isBn ? "যোগাযোগ" : "Contact"}
             </Link>
           </div>
         </div>

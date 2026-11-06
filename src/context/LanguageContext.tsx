@@ -73,14 +73,14 @@ interface LanguageContextType {
 }
 
 const LanguageContext = createContext<LanguageContextType>({
-  locale: "bn",
+  locale: "en",
   setLocale: () => {},
   toggleLocale: () => {},
   t: (key) => key,
 });
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("bn");
+  const [locale, setLocaleState] = useState<Locale>("en");
 
   useEffect(() => {
     try {

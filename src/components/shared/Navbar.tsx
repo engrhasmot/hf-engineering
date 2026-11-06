@@ -31,6 +31,7 @@ export default function Navbar() {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
   const pathname = usePathname();
   const { locale, toggleLocale, t } = useLanguage();
+  const isBn = locale === "bn";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,14 +59,14 @@ export default function Navbar() {
   // About dropdown items
   const aboutItems = [
     {
-      title: locale === "bn" ? "প্রতিষ্ঠান পরিচিতি" : "About Company",
-      desc: locale === "bn" ? "আমাদের লক্ষ্য, দর্শন ও অভিজ্ঞতা" : "Our mission, philosophy & vision",
+      title: isBn ? "প্রতিষ্ঠান পরিচিতি" : "About Our Firm",
+      desc: isBn ? "আমাদের লক্ষ্য, দর্শন ও অভিজ্ঞতা" : "Our mission, philosophy & vision",
       href: "/about",
       icon: Building2,
     },
     {
-      title: locale === "bn" ? "আমাদের ইঞ্জিনিয়ার প্যানেল" : "Our Engineering Team",
-      desc: locale === "bn" ? "সিভিল ইঞ্জিনিয়ার ও স্ট্রাকচারাল টিম" : "Lead consultants & structural engineers",
+      title: isBn ? "আমাদের ইঞ্জিনিয়ার প্যানেল" : "Our Engineering Team",
+      desc: isBn ? "সিভিল ইঞ্জিনিয়ার ও স্ট্রাকচারাল টিম" : "Lead consultants & structural engineers",
       href: "/team",
       icon: Users,
     },
@@ -113,7 +114,7 @@ export default function Navbar() {
                 pathname === "/" ? "text-accent bg-secondary/50 font-bold" : "text-foreground"
               }`}
             >
-              {t("nav.home") || "হোম"}
+              {t("nav.home")}
             </Link>
 
             {/* Services */}
@@ -124,7 +125,7 @@ export default function Navbar() {
                 pathname === "/services" ? "text-accent bg-secondary/50 font-bold" : "text-foreground"
               }`}
             >
-              {t("nav.services") || "সেবাসমূহ"}
+              {t("nav.services")}
             </Link>
 
             {/* Portfolio */}
@@ -135,7 +136,7 @@ export default function Navbar() {
                 pathname === "/portfolio" ? "text-accent bg-secondary/50 font-bold" : "text-foreground"
               }`}
             >
-              {t("nav.portfolio") || "প্রজেক্টসমূহ"}
+              {t("nav.portfolio")}
             </Link>
 
             {/* Cost Estimator */}
@@ -149,7 +150,7 @@ export default function Navbar() {
               }`}
             >
               <Calculator className="w-3.5 h-3.5 text-accent" />
-              <span>{t("nav.costEstimator") || "খরচ ক্যালকুলেটর"}</span>
+              <span>{t("nav.costEstimator")}</span>
             </Link>
 
             {/* About dropdown (About + Team) */}
@@ -166,7 +167,7 @@ export default function Navbar() {
                 }`}
                 aria-expanded={aboutDropdownOpen}
               >
-                <span>{t("nav.about") || "আমাদের সম্পর্কে"}</span>
+                <span>{t("nav.about")}</span>
                 <ChevronDown
                   className={`w-3.5 h-3.5 transition-transform duration-200 ${
                     aboutDropdownOpen ? "rotate-180" : ""
@@ -223,7 +224,7 @@ export default function Navbar() {
                 pathname === "/contact" ? "text-accent bg-secondary/50 font-bold" : "text-foreground"
               }`}
             >
-              {t("nav.contact") || "যোগাযোগ"}
+              {t("nav.contact")}
             </Link>
           </nav>
 
@@ -237,7 +238,7 @@ export default function Navbar() {
                 className="text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-secondary/80 gap-1.5 h-9"
               >
                 <Search className="w-3.5 h-3.5 text-accent" />
-                <span className="hidden xl:inline">{locale === "bn" ? "প্ল্যান ট্র্যাকিং" : "Track Plan"}</span>
+                <span className="hidden xl:inline">{isBn ? "প্ল্যান ট্র্যাকিং" : "Track Plan"}</span>
               </Button>
             </Link>
 
@@ -245,10 +246,10 @@ export default function Navbar() {
             <button
               onClick={toggleLocale}
               className="px-2.5 py-1 text-xs font-bold rounded-lg border border-border bg-secondary/60 hover:bg-secondary text-foreground transition-all flex items-center gap-1.5 shadow-xs"
-              title="Change Language / ভাষা পরিবর্তন"
+              title={isBn ? "Switch to English" : "বাংলায় পরিবর্তন করুন"}
             >
               <Globe className="w-3.5 h-3.5 text-accent" />
-              <span>{locale === "bn" ? "🇧🇩 বাংলা" : "🇬🇧 EN"}</span>
+              <span>{isBn ? "🇧🇩 বাংলা" : "🇬🇧 EN"}</span>
             </button>
 
             {/* Primary Action Button: Send Sketch */}
@@ -258,7 +259,7 @@ export default function Navbar() {
                 className="bg-accent hover:bg-accent/90 text-primary-foreground font-bold shadow-sm rounded-lg text-xs h-9 px-3.5 gap-1.5"
               >
                 <UploadCloud className="w-4 h-4" />
-                <span>{locale === "bn" ? "নকশা পাঠান" : "Send Sketch"}</span>
+                <span>{isBn ? "নকশা পাঠান" : "Send Sketch"}</span>
               </Button>
             </Link>
 
@@ -284,7 +285,7 @@ export default function Navbar() {
                 className="bg-accent hover:bg-accent/90 text-primary-foreground font-bold text-xs h-8 px-2.5 gap-1 shadow-xs"
               >
                 <UploadCloud className="w-3.5 h-3.5" />
-                <span>নকশা পাঠান</span>
+                <span>{isBn ? "নকশা পাঠান" : "Send Sketch"}</span>
               </Button>
             </Link>
 
@@ -293,7 +294,7 @@ export default function Navbar() {
               onClick={toggleLocale}
               className="px-2 py-1 text-xs font-bold rounded-md border border-border bg-secondary/80 text-foreground"
             >
-              {locale === "bn" ? "🇧🇩 BN" : "🇬🇧 EN"}
+              {isBn ? "🇧🇩 BN" : "🇬🇧 EN"}
             </button>
 
             {/* Mobile menu toggle */}
@@ -323,21 +324,23 @@ export default function Navbar() {
               </a>
               <a
                 href={`https://wa.me/${SITE_CONFIG.whatsapp}?text=${encodeURIComponent(
-                  "আসসালামু আলাইকুম, আমি বিল্ডিং ডিজাইন ও প্ল্যান সংক্রান্ত তথ্য জানতে চাই।"
+                  isBn
+                    ? "আসসালামু আলাইকুম, আমি বিল্ডিং ডিজাইন ও প্ল্যান সংক্রান্ত তথ্য জানতে চাই।"
+                    : "Hello HF Engineering, I would like to inquire about building design and plan consultancy."
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 p-2.5 rounded-xl bg-emerald-600 text-white text-xs font-bold shadow-xs"
               >
                 <WhatsAppIcon className="w-3.5 h-3.5" />
-                <span>WhatsApp চ্যাট</span>
+                <span>{isBn ? "WhatsApp চ্যাট" : "WhatsApp Chat"}</span>
               </a>
             </div>
 
             {/* Main Navigation Links */}
             <div>
               <p className="px-2 text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1.5">
-                {locale === "bn" ? "মূল নেভিগেশন" : "Main Navigation"}
+                {isBn ? "মূল নেভিগেশন" : "Main Navigation"}
               </p>
               <div className="space-y-1">
                 <Link
@@ -348,7 +351,7 @@ export default function Navbar() {
                     pathname === "/" ? "bg-accent/15 text-accent font-bold" : "text-foreground hover:bg-secondary"
                   }`}
                 >
-                  {t("nav.home") || "হোম"}
+                  {t("nav.home")}
                 </Link>
 
                 <Link
@@ -359,7 +362,7 @@ export default function Navbar() {
                     pathname === "/services" ? "bg-accent/15 text-accent font-bold" : "text-foreground hover:bg-secondary"
                   }`}
                 >
-                  {t("nav.services") || "সেবাসমূহ"}
+                  {t("nav.services")}
                 </Link>
 
                 <Link
@@ -370,7 +373,7 @@ export default function Navbar() {
                     pathname === "/portfolio" ? "bg-accent/15 text-accent font-bold" : "text-foreground hover:bg-secondary"
                   }`}
                 >
-                  {t("nav.portfolio") || "প্রজেক্টসমূহ"}
+                  {t("nav.portfolio")}
                 </Link>
 
                 <Link
@@ -385,10 +388,10 @@ export default function Navbar() {
                 >
                   <span className="flex items-center gap-2">
                     <Calculator className="w-4 h-4 text-accent" />
-                    {t("nav.costEstimator") || "খরচ ক্যালকুলেটর"}
+                    {t("nav.costEstimator")}
                   </span>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-accent/20 text-accent">
-                    জনপ্রিয়
+                    {isBn ? "জনপ্রিয়" : "Popular"}
                   </span>
                 </Link>
 
@@ -400,7 +403,7 @@ export default function Navbar() {
                     pathname === "/about" ? "bg-accent/15 text-accent font-bold" : "text-foreground hover:bg-secondary"
                   }`}
                 >
-                  {t("nav.about") || "প্রতিষ্ঠান পরিচিতি"}
+                  {t("nav.about")}
                 </Link>
 
                 <Link
@@ -411,7 +414,7 @@ export default function Navbar() {
                     pathname === "/team" ? "bg-accent/15 text-accent font-bold" : "text-foreground hover:bg-secondary"
                   }`}
                 >
-                  {t("nav.team") || "আমাদের ইঞ্জিনিয়ার প্যানেল"}
+                  {t("nav.team")}
                 </Link>
 
                 <Link
@@ -422,7 +425,7 @@ export default function Navbar() {
                     pathname === "/contact" ? "bg-accent/15 text-accent font-bold" : "text-foreground hover:bg-secondary"
                   }`}
                 >
-                  {t("nav.contact") || "যোগাযোগ ও ঠিকানা"}
+                  {t("nav.contact")}
                 </Link>
               </div>
             </div>
@@ -430,7 +433,7 @@ export default function Navbar() {
             {/* Quick Client Utilities Cards */}
             <div className="pt-2 border-t border-border">
               <p className="px-2 text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-2">
-                {locale === "bn" ? "ক্লায়েন্ট সার্ভিস" : "Client Services"}
+                {isBn ? "ক্লায়েন্ট সার্ভিস" : "Client Services"}
               </p>
               <div className="grid grid-cols-2 gap-2">
                 <Link
@@ -439,8 +442,12 @@ export default function Navbar() {
                   className="p-3 rounded-xl bg-card border border-border hover:border-accent/40 text-left transition-colors flex flex-col justify-between"
                 >
                   <Search className="w-4 h-4 text-accent mb-1" />
-                  <span className="text-xs font-bold text-foreground">প্ল্যান ট্র্যাকিং</span>
-                  <span className="text-[10px] text-muted-foreground mt-0.5">ফাইলের অগ্রগতি দেখুন</span>
+                  <span className="text-xs font-bold text-foreground">
+                    {isBn ? "প্ল্যান ট্র্যাকিং" : "Track Plan"}
+                  </span>
+                  <span className="text-[10px] text-muted-foreground mt-0.5">
+                    {isBn ? "ফাইলের অগ্রগতি দেখুন" : "Check File Status"}
+                  </span>
                 </Link>
 
                 <Link
@@ -449,8 +456,12 @@ export default function Navbar() {
                   className="p-3 rounded-xl bg-card border border-border hover:border-accent/40 text-left transition-colors flex flex-col justify-between"
                 >
                   <User className="w-4 h-4 text-accent mb-1" />
-                  <span className="text-xs font-bold text-foreground">ক্লায়েন্ট পোর্টাল</span>
-                  <span className="text-[10px] text-muted-foreground mt-0.5">ড্রয়িং ও স্ট্যাটাস</span>
+                  <span className="text-xs font-bold text-foreground">
+                    {isBn ? "ক্লায়েন্ট পোর্টাল" : "Client Portal"}
+                  </span>
+                  <span className="text-[10px] text-muted-foreground mt-0.5">
+                    {isBn ? "ড্রয়িং ও স্ট্যাটাস" : "Drawings & Files"}
+                  </span>
                 </Link>
               </div>
             </div>
@@ -460,7 +471,9 @@ export default function Navbar() {
               <Link href="/sketch-upload" onClick={() => setIsOpen(false)}>
                 <Button className="w-full bg-accent hover:bg-accent/90 text-primary-foreground font-bold h-11 rounded-xl shadow-md gap-2">
                   <UploadCloud className="w-4 h-4" />
-                  <span>নকশা পাঠান (ফ্রি পরামর্শ ও কোটেশন)</span>
+                  <span>
+                    {isBn ? "নকশা পাঠান (ফ্রি পরামর্শ ও কোটেশন)" : "Send Sketch (Free Quote & Advice)"}
+                  </span>
                 </Button>
               </Link>
             </div>

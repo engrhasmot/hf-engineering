@@ -506,7 +506,6 @@ export default function HomePage() {
                   </div>
                   <div>
                     <p className="font-bold text-foreground text-sm">Professional Engineering Firm</p>
-                    <p className="text-xs text-muted-foreground">Government & municipal compliant design standards</p>
                   </div>
                 </div>
               </div>

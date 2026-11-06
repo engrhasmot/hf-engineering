@@ -86,7 +86,7 @@ const DEFAULT_MEMBERS: TeamMember[] = [
     _id: "asraful-islam",
     name: "Engr. Md. Asraful Islam",
     designation: "Senior Civil Engineer & GIS Specialist",
-    bio: "B.Sc. in Civil Engineering and certified GIS & ArcGIS Specialist with extensive field experience in geospatial analysis, topographical mapping, digital land surveying, and municipal civil engineering projects. Skilled in transforming complex spatial data into accurate, constructible boundary drawings and structural grading layouts.",
+    bio: "Diploma in Civil Engineering and certified GIS & ArcGIS Specialist with extensive field experience in geospatial analysis, topographical mapping, digital land surveying, and municipal civil engineering projects. Skilled in transforming complex spatial data into accurate, constructible boundary drawings and structural grading layouts.",
     image: {
       url: "https://res.cloudinary.com/fcpqnule/image/upload/v1789671844/triple-h/uploads/gkfrh2ifjhpl4mudyzmb.png",
       publicId: "triple-h/uploads/gkfrh2ifjhpl4mudyzmb",
@@ -154,15 +154,19 @@ export default function TeamPage() {
       .then((res) => res.json())
       .then((json) => {
         if (json && json.data && Array.isArray(json.data) && json.data.length > 0) {
-          // Merge API data with default details for high fidelity
+          // Merge API data with default fallback details per member
           const mapped = json.data.map((m: any) => {
-            const def = DEFAULT_MEMBERS.find(
-              (d) => d.name.toLowerCase().includes("hasmot") && m.name.toLowerCase().includes("hasmot")
+            const nameLower = m.name.toLowerCase();
+            const def = DEFAULT_MEMBERS.find((d) =>
+              d.name.toLowerCase().split(" ").some((word) => word.length > 3 && nameLower.includes(word))
             );
             return {
               ...m,
+              bio: m.bio || def?.bio || "",
               expertise: m.expertise?.length > 0 ? m.expertise : def?.expertise || [],
-              phone: m.phone || def?.phone || "01778-506500",
+              phone: m.phone || def?.phone || "",
+              email: m.email || def?.email || "",
+              socialLinks: m.socialLinks?.length > 0 ? m.socialLinks : def?.socialLinks || [],
             };
           });
           setMembers(mapped);

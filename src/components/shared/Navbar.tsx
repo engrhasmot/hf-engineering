@@ -44,6 +44,23 @@ export default function Navbar() {
     if (isDesktop) setIsOpen(false);
   }, [isDesktop]);
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
+
+  // Prevent background scrolling when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -51,8 +68,18 @@ export default function Navbar() {
         setAboutDropdownOpen(false);
       }
     };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsOpen(false);
+        setAboutDropdownOpen(false);
+      }
+    };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, []);
 
   // About dropdown items
@@ -81,23 +108,23 @@ export default function Navbar() {
           : "bg-background/85 backdrop-blur-sm border-b border-border/40 py-1"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 md:h-20">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16 md:h-20 gap-2">
           {/* ─── Brand Logo & Identity ─── */}
-          <Link href="/" className="flex-shrink-0 group flex items-center gap-2.5">
+          <Link href="/" className="shrink-0 group flex items-center gap-1.5 sm:gap-2.5 min-w-0">
             <Image
               src="/images/logo.png"
               alt="HF Design & Engineering Solutions logo"
               width={140}
               height={140}
-              className="h-10 md:h-13 w-auto object-contain group-hover:opacity-90 transition-opacity"
+              className="h-8.5 sm:h-10 md:h-13 w-auto object-contain group-hover:opacity-90 transition-opacity shrink-0"
               priority
             />
-            <div className="flex flex-col leading-tight">
-              <span className="text-base md:text-xl font-black tracking-tight text-accent group-hover:text-accent/90 transition-colors uppercase">
+            <div className="flex flex-col leading-tight min-w-0">
+              <span className="text-base sm:text-lg md:text-xl font-black tracking-tight text-accent group-hover:text-accent/90 transition-colors uppercase leading-none">
                 HF
               </span>
-              <span className="text-[9px] md:text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
+              <span className="text-[7.5px] sm:text-[9px] md:text-[10px] font-semibold tracking-wider text-muted-foreground uppercase whitespace-nowrap mt-0.5">
                 Design &amp; Engineering
               </span>
             </div>
@@ -275,31 +302,34 @@ export default function Navbar() {
           </div>
 
           {/* ─── Mobile Action Controls ─── */}
-          <div className="lg:hidden flex items-center gap-2">
+          <div className="lg:hidden flex items-center gap-1.5 sm:gap-2 shrink-0">
             {/* Quick Sketch upload button */}
-            <Link href="/sketch-upload">
+            <Link href="/sketch-upload" title={isBn ? "নকশা পাঠান" : "Send Sketch"}>
               <Button
                 size="sm"
-                className="bg-accent hover:bg-accent/90 text-primary-foreground font-bold text-xs h-8 px-2.5 gap-1 shadow-xs"
+                className="bg-accent hover:bg-accent/90 text-primary-foreground font-bold text-xs h-8 px-2 sm:px-2.5 gap-1 shadow-xs rounded-lg shrink-0"
               >
-                <UploadCloud className="w-3.5 h-3.5" />
-                <span>{isBn ? "নকশা পাঠান" : "Send Sketch"}</span>
+                <UploadCloud className="w-3.5 h-3.5 shrink-0" />
+                <span className="hidden min-[480px]:inline">{isBn ? "নকশা পাঠান" : "Send Sketch"}</span>
+                <span className="min-[480px]:hidden hidden min-[360px]:inline">{isBn ? "নকশা" : "Sketch"}</span>
               </Button>
             </Link>
 
             {/* Lang toggle */}
             <button
               onClick={toggleLocale}
-              className="px-2 py-1 text-xs font-bold rounded-md border border-border bg-secondary/80 text-foreground"
+              className="px-1.5 sm:px-2 py-1 text-xs font-bold rounded-lg border border-border bg-secondary/80 hover:bg-secondary text-foreground transition-colors shrink-0 flex items-center gap-1 active:scale-95"
+              title={isBn ? "Switch to English" : "বাংলায় পরিবর্তন করুন"}
             >
-              {isBn ? "🇧🇩 BN" : "🇬🇧 EN"}
+              <span>{isBn ? "🇧🇩 BN" : "🇬🇧 EN"}</span>
             </button>
 
             {/* Mobile menu toggle */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-foreground p-2 rounded-lg hover:bg-secondary focus:outline-none transition-colors"
-              aria-label="Toggle menu"
+              className="text-foreground p-1.5 sm:p-2 rounded-lg hover:bg-secondary focus:outline-none transition-colors shrink-0 flex items-center justify-center"
+              aria-label={isOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isOpen}
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -309,8 +339,29 @@ export default function Navbar() {
 
       {/* ─── Mobile Slide-down Navigation Menu ─── */}
       {isOpen && (
-        <div className="lg:hidden bg-background/98 backdrop-blur-md border-b border-border absolute w-full shadow-2xl animate-in slide-in-from-top-2 max-h-[calc(100vh-4rem)] overflow-y-auto">
-          <div className="px-4 pt-3 pb-8 space-y-4">
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 top-16 bg-black/50 backdrop-blur-xs z-40 lg:hidden animate-in fade-in-0 duration-200"
+            onClick={() => setIsOpen(false)}
+            aria-hidden="true"
+          />
+
+          <div className="lg:hidden bg-background/98 backdrop-blur-md border-b border-border absolute top-full left-0 right-0 w-full z-50 shadow-2xl animate-in slide-in-from-top-2 max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain">
+            <div className="px-4 pt-3 pb-8 space-y-4">
+              {/* Language Switch inside menu for convenience */}
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-secondary/60 border border-border">
+                <span className="text-xs font-semibold text-muted-foreground">
+                  {isBn ? "ভাষা নির্বাচন করুন" : "Select Language"}
+                </span>
+                <button
+                  onClick={toggleLocale}
+                  className="px-2.5 py-1 text-xs font-bold rounded-lg border border-border bg-background hover:bg-secondary text-foreground transition-all flex items-center gap-1.5 shadow-xs"
+                >
+                  <Globe className="w-3.5 h-3.5 text-accent" />
+                  <span>{isBn ? "🇧🇩 বাংলা" : "🇬🇧 English"}</span>
+                </button>
+              </div>
             {/* Direct Call / WhatsApp strip */}
             <div className="grid grid-cols-2 gap-2 pt-1 pb-2">
               <a
@@ -472,8 +523,9 @@ export default function Navbar() {
                 </Button>
               </Link>
             </div>
+            </div>
           </div>
-        </div>
+        </>
       )}
     </header>
   );

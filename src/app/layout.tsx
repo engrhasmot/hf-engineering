@@ -92,7 +92,7 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
       className={`${inter.variable} ${montserrat.variable} ${hindSiliguri.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
+      <body className="min-h-full flex flex-col bg-background text-foreground font-sans overflow-x-hidden">
         <LanguageProvider>
           {children}
         </LanguageProvider>

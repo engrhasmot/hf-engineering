@@ -330,26 +330,42 @@ export function planStatusClientWhatsApp(data: {
   clientName: string;
   fileId: string;
   projectTitle: string;
-  newStatus: string;
+  newStatus?: string;
+  progressPercentage?: number;
   note?: string;
 }): string {
   const statusLabels: Record<string, string> = {
-    submitted: 'জমা দেওয়া হয়েছে ✅',
-    'under-review': 'পর্যালোচনাধীন 🔍',
-    'revision-required': 'সংশোধন প্রয়োজন ⚠️',
-    approved: 'অনুমোদিত হয়েছে 🎉',
-    rejected: 'প্রত্যাখ্যাত ❌',
+    submitted: 'দাখিলকৃত (Submitted) ✅',
+    'under-review': 'পর্যালোচনাধীন (Under Review) 🔍',
+    'revision-required': 'সংশোধন প্রয়োজন (Revision Required) ⚠️',
+    approved: 'অনুমোদিত ও পাশ (Approved) 🎉',
+    rejected: 'বাতিল (Rejected) ❌',
+    'in-progress': 'চলমান কাজ (In Progress) ⚡',
+    completed: 'সম্পূর্ণ ও প্রস্তুত (Completed) 🏆',
+    drafting: 'ড্রয়িং প্রস্তুত হচ্ছে 📐',
   };
-  const statusLabel = statusLabels[data.newStatus] || data.newStatus;
+
+  const rawKey = (data.newStatus || '').toLowerCase().trim();
+  const statusLabel = statusLabels[rawKey] || (data.newStatus && data.newStatus !== 'undefined' ? data.newStatus : 'পর্যালোচনাধীন (Under Review) 🔍');
   const trackUrl = `${getSiteUrl()}/track-plan${data.fileId ? `?query=${encodeURIComponent(data.fileId)}` : ''}`;
+
   const lines = [
-    `প্রিয় ${data.clientName},`,
+    `প্রিয় *${data.clientName}*,`,
     ``,
     `আপনার ফাইল "*${data.projectTitle}*" এর অবস্থা আপডেট হয়েছে 🔔`,
     ``,
-    `নতুন অবস্থা: *${statusLabel}*`,
+    `📋 ফাইল নম্বর: *${data.fileId}*`,
+    `📌 বর্তমান অবস্থা: *${statusLabel}*`,
   ];
-  if (data.note) lines.push(`মন্তব্য: ${data.note}`);
+
+  if (typeof data.progressPercentage === 'number' && !isNaN(data.progressPercentage)) {
+    lines.push(`⚡ কাজের অগ্রগতি: *${data.progressPercentage}%*`);
+  }
+
+  if (data.note && data.note.trim()) {
+    lines.push(`📝 সর্বশেষ মন্তব্য: ${data.note.trim()}`);
+  }
+
   lines.push(``);
   lines.push(`🔍 লাইভ স্ট্যাটাস দেখতে ক্লিক করুন:`);
   lines.push(trackUrl);

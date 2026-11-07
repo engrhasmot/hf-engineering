@@ -455,7 +455,7 @@ export default function AdminPlanTrackerPage() {
   const handleWhatsAppUpdate = (plan: any) => {
     const statusText = STATUS_CONFIG[plan.currentStatus]?.label || plan.currentStatus;
     const progress = plan.progressPercentage || 0;
-    const queryUrl = `https://hfengineeringbd.com/track-plan?query=${encodeURIComponent(
+    const queryUrl = `https://hf-engineering.vercel.app/track-plan?query=${encodeURIComponent(
       plan.fileId
     )}`;
 

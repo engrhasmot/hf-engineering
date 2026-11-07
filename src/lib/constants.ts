@@ -1,20 +1,29 @@
-// TODO: Update CANONICAL_SITE_URL if your production domain differs from hfengineeringbd.com
-export const CANONICAL_SITE_URL = 'https://hfengineeringbd.com';
+// Active free Vercel production domain
+export const CANONICAL_SITE_URL = 'https://hf-engineering.vercel.app';
 
 export function getSiteUrl(): string {
-  const envUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  if (typeof window !== 'undefined' && window.location?.origin) {
+    if (!window.location.origin.includes('localhost') && !window.location.origin.includes('127.0.0.1')) {
+      return window.location.origin;
+    }
+  }
+
+  const envUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
   if (envUrl && !envUrl.includes('localhost') && !envUrl.includes('127.0.0.1')) {
-    try {
-      const urlToParse = envUrl.startsWith('http://') || envUrl.startsWith('https://')
-        ? envUrl
-        : `https://${envUrl}`;
-      const parsed = new URL(urlToParse);
-      // Strictly extract the origin
-      if (parsed.hostname && parsed.hostname.includes('.')) {
-        return parsed.origin;
+    // If NEXT_PUBLIC_SITE_URL points to unconfigured custom domain hfengineeringbd.com, ignore and fallback to active vercel app
+    if (!envUrl.includes('hfengineeringbd.com')) {
+      try {
+        const urlToParse = envUrl.startsWith('http://') || envUrl.startsWith('https://')
+          ? envUrl
+          : `https://${envUrl}`;
+        const parsed = new URL(urlToParse);
+        // Strictly extract the origin
+        if (parsed.hostname && parsed.hostname.includes('.')) {
+          return parsed.origin;
+        }
+      } catch {
+        // fallback if URL parsing fails
       }
-    } catch {
-      // fallback if URL parsing fails
     }
   }
   return CANONICAL_SITE_URL;

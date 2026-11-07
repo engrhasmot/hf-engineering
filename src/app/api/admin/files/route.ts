@@ -121,13 +121,15 @@ export async function PATCH(req: NextRequest) {
 
     // Fire SMS & WhatsApp notification (non-blocking)
     if (updated) {
+      const effectiveStatus = currentStatus || updated.currentStatus || 'under-review';
+
       sendSMS(
         updated.phone,
         planStatusUpdateSMS({
           clientName: updated.clientName,
           fileId: updated.fileId,
           projectTitle: updated.projectTitle,
-          newStatus: currentStatus,
+          newStatus: effectiveStatus,
           note: remark || '',
         })
       ).catch(err => console.error('[SMS] Failed to send status update SMS:', err));
@@ -137,7 +139,8 @@ export async function PATCH(req: NextRequest) {
           clientName: updated.clientName,
           fileId: updated.fileId,
           projectTitle: updated.projectTitle,
-          newStatus: currentStatus,
+          newStatus: effectiveStatus,
+          progressPercentage: updated.progressPercentage,
           note: remark || '',
         }),
         updated.phone

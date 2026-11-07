@@ -124,18 +124,21 @@ export function planStatusUpdateSMS(data: {
   clientName: string;
   fileId: string;
   projectTitle: string;
-  newStatus: string;
+  newStatus?: string;
   note?: string;
 }): string {
   const statusLabels: Record<string, string> = {
-    submitted: 'জমা দেওয়া হয়েছে ✅',
+    submitted: 'দাখিলকৃত (Submitted) ✅',
     'under-review': 'পর্যালোচনাধীন 🔍',
     'revision-required': 'সংশোধন প্রয়োজন ⚠️',
     approved: 'অনুমোদিত হয়েছে 🎉',
-    rejected: 'প্রত্যাখ্যাত ❌',
+    rejected: 'বাতিল ❌',
+    'in-progress': 'চলমান ⚡',
+    completed: 'সম্পূর্ণ 🏆',
   };
 
-  const statusLabel = statusLabels[data.newStatus] || data.newStatus;
+  const rawKey = (data.newStatus || '').toLowerCase().trim();
+  const statusLabel = statusLabels[rawKey] || (data.newStatus && data.newStatus !== 'undefined' ? data.newStatus : 'পর্যালোচনাধীন 🔍');
 
   let msg = `প্রিয় ${data.clientName},\n`;
   msg += `আপনার ফাইল "${data.projectTitle}" (ID: ${data.fileId}) এর অবস্থা আপডেট হয়েছে:\n\n`;
